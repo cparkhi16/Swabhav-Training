@@ -55,4 +55,39 @@ OUTERFOR:
 	default:
 		fmt.Println("Today is working day")
 	}
+	//add := addition
+	a := float32(10)
+	b := float32(20)
+
+	result := mathOperations(a, b, addition)
+	fmt.Println("Addition is", result, "Type of result ", reflect.TypeOf(result))
+
+	diff := mathOperations(a, b, subtraction)
+	fmt.Println("Addition is", diff, "Type of result ", reflect.TypeOf(diff))
+
+	mul := mathOperations(a, b, multiplication)
+	fmt.Println("Addition is", mul, "Type of result ", reflect.TypeOf(mul))
+
+	div := mathOperations(a, b, division)
+	fmt.Println("Addition is", div, "Type of result ", reflect.TypeOf(div))
+
+}
+func mathOperations(f1, f2 float32, f func(num1, num2 float32) float32) float64 {
+	return float64(f(f1, f2))
+}
+func addition(n1, n2 float32) float32 {
+	ans := n1 + n2
+	return ans
+}
+func subtraction(n1, n2 float32) float32 {
+	ans := n1 - n2
+	return ans
+}
+func multiplication(n1, n2 float32) float32 {
+	ans := n1 * n2
+	return ans
+}
+func division(n1, n2 float32) float32 {
+	ans := n1 / n2
+	return ans
 }
