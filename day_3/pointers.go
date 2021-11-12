@@ -19,6 +19,7 @@ func main() {
 	fmt.Println("Zero value of c", c)
 	fmt.Println("Zero value of b ", b)
 	fmt.Println("Zero value of p ", p)
+	//fmt.Println("Zero value of *p ", *p)
 	fmt.Println("Value of ptr ", ptr)
 	fmt.Println("Value of a", a)
 	fmt.Println("Value of *ptr", *ptr)
