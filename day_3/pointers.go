@@ -21,8 +21,7 @@ func main() {
 	fmt.Println("Value of **ptr2 ", **ptr2)
 }
 func a() func(f1, f2 float32, f func(num1, num2 float32) float32) float64 {
-	b := func(f1, f2 float32, f func(num1, num2 float32) float32) float64 {
+	return func(f1, f2 float32, f func(num1, num2 float32) float32) float64 {
 		return float64(f(f1, f2))
 	}
-	return b
 }
