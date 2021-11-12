@@ -10,8 +10,15 @@ func main() {
 	f := a()
 	ans := f(float32(10), float32(30), addition)
 	fmt.Println(ans)
-	var a string = "abc"
-	ptr := &a
+	var a string
+	var b int
+	var p *int
+	var c bool
+	ptr := &b
+	fmt.Println("Zero value of a ", a)
+	fmt.Println("Zero value of c", c)
+	fmt.Println("Zero value of b ", b)
+	fmt.Println("Zero value of p ", p)
 	fmt.Println("Value of ptr ", ptr)
 	fmt.Println("Value of a", a)
 	fmt.Println("Value of *ptr", *ptr)
