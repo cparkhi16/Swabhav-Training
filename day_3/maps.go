@@ -44,4 +44,14 @@ func main() {
 		1:2
 	}
 	fmt.Println(mapExample)*/
+	fmt.Println("myNewMap before copying it to copyMap", myNewMap)
+	copyMap := myNewMap
+	copyMap[0] = "Abc"
+	copyMap[2] = "Pqr"
+	fmt.Println("myNewMap after modification in copyMap ", myNewMap)
+	fmt.Println("copy map using range for loop")
+	for key, val := range copyMap {
+		fmt.Println(key, val)
+	}
+
 }
