@@ -72,6 +72,9 @@ func manipulateSlice(s []int) {
 	fmt.Println("nSlice ", nSlice, len(nSlice), cap(nSlice))
 	fmt.Println()
 	a := []int{1, 2, 3, 4, 5, 6}
+	for _, val := range a {
+		fmt.Println("Range loop for slice", val)
+	}
 	b := a[1:3:5]
 	c := a[1:3]
 	fmt.Println("b ", b, len(b), cap(b))
