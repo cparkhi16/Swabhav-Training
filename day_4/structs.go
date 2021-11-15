@@ -1,16 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"day_4/persons"
+	"fmt"
+)
 
 func main() {
 	personOne := NewPerson("Chinmay", "Parkhi", 23)
 	fmt.Println(*personOne)
 	//FuncPassStruct(person)
-	var persons []person
-	persons = append(persons, *personOne)
+	var personsNew []person
+	personsNew = append(personsNew, *personOne)
 	new_person := NewPerson("Ram", "xyz", 21)
-	persons = append(persons, *new_person)
-	for _, val := range persons {
+	personsNew = append(personsNew, *new_person)
+	for _, val := range personsNew {
 		fmt.Println("Struct value", val)
 	}
 	manipulateStruct(*personOne)
@@ -19,6 +22,15 @@ func main() {
 	myPtr := &nPerson
 	manipulateStructWithPtr(myPtr)
 	fmt.Println("after manipulating personOne with ptr", *personOne)
+
+	//package persons
+	p1 := persons.New("Manoj", "P", "Thane", "Maharashtra", 21, 3)
+	persons.PrintPerson(*p1)
+	e1 := persons.NewEmployee(123, *p1)
+	persons.PrintEmployeeDetails(*e1)
+	//Updating employee first Name
+	e1.UpdateEmployeeFirstName("Raj")
+	persons.PrintEmployeeDetails(*e1)
 }
 func manipulateStruct(p person) {
 	p.firstName = "Raju"
