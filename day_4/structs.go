@@ -24,13 +24,17 @@ func main() {
 	fmt.Println("after manipulating personOne with ptr", *personOne)
 
 	//package persons
-	p1 := persons.New("Manoj", "P", "Thane", "Maharashtra", 21, 3)
+	p1 := persons.NewPerson("Manoj", "P", 21)
 	persons.PrintPerson(*p1)
 	e1 := persons.NewEmployee(123, *p1)
 	persons.PrintEmployeeDetails(*e1)
 	//Updating employee first Name
-	e1.UpdateEmployeeFirstName("Raj")
+	e1.SetEmployeeFirstName("Raj")
+	e1.SetEmployeeAddress(4, "Kalyan", "Maharashtra")
 	persons.PrintEmployeeDetails(*e1)
+	name := e1.GetEmployeeFirstName(123)
+	fmt.Println(name)
+
 }
 func manipulateStruct(p person) {
 	p.firstName = "Raju"
