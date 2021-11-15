@@ -36,7 +36,8 @@ func main() {
 	} else {
 		fmt.Println("Value not found")
 	}
-
+	manipulateMap(myNewMap)
+	fmt.Println("My new map in main func", myNewMap)
 	//mapExample[0] = 1 //Error in assigning a nil map
 	//fmt.Println(mapExample)
 	/*mapExample={
@@ -53,5 +54,14 @@ func main() {
 	for key, val := range copyMap {
 		fmt.Println(key, val)
 	}
+	delete(copyMap, 0)
+	fmt.Println("Delete a key from copyMap", copyMap)
+	delete(copyMap, 5)
+	fmt.Println("Delete a non existing key from copyMap ", copyMap)
 
+}
+
+func manipulateMap(mapEg map[int]string) {
+	mapEg[3] = "CJP"
+	fmt.Println("Map in func call", mapEg)
 }
