@@ -24,11 +24,16 @@ const (
 func NewAccountHolder(fName, lName, contact string, age, accountNumber uint8, balance int, gender Gender) (*person, error) {
 	if balance <= 0 {
 		return nil, fmt.Errorf("zero or negative balance not accepted")
+	} else if gender.EnumIndex() > 3 {
+		return nil, fmt.Errorf("please provide appropriate gender")
 	}
 	return &person{firstName: fName, lastName: lName, age: age, contact: contact, balance: balance, accountNumber: accountNumber, Gender: gender}, nil
 }
 func (g Gender) String() string {
 	return [...]string{"Male", "Female", "Other"}[g-1]
+}
+func (g Gender) EnumIndex() int {
+	return int(g)
 }
 func (a person) GetAccountDetails() {
 	fmt.Println("Account Number", a.accountNumber)

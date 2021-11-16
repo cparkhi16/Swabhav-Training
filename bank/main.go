@@ -18,7 +18,7 @@ func main() {
 	accTwo, err := b.NewAccountHolder("Rajesh", "Patil", "9879901234", 22, 123, 1200, b.Male)
 	er := PrintError(err)
 	if er && e {
-		str, err := accOne.ShareMoney(accTwo, -1000)
+		str, err := accOne.ShareMoney(accTwo, 1000)
 		if err != nil {
 			fmt.Println(str, err)
 		} else {
