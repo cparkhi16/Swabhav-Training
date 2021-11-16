@@ -41,6 +41,9 @@ func (a person) GetAccountDetails() {
 }
 
 func (acc *person) ShareMoney(accTwo *person, money int) (string, error) {
+	if money < 0 {
+		return "Transfer unsuccessful", fmt.Errorf("negative money can't be transfered")
+	}
 	if acc.balance < money {
 		return "Transfer unsuccessful", fmt.Errorf("you have less balance")
 	}
