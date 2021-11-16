@@ -21,8 +21,11 @@ const (
 	Other  Gender = 3
 )
 
-func NewAccountHolder(fName, lName, contact string, age, accountNumber uint8, balance int, gender Gender) *person {
-	return &person{firstName: fName, lastName: lName, age: age, contact: contact, balance: balance, accountNumber: accountNumber, Gender: gender}
+func NewAccountHolder(fName, lName, contact string, age, accountNumber uint8, balance int, gender Gender) (*person, error) {
+	if balance <= 0 {
+		return nil, fmt.Errorf("zero or negative balance not accepted")
+	}
+	return &person{firstName: fName, lastName: lName, age: age, contact: contact, balance: balance, accountNumber: accountNumber, Gender: gender}, nil
 }
 func (g Gender) String() string {
 	return [...]string{"Male", "Female", "Other"}[g-1]
