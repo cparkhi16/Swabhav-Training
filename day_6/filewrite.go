@@ -3,6 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+
+	//"fs"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -39,6 +42,8 @@ func WriteIntoFileWithIOutil() {
 	//err := ioutil.WriteFile("datanew.txt", data, 0)
 	//err := ioutil.WriteFile("dnew.txt", data, 0777)
 	err := ioutil.WriteFile("test1.txt", data, 0777)
+	var f fs.FileMode = 0777
+	fmt.Println("Return file perm ", f.Perm())
 
 	if err != nil {
 		log.Fatal(err)
@@ -100,12 +105,42 @@ func ReadSpecificBytes() {
 		log.Fatal(err)
 	}
 	log.Printf("Number of bytes read: %d\n", bytesRead)
-	log.Printf("Data read: %s\n", byteSlice)
+	log.Printf("Data read: %s\n", byteSlice[:bytesRead])
 
+}
+func WriteWithAppend() {
+	file, err := os.OpenFile("test1.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		reader := bufio.NewReader(os.Stdin)
+
+		fmt.Print("Enter your name: ")
+
+		name, _ := reader.ReadString('\n')
+		//data := []byte(name)
+
+		//err := ioutil.WriteFile("datanew.txt", data, 0)
+		//err := ioutil.WriteFile("dnew.txt", data, 0777)
+		//err := ioutil.WriteFile(file.Name(), data, 0777)
+		var f fs.FileMode = 0777
+		fmt.Println("Return file perm ", f.Perm())
+
+		if err != nil {
+			log.Println(err)
+		}
+		defer file.Close()
+		if _, err := file.WriteString(name); err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("done")
+	}
 }
 func main() {
 	//WriteFileWithWriteString()
 	//WriteIntoFileWithIOutil()
 	//testReadWrite()
-	ReadSpecificBytes()
+	//ReadSpecificBytes()
+	WriteWithAppend()
 }
