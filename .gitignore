@@ -1,5 +1,6 @@
 new.txt
 hello.txt
 tracked.txt
-change.txt
+*.txt
 *.docx
+*.html
