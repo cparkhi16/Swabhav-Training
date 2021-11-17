@@ -22,7 +22,6 @@ func ReadDir(file string, initialpath string, innerFile bool) {
 		return
 	}
 	for _, file := range files {
-		//fmt.Println("A dir detected")
 		if !file.IsDir() {
 			fmt.Println("===FILE WITHIN THE CURRENT DIRECTORY ====", file.Name())
 		} else if file.IsDir() {
@@ -40,7 +39,6 @@ func main() {
 	}
 
 	for _, file := range files {
-		//fmt.Println(file.Name())
 		if !file.IsDir() {
 			fmt.Println("-----------File-------------", file.Name())
 		} else if file.IsDir() {
