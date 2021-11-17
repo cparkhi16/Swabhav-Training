@@ -37,7 +37,8 @@ func WriteIntoFileWithIOutil() {
 	data := []byte(name)
 
 	//err := ioutil.WriteFile("datanew.txt", data, 0)
-	err := ioutil.WriteFile("dnew.txt", data, 0777)
+	//err := ioutil.WriteFile("dnew.txt", data, 0777)
+	err := ioutil.WriteFile("test1.txt", data, 0777)
 
 	if err != nil {
 		log.Fatal(err)
@@ -85,8 +86,26 @@ func testReadWrite() {
 	fmt.Println("Writing done, reading file with os")
 	readFileLineByLine("new.txt")
 }
+func ReadSpecificBytes() {
+	WriteIntoFileWithIOutil()
+	file, err := os.Open("test1.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	byteSlice := make([]byte, 16)
+	bytesRead, err := file.Read(byteSlice)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Number of bytes read: %d\n", bytesRead)
+	log.Printf("Data read: %s\n", byteSlice)
+
+}
 func main() {
 	//WriteFileWithWriteString()
 	//WriteIntoFileWithIOutil()
-	testReadWrite()
+	//testReadWrite()
+	ReadSpecificBytes()
 }
