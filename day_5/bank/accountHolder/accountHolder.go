@@ -6,7 +6,6 @@ import (
 )
 
 type account struct {
-	id            int
 	accountNumber uint8
 	balance       int
 }
@@ -27,18 +26,13 @@ const (
 	Other  Gender = 3
 )
 
-func (p *person) AddAccountForUser(id int, accountNumber uint8, balance int) {
+func (p *person) AddAccountForUser(accountNumber uint8, balance int) {
 	acc := account{
 		balance:       balance,
 		accountNumber: accountNumber,
-		id:            id,
 	}
-	for _, val := range p.accounts {
-		if val.id == id {
-			p.accounts = append(p.accounts, acc)
-			fmt.Println("Account added", *p)
-		}
-	}
+	p.accounts = append(p.accounts, acc)
+	fmt.Println("Account added", *p)
 
 }
 func NewAccountHolder(fName, lName, contact string, age, accountNumber uint8, id, balance int, gender Gender) (p *person, e l.BankError) {
@@ -52,7 +46,6 @@ func NewAccountHolder(fName, lName, contact string, age, accountNumber uint8, id
 	acc := account{
 		accountNumber: accountNumber,
 		balance:       balance,
-		id:            id,
 	}
 
 	p = &person{firstName: fName, lastName: lName, age: age, contact: contact, Gender: gender, accounts: []account{acc}, id: id}
@@ -64,7 +57,7 @@ func (g Gender) String() string {
 func (g Gender) EnumIndex() int {
 	return int(g)
 }
-func (a person) GetAccountDetails() {
+func (a *person) GetAccountDetails() {
 	fmt.Println("Account Number", a.accounts)
 	fmt.Println("Account holder name ", a.firstName+" "+a.lastName)
 	fmt.Println("Account balance", a.accounts)

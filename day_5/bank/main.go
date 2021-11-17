@@ -20,8 +20,8 @@ func main() {
 	fmt.Println(err.Error())
 
 	if er && e {
-		userOne.AddAccountForUser(400, 232, 5000)
-		userTwo.AddAccountForUser(500, 124, 100)
+		userOne.AddAccountForUser(232, 5000)
+		userTwo.AddAccountForUser(124, 100)
 		str, err := userOne.ShareMoney(userTwo, 232, 123, 1000)
 		if err.Error() != "" {
 			fmt.Println(str, err)
