@@ -83,12 +83,16 @@ func (acc *person) GetBalance(accNumber uint8) int {
 	}
 	return 0
 }
-func (acc *person) UpdateAccount(accountNumber uint8, balance int) {
+func (acc *person) UpdateAccount(accountNumber uint8, balance int) l.BankError {
+	if balance < 0 {
+		return l.BankError{Err: "Negative balance not accepted"}
+	}
 	for i, val := range acc.accounts {
 		if val.accountNumber == accountNumber {
 			acc.accounts[i].balance = balance
 		}
 	}
+	return l.BankError{Err: ""}
 }
 func (acc *person) ShareMoney(accTwo *person, accountNumberOne, accountNumberTwo uint8, money int) (string, l.BankError) {
 	if money < 0 {
@@ -104,6 +108,6 @@ func (acc *person) ShareMoney(accTwo *person, accountNumberOne, accountNumberTwo
 		acc.UpdateAccount(accountNumberOne, acc.GetBalance(accountNumberOne)-money)
 		accTwo.UpdateAccount(accountNumberTwo, accTwo.GetBalance(accountNumberTwo)+money)
 	}
-	fmt.Println(*acc, *accTwo)
+	//fmt.Println(*acc, *accTwo)
 	return "Transfer successful", l.BankError{Err: ""}
 }
