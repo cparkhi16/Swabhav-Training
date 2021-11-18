@@ -23,10 +23,14 @@ func ReadDir(file string, initialpath string, innerFile bool) {
 	}
 	for _, file := range files {
 		if !file.IsDir() {
-			fmt.Println("===FILE WITHIN THE CURRENT DIRECTORY ====", file.Name())
+			if innerFile {
+				fmt.Println("--", file.Name())
+			} else {
+				fmt.Println("-", file.Name())
+			}
 		} else if file.IsDir() {
 			var fname string = filep + "/"
-			fmt.Println(" directory within a directory --------------------", file.Name())
+			fmt.Println("||-", file.Name())
 			ReadDir(fname+file.Name()+"/", initialpath, true)
 		}
 	}
@@ -40,9 +44,9 @@ func main() {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			fmt.Println("-----------File-------------", file.Name())
+			fmt.Println("", file.Name())
 		} else if file.IsDir() {
-			fmt.Println("---------------------Directory --------------------", file.Name())
+			fmt.Println("|-", file.Name())
 			ReadDir(file.Name(), initialpath, false)
 		}
 	}
