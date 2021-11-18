@@ -1,6 +1,8 @@
 package calculator
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestAddBulk(t *testing.T) {
 	var l = []struct {
@@ -60,15 +62,16 @@ func TestPower(t *testing.T) {
 		n1       int
 		n2       int
 		expected int
+		err      string
 	}{{
-		2, 1, 2,
+		2, 2, 4, "",
 	}, {
-		2, 3, 8,
+		2, 3, 8, "",
 	},
 	}
 	for _, val := range l {
-		actual := ipow(val.n1, val.n2)
-		if val.expected != actual {
+		actual, err := ipow(val.n1, val.n2)
+		if actual != val.expected && val.err == err {
 			t.Errorf("Error found for power actual %v and expected %v", actual, val.expected)
 		}
 	}

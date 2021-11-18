@@ -21,22 +21,15 @@ func SquareRoot(number float64) float64 {
 	return sr
 
 }
-func ipow(base int, exp int) int {
-	var result int = 1
-	for {
-		c := exp & 1
-		//fmt.Println("C value ", c)
-		if c == 1 {
-			result *= base
-		}
-		if c == 0 {
-			break
-		}
-		exp >>= 1
-		//fmt.Println("Exp value", exp)
-		base *= base
-		//fmt.Println(base)
+func ipow(base int, exp int) (int, string) {
+	output := 1
+	if base < 0 && exp < 0 {
+		return -1, "NaN"
 	}
-
-	return result
+	for exp != 0 {
+		output *= base
+		exp -= 1
+	}
+	//fmt.Println("Output", output)
+	return output, ""
 }
