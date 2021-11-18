@@ -44,13 +44,32 @@ func TestSquareRootBulk(t *testing.T) {
 	}{{
 		4, 2,
 	}, {
-		9, 1,
+		9, 3,
 	},
 	}
 	for _, val := range l {
 		actual := SquareRoot(val.n1)
 		if val.expected != actual {
 			t.Errorf("Error found for squareroot actual %v and expected %v", actual, val.expected)
+		}
+	}
+}
+
+func TestPower(t *testing.T) {
+	var l = []struct {
+		n1       int
+		n2       int
+		expected int
+	}{{
+		2, 1, 2,
+	}, {
+		2, 3, 8,
+	},
+	}
+	for _, val := range l {
+		actual := ipow(val.n1, val.n2)
+		if val.expected != actual {
+			t.Errorf("Error found for power actual %v and expected %v", actual, val.expected)
 		}
 	}
 }
