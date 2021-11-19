@@ -25,9 +25,9 @@ func DisplayFileSize(path string, fsize string) {
 	if fsize == "Bytes" {
 		fmt.Println("Size of file in bytes", fi.Size())
 	} else if fsize == "KB" {
-		fmt.Println("Size of file in KB", fi.Size()/KB)
+		fmt.Println("Size of file in KB", float64(fi.Size())/KB)
 	} else if fsize == "MB" {
-		fmt.Println("Size of file in MB", fi.Size()/MB)
+		fmt.Println("Size of file in MB", float64(fi.Size())/MB)
 	}
 
 }
