@@ -24,13 +24,17 @@ func ReadDir(file string, initialpath string, innerFile bool) {
 	for _, file := range files {
 		if !file.IsDir() {
 			if innerFile {
-				fmt.Println("--", file.Name())
+				fmt.Println("   |--", file.Name())
 			} else {
-				fmt.Println("-", file.Name())
+				fmt.Println(" |-", file.Name())
 			}
 		} else if file.IsDir() {
 			var fname string = filep + "/"
-			fmt.Println("||-", file.Name())
+			if innerFile {
+				fmt.Println("  |---", file.Name())
+			} else {
+				fmt.Println("|---", file.Name())
+			}
 			ReadDir(fname+file.Name()+"/", initialpath, true)
 		}
 	}
@@ -44,9 +48,9 @@ func main() {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			fmt.Println("", file.Name())
-		} else if file.IsDir() {
 			fmt.Println("|-", file.Name())
+		} else if file.IsDir() {
+			fmt.Println("|----------------------------------", file.Name())
 			ReadDir(file.Name(), initialpath, false)
 		}
 	}
