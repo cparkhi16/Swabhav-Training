@@ -22,7 +22,7 @@ func main() {
 	if er && e {
 		userOne.AddAccountForUser(232, 5000)
 		userTwo.AddAccountForUser(124, 100)
-		str, err := userOne.ShareMoney(userTwo, 232, 123, 1000)
+		str, err := userOne.ShareMoney(userTwo, 232, 123, 10000)
 		if err.Error() != "" {
 			fmt.Println(str, err)
 		} else {
