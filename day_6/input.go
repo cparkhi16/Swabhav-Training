@@ -6,6 +6,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 func thirdway() {
@@ -23,8 +24,14 @@ func thirdway() {
 		scanner.Scan()
 		age := scanner.Text()
 		fmt.Println("Type of age ", reflect.TypeOf(age))
-		nAge, _ := strconv.Atoi(age)
-		fmt.Println("After conv type of age ", nAge)
+		nAge, e := strconv.Atoi(age)
+
+		m, _ := strconv.ParseFloat(text, 64)
+		fmt.Println("After conv type of text ", m+1)
+		if e != nil {
+			fmt.Println(e)
+		}
+		fmt.Println("After conv type of age ", nAge+1)
 		if len(text) != 0 {
 
 			fmt.Println(text)
@@ -47,8 +54,12 @@ func secondway() {
 	fmt.Println("Enter your age")
 	n, _ := reader.ReadString('\n')
 	fmt.Println("Type of age before conv ", reflect.TypeOf(n))
-	val, _ := strconv.Atoi(n)
-	fmt.Println("Type of age after conv ", reflect.TypeOf(val))
+	n = strings.TrimSuffix(n, "\r\n")
+	val, err := strconv.Atoi(n)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Type of age after conv ", val+1, reflect.TypeOf(val))
 }
 func firstway() {
 	fmt.Println("Enter Your First Name: ")
@@ -62,7 +73,7 @@ func firstway() {
 	fmt.Println("Enter int")
 	var i int
 	fmt.Scanln(&i)
-	fmt.Println("Val of i", i, "Type of i", reflect.TypeOf(i))
+	fmt.Println("Val of i", float64(i+1), "Type of i", reflect.TypeOf(i))
 }
 func fourthway() {
 	fmt.Println("Enter name and age")
@@ -75,6 +86,6 @@ func fourthway() {
 func main() {
 	//firstway()
 	//secondway()
-	//thirdway()
-	fourthway()
+	thirdway()
+	//fourthway()
 }
