@@ -40,7 +40,7 @@ func ReadDir(file string, initialpath string, innerFile bool) {
 	}
 }
 func main() {
-	var initialpath string = "C:/Users/chinmay.parkhi/OneDrive - Forcepoint/Desktop/swabhav_training/Swabhav-Training/day_8/"
+	var initialpath string = "C:/Users/chinmay.parkhi/OneDrive - Forcepoint/Desktop/swabhav_training/go-basics/day_8/"
 	files, err := ioutil.ReadDir(initialpath)
 	if err != nil {
 		log.Fatal(err)
