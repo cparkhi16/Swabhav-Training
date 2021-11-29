@@ -17,11 +17,13 @@ func main() {
 		go func(num int) {
 			test(num)
 		}(num)
+		wg.Wait()
 	}
-	wg.Wait()
+	
 }
 
 func test(i int) {
+	//wg.Add(1)
 	fmt.Printf("%d ", i)
 	wg.Done()
 }
