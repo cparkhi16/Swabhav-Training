@@ -22,8 +22,8 @@ type WalletFacade struct {
 func NewWalletFacade(acc *a.Account, l *l.Ledger, n *n.Notification, w *Wallet) *WalletFacade {
 	return &WalletFacade{acc: acc, ledger: l, notify: n, w: w}
 }
-func (wf *WalletFacade) AddMoney() {
-	isAccount := wf.acc.CheckAccount(100)
+func (wf *WalletFacade) AddMoney(accNo, money uint) {
+	isAccount := wf.acc.CheckAccount(accNo)
 	if !isAccount {
 		log.Fatal("No account found")
 	}
@@ -32,13 +32,13 @@ func (wf *WalletFacade) AddMoney() {
 	if !isSecCode {
 		log.Fatal("Security code didn't matched")
 	}
-	wf.w.Credit(100, wf.ledger)
+	wf.w.Credit(money, wf.ledger)
 	wf.acc.PrintDetails()
 	wf.ledger.PrintLedger(wf.acc.AccountNumber)
 	wf.notify.SendNotification()
 }
-func (wf *WalletFacade) DeductMoney() {
-	isAccount := wf.acc.CheckAccount(100)
+func (wf *WalletFacade) DeductMoney(accNo, money uint) {
+	isAccount := wf.acc.CheckAccount(accNo)
 	if !isAccount {
 		log.Fatal("No account found")
 	}
@@ -47,7 +47,7 @@ func (wf *WalletFacade) DeductMoney() {
 	if !isSecCode {
 		log.Fatal("Security code didn't matched")
 	}
-	wf.w.Debit(100, wf.ledger)
+	wf.w.Debit(money, wf.ledger)
 	wf.acc.PrintDetails()
 	wf.ledger.PrintLedger(wf.acc.AccountNumber)
 	wf.notify.SendNotification()

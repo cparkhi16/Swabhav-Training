@@ -13,6 +13,6 @@ func main() {
 	l := ledger.NewLedger(*acc)
 	notify := notification.NewNotifier(l)
 	wfl := wallet.NewWalletFacade(acc, l, notify, w)
-	wfl.AddMoney()
-	wfl.DeductMoney()
+	wfl.AddMoney(100, 100)
+	wfl.DeductMoney(100, 100)
 }
