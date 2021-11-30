@@ -1,11 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"design/account"
+	"design/ledger"
+	"design/notification"
+	"design/wallet"
 	"log"
 )
 
-type Account struct {
+/*type Account struct {
 	accountNumber uint
 	securityCode  uint
 	balance       uint
@@ -18,8 +21,6 @@ func NewAccount(accountNumber uint, balance uint) *Account {
 func (a *Account) CheckAccount(accNumber uint) bool {
 	return a.accountNumber == accNumber
 }
-
-type SecurityCode struct{}
 
 func NewSecurityCode(acc *Account) uint {
 	acc.securityCode = acc.accountNumber + 500
@@ -85,27 +86,27 @@ func (n *Notification) sendNotification() {
 	} else {
 		fmt.Println()
 	}
-}
+}*/
 func main() {
-	acc := NewAccount(100, 201)
+	acc := account.NewAccount(100, 201)
 	isAccount := acc.CheckAccount(100)
 	if !isAccount {
 		log.Fatal("No account found")
 	}
-	secCode := NewSecurityCode(acc)
+	secCode := account.NewSecurityCode(acc)
 	isSecCode := acc.CheckSecurityCode(secCode)
 	if !isSecCode {
 		log.Fatal("Security code didn't matched")
 	}
 	acc.PrintDetails()
-	w := NewWallet(acc)
-	l := NewLedger(*acc)
+	w := wallet.NewWallet(acc)
+	l := ledger.NewLedger(*acc)
 	w.Credit(100, l)
 	acc.PrintDetails()
 	l.PrintLedger(100)
 	w.Debit(100, l)
 	l.PrintLedger(100)
 	acc.PrintDetails()
-	notify := Notification{l: *l}
-	notify.sendNotification()
+	notify := notification.Notification{L: *l}
+	notify.SendNotification()
 }
