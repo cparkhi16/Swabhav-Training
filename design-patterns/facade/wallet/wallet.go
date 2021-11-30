@@ -1,15 +1,57 @@
 package wallet
 
 import (
+	"design/account"
 	a "design/account"
 	l "design/ledger"
+	n "design/notification"
 	"fmt"
+	"log"
 )
 
 type Wallet struct {
 	acc *a.Account
 }
+type WalletFacade struct {
+	w      *Wallet
+	acc    *a.Account
+	ledger *l.Ledger
+	notify *n.Notification
+}
 
+func NewWalletFacade(acc *a.Account, l *l.Ledger, n *n.Notification, w *Wallet) *WalletFacade {
+	return &WalletFacade{acc: acc, ledger: l, notify: n, w: w}
+}
+func (wf *WalletFacade) AddMoney() {
+	isAccount := wf.acc.CheckAccount(100)
+	if !isAccount {
+		log.Fatal("No account found")
+	}
+	secCode := account.NewSecurityCode(wf.acc)
+	isSecCode := wf.acc.CheckSecurityCode(secCode)
+	if !isSecCode {
+		log.Fatal("Security code didn't matched")
+	}
+	wf.w.Credit(100, wf.ledger)
+	wf.acc.PrintDetails()
+	wf.ledger.PrintLedger(wf.acc.AccountNumber)
+	wf.notify.SendNotification()
+}
+func (wf *WalletFacade) DeductMoney() {
+	isAccount := wf.acc.CheckAccount(100)
+	if !isAccount {
+		log.Fatal("No account found")
+	}
+	secCode := account.NewSecurityCode(wf.acc)
+	isSecCode := wf.acc.CheckSecurityCode(secCode)
+	if !isSecCode {
+		log.Fatal("Security code didn't matched")
+	}
+	wf.w.Debit(100, wf.ledger)
+	wf.acc.PrintDetails()
+	wf.ledger.PrintLedger(wf.acc.AccountNumber)
+	wf.notify.SendNotification()
+}
 func NewWallet(acc *a.Account) *Wallet {
 	return &Wallet{acc: acc}
 }
