@@ -17,9 +17,13 @@ func (h *hasItemState) RequestItem() error {
 }
 
 func (h *hasItemState) AddItem(count uint) error {
-	fmt.Printf("%d items added to vending machine \n", count)
-	h.vendingMachine.incrementItemCount(count)
-	return nil
+	if count != 0 {
+		fmt.Printf("%d items added to vending machine \n", count)
+		h.vendingMachine.incrementItemCount(count)
+		return nil
+	} else {
+		return fmt.Errorf("zero items cannot be added")
+	}
 }
 
 func (h *hasItemState) InsertMoney(money uint) error {

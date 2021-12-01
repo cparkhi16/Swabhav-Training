@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf(err.Error())
 	}
 	fmt.Println("Number of items in vending machine after dispensing one item--", vendingMachine.GetItemCount())
-	err = vendingMachine.AddItem(2)
+	err = vendingMachine.AddItem(0)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
