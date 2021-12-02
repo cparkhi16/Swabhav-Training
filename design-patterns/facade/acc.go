@@ -1,5 +1,6 @@
 package main
 
+// Facade is used when we want to build a kind of interactive wall to communicate a big subsystem behind it
 import (
 	"design/account"
 	"design/ledger"

@@ -1,5 +1,6 @@
 package main
 
+// Singleton is used when we want to instantiate a object only one time in the program and that same object is to be used by other classes
 import "fmt"
 
 type log struct {
