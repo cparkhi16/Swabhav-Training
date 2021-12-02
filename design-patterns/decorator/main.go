@@ -1,5 +1,6 @@
 package main
 
+// Decorator pattern is used for wrapping up the object based on its modification we need to update its state
 import (
 	t "decor/topping"
 	"fmt"
