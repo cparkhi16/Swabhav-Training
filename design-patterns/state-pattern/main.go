@@ -1,5 +1,6 @@
 package main
 
+// State pattern is used when we want to change the state of objects and based on that change the functionality is to be provided to the user
 import (
 	s "design/state"
 	"fmt"
