@@ -12,15 +12,12 @@ const (
 	tesla    Brand = 3
 )
 
-func (b Brand) String() string {
-	return [...]string{"bmw", "mercedes", "tesla"}[b-1]
-}
 func (a *AutomobileFactory) Make(b Brand) f.Automobile {
-	if b.String() == "bmw" {
+	if b == 1 {
 		return &BMW{modelName: "BMW"}
-	} else if b.String() == "mercedes" {
+	} else if b == 2 {
 		return &Mercedes{modelName: "Mercedes"}
-	} else if b.String() == "tesla" {
+	} else if b == 3 {
 		return &Tesla{modelName: "Tesla"}
 	}
 	return nil
