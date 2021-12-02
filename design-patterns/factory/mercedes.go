@@ -6,6 +6,9 @@ type Mercedes struct {
 	modelName string
 }
 
+func NewMercedes(modelName string) *Mercedes {
+	return &Mercedes{modelName: modelName}
+}
 func (m *Mercedes) Start() {
 	fmt.Println("Starting ...", m.modelName)
 }

@@ -14,11 +14,11 @@ const (
 
 func (a *AutomobileFactory) Make(b Brand) f.Automobile {
 	if b == 1 {
-		return &BMW{modelName: "BMW"}
+		return NewBMW("BMW")
 	} else if b == 2 {
-		return &Mercedes{modelName: "Mercedes"}
+		return NewMercedes("Mercedes")
 	} else if b == 3 {
-		return &Tesla{modelName: "Tesla"}
+		return NewTesla("Tesla")
 	}
 	return nil
 }
