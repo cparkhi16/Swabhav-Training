@@ -8,7 +8,7 @@ type Cache struct {
 	capacity     int
 	maxCapacity  int
 	algo         string
-	Queue        []string
+	queue        []string
 	freq         map[string]int
 	recentlyUsed []string
 }
@@ -33,14 +33,14 @@ func (c *Cache) SetEvictionAlgo(e Evicter) {
 func (c *Cache) Add(key, value string) {
 	//fmt.Println(c.capacity)
 	//fmt.Println(c.maxCapacity)
-	if c.capacity >= c.maxCapacity {
+	if c.capacity == c.maxCapacity {
 		//fmt.Println("calling")
 		c.evict()
 	}
-	c.Queue = append(c.Queue, key)
+	c.queue = append(c.queue, key)
 	c.capacity++
 	c.storage[key] = value
-
+	//fmt.Println("Capacity is ", c.capacity)
 	fmt.Println(c.storage)
 }
 
@@ -56,4 +56,5 @@ func (c *Cache) Get(key string) string {
 func (c *Cache) evict() {
 	c.evictionAlgo.Evict(c)
 	c.capacity--
+	//fmt.Println("Capacity in evict ", c.capacity)
 }

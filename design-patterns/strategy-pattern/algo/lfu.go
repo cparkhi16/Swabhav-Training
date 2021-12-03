@@ -6,7 +6,7 @@ type Lfu struct {
 }
 
 func (l *Lfu) Evict(c *Cache) {
-	fmt.Println("Evicting by lfu strtegy")
+	fmt.Println("Evicting by lfu strategy")
 	min := 500
 	lfuElement := ""
 	for k, v := range c.freq {
@@ -16,16 +16,17 @@ func (l *Lfu) Evict(c *Cache) {
 		}
 	}
 	if lfuElement == "" {
-		lfuElement = c.Queue[0]
+		lfuElement = c.queue[0]
 	}
 	c.Remove(lfuElement)
 	index := 0
-	for i, v := range c.Queue {
+	for i, v := range c.queue {
 		if v == lfuElement {
 			index = i
 			break
 		}
 	}
-	c.Queue = append(c.Queue[:index], c.Queue[index+1:]...)
+	delete(c.freq, lfuElement)
+	c.queue = append(c.queue[:index], c.queue[index+1:]...)
 
 }

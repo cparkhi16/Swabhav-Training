@@ -8,9 +8,12 @@ type Fifo struct {
 func NewFIFO() *Fifo {
 	return &Fifo{}
 }
+
 func (l *Fifo) Evict(c *Cache) {
 	//fmt.Println(c.fifoQueue)
-	c.Remove(c.Queue[0])
+	c.Remove(c.queue[0])
+	c.queue = c.queue[1:]
+	//fmt.Println("Queue", c.Queue)
 	//fmt.Println(c.storage)
-	fmt.Println("Evicting by fifo strtegy")
+	fmt.Println("Evicting by fifo strategy")
 }
