@@ -1,5 +1,7 @@
 package main
 
+import _ "factory/autointerface"
+
 // Factory pattern is used when we want to create any object avaialable to be created which implements a interface.
 func main() {
 	autofactory := &AutomobileFactory{}
