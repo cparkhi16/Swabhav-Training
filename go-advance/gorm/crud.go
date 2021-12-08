@@ -105,4 +105,5 @@ func main() {
 	var n User
 	n = User{Name: "JP", ID: 8, Address: "Mulund", Gender: "Male", test: "Hi"}
 	db.Debug().Create(&n)
+	db.Model(&n).UpdateColumns(User{Name: "JYP"}) // Withour hooks
 }
