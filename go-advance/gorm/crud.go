@@ -14,7 +14,7 @@ type User struct {
 	Name    string
 	Address string
 	Gender  string
-	test    string
+	Test    string
 }
 
 func main() {
@@ -86,24 +86,30 @@ func main() {
 	//fmt.Println("Running user{} update with model")
 	//db.Model(&User{}).Update("test", "trial").Debug()
 	db.Model(&User{}).Debug().Update("address", "trial")
-	test.test = "Gajendra"
+	test.Test = "Gajendra"
 	if result := db.Model(&test).Debug().Updates(test).Error; result != nil {
 		log.Println("Unable to update data")
 	}
 	// WARNING when update with struct, GORM will only update those fields that with non blank value
 	// For below Update, nothing will be updated as "", 0, false are blank values of their types
-	db.Model(&test).Debug().Updates(User{Name: "", ID: 0, Address: ""})
+	/*db.Model(&test).Debug().Updates(User{Name: "", ID: 0, Address: ""})
 	var caseNew User // IF ID IS CHANGED HERE IN UPDATES THEN NO CHANGE IS DONE SINCE IT IS A PRIMARY KEY
 	r := db.Model(&caseNew).Where("id = ?", 3).Debug().Updates(User{Name: "Manager", ID: 35, Address: ""}).Error
 	if r != nil {
 		fmt.Println("Error")
-	}
+	}*/
 	// Create
-	var newUser User // IF PRIMARY KEY IS NOT SPECIFIED IT GOT  CREATED BY DEFAULT AS 101
-	newUser = User{Name: "Chinmay", Address: "Thane", Gender: "Male", test: "testing"}
-	db.Debug().Create(&newUser)
-	var n User
-	n = User{Name: "JP", ID: 8, Address: "Mulund", Gender: "Male", test: "Hi"}
+	/*var newUser User // IF PRIMARY KEY IS NOT SPECIFIED IT GOT  CREATED BY DEFAULT AS 101
+	newUser = User{Name: "Chinmay", Address: "Thane", Gender: "Male", Test: "testing"}
+	db.Debug().Create(&newUser)*/
+	/*var n User
+	n = User{Name: "JP", ID: 8, Address: "Mulund", Gender: "Male", Test: "Hi"}
 	db.Debug().Create(&n)
-	db.Model(&n).UpdateColumns(User{Name: "JYP"}) // Withour hooks
+	db.Model(&n).UpdateColumns(User{Name: "JYP"}) // Withour hooks*/
+	var mUsers []User
+	db.Find(&mUsers)
+	fmt.Println(mUsers)
+	var uf User
+	uf.ID = 101
+	db.Model(&uf).Debug().Update("test", "New test")
 }
