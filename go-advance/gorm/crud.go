@@ -47,13 +47,16 @@ func main() {
 	update := User{Name: "Chinmay", ID: 1, Address: "BCD"}
 	db.Debug().Save(&update)
 
-	//Delete //IF RECORD NOT PRESENT THEN IT DOESN'T GIVE ANY ERROR
-	var ud User
+	//Delete //IF RECORD NOT PRESENT THEN IT GIVES ERROR
+	/*var ud User
 	IDToBeDeleted := 100
-	db.Where("id= ?", IDToBeDeleted).Delete(&ud)
+	e := db.Where("id= ?", IDToBeDeleted).Delete(&ud)
+	if e != nil {
+		log.Fatal("Error deleting unknown db entry")
+	}*/
 
 	//Update
-	var uUser User
-	db.Debug().Model(&uUser).Where("id = ?", 1).Update("test", "hello")
+	//var uUser User
+	db.Table("users").Where("id = ?", 1).Debug().Update("test", "hello")
 	fmt.Println("End")
 }
