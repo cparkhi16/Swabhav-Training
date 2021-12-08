@@ -15,6 +15,9 @@ type User struct {
 	Gender  string
 }
 
+//Updates Gender in User table already created by CreateTable earlier ..If New fields are added then
+//automigrate will add new fields to table but if deleted here from structs then it will not
+//delete any field
 func main() {
 	dbConn := "root:hello@tcp(127.0.0.1:3306)/newdb?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dbConn)

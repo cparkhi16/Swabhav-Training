@@ -37,18 +37,23 @@ func main() {
 	db.Last(&user3)
 	fmt.Println(user3)
 
-	//Update It creates new record with new ID 100
+	//Save It creates new record with new ID 100
 	/*var userNew User
 	db.First(&userNew)
 	userNew.ID = 100
 	db.Save(&userNew)*/
 
-	//Update without creating a new record
-	update := User{Name: "Chinmay", ID: 1, Address: "Xyz"}
-	db.Save(&update)
+	//Save without creating a new record
+	update := User{Name: "Chinmay", ID: 1, Address: "BCD"}
+	db.Debug().Save(&update)
 
-	//Delete
+	//Delete //IF RECORD NOT PRESENT THEN IT DOESN'T GIVE ANY ERROR
 	var ud User
 	IDToBeDeleted := 100
 	db.Where("id= ?", IDToBeDeleted).Delete(&ud)
+
+	//Update
+	var uUser User
+	db.Debug().Model(&uUser).Where("id = ?", 1).Update("test", "hello")
+	fmt.Println("End")
 }
