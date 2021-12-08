@@ -3,15 +3,15 @@ package wood
 type Wood int
 
 const (
-	Mahagony = 11
-	Maple    = 21
-	Cocobolo = 31
-	Cedar    = 41
-	Sitka    = 51
+	Mahagony Wood = 11
+	Maple    Wood = 21
+	Cocobolo Wood = 31
+	Cedar    Wood = 41
+	Sitka    Wood = 51
 )
 
 func (w Wood) String() string {
-	if w == 0 {
+	/*if w == 0 {
 		return ""
 	}
 	s := make([]string, 52)
@@ -19,6 +19,12 @@ func (w Wood) String() string {
 	s[20] = "Maple"
 	s[30] = "Cocobolo"
 	s[40] = "Cedar"
-	s[50] = "Sitka"
-	return s[w-1]
+	s[50] = "Sitka"*/
+	v := []string{"", "Mahagony", "Maple", "Cocobolo", "Cedar", "Sitka"}
+	if w == 11 || w == 21 || w == 31 || w == 41 || w == 51 {
+		index := (w - 1) / 10
+		return v[index]
+	}
+	return v[0]
+
 }

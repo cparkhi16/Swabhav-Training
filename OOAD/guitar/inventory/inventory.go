@@ -51,21 +51,44 @@ func (i *Inventory) SearchGuitar(spec g.GuitarSpec) {
 	backWood := spec.GetBackWood()
 	frontWood := spec.GetFrontWood()
 	noOfStrings := spec.GetNumberOfStrings()
+	isRefundable, isSet := spec.GetIsRefundableVal()
 	recordFound := false
 	for _, val := range i.allGuitars {
-		if (val.GetSpecs().GetBuilder() == builder) || (val.GetSpecs().GetTypeOfGuitar() == typeofGuitar) || (val.GetSpecs().GetModel() == model) ||
-			(val.GetSpecs().GetBackWood() == backWood) || (val.GetSpecs().GetFrontWood() == frontWood) || (val.GetSpecs().GetNumberOfStrings() == noOfStrings) {
-			fmt.Println("----------Search Results------------")
-			fmt.Println("Matched guitars in inventory based on your search ")
-			fmt.Println("Serial no ", val.GetSerialNumber())
-			fmt.Println("Builder type ", val.GetSpecs().GetBuilder())
-			fmt.Println("Guitar Type ", val.GetSpecs().GetTypeOfGuitar())
-			fmt.Println("Guitar model ", val.GetSpecs().GetModel())
-			fmt.Println("Type of backWood ", val.GetSpecs().GetBackWood())
-			fmt.Println("Type of frontWood ", val.GetSpecs().GetFrontWood())
-			fmt.Println("Number of strings ", val.GetSpecs().GetNumberOfStrings())
-			fmt.Println("Guitar Price --", val.GetPrice())
-			recordFound = true
+		if isSet == 1 {
+			isRefundableRequired, _ := val.GetSpecs().GetIsRefundableVal()
+			if (val.GetSpecs().GetBuilder() == builder) || (val.GetSpecs().GetTypeOfGuitar() == typeofGuitar) || (val.GetSpecs().GetModel() == model) ||
+				(val.GetSpecs().GetBackWood() == backWood) || (val.GetSpecs().GetFrontWood() == frontWood) || (val.GetSpecs().GetNumberOfStrings() == noOfStrings) ||
+				(isRefundableRequired == isRefundable) {
+				fmt.Println("----------Search Results------------")
+				fmt.Println("Matched guitars in inventory based on your search ")
+				fmt.Println("Serial no ", val.GetSerialNumber())
+				fmt.Println("Builder type ", val.GetSpecs().GetBuilder())
+				fmt.Println("Guitar Type ", val.GetSpecs().GetTypeOfGuitar())
+				fmt.Println("Guitar model ", val.GetSpecs().GetModel())
+				fmt.Println("Type of backWood ", val.GetSpecs().GetBackWood())
+				fmt.Println("Type of frontWood ", val.GetSpecs().GetFrontWood())
+				fmt.Println("Number of strings ", val.GetSpecs().GetNumberOfStrings())
+				fmt.Println("Is this refundable ", isRefundableRequired)
+				fmt.Println("Guitar Price --", val.GetPrice())
+				recordFound = true
+			}
+		} else {
+			isRefundable, _ := val.GetSpecs().GetIsRefundableVal()
+			if (val.GetSpecs().GetBuilder() == builder) || (val.GetSpecs().GetTypeOfGuitar() == typeofGuitar) || (val.GetSpecs().GetModel() == model) ||
+				(val.GetSpecs().GetBackWood() == backWood) || (val.GetSpecs().GetFrontWood() == frontWood) || (val.GetSpecs().GetNumberOfStrings() == noOfStrings) {
+				fmt.Println("----------Search Results------------")
+				fmt.Println("Matched guitars in inventory based on your search ")
+				fmt.Println("Serial no ", val.GetSerialNumber())
+				fmt.Println("Builder type ", val.GetSpecs().GetBuilder())
+				fmt.Println("Guitar Type ", val.GetSpecs().GetTypeOfGuitar())
+				fmt.Println("Guitar model ", val.GetSpecs().GetModel())
+				fmt.Println("Type of backWood ", val.GetSpecs().GetBackWood())
+				fmt.Println("Type of frontWood ", val.GetSpecs().GetFrontWood())
+				fmt.Println("Number of strings ", val.GetSpecs().GetNumberOfStrings())
+				fmt.Println("Is this refundable ", isRefundable)
+				fmt.Println("Guitar Price --", val.GetPrice())
+				recordFound = true
+			}
 		}
 	}
 	if !recordFound {

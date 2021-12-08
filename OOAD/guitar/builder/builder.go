@@ -3,9 +3,9 @@ package builder
 type Builder int
 
 const (
-	Fender = 1
-	Martin = 2
-	Gibson = 3
+	Fender Builder = 1
+	Martin Builder = 2
+	Gibson Builder = 3
 )
 
 func (b Builder) String() string {

@@ -8,15 +8,17 @@ import (
 )
 
 type GuitarSpec struct {
-	model        string
-	builder      b.Builder
-	typeofGuitar e.GuitarType
-	backWood     w.Wood
-	frontWood    w.Wood
-	noOfStrings  uint8
+	model                    string
+	builder                  b.Builder
+	typeofGuitar             e.GuitarType
+	backWood                 w.Wood
+	frontWood                w.Wood
+	noOfStrings              uint8
+	isRefundable             bool
+	isRefundableSetForSearch int
 }
 
-func NewGuitarSpec(model string, builder b.Builder, typeofGuitar e.GuitarType, backWood w.Wood, frontWood w.Wood, noOfStrings uint8) *GuitarSpec {
+func NewGuitarSpec(model string, builder b.Builder, typeofGuitar e.GuitarType, backWood w.Wood, frontWood w.Wood, noOfStrings uint8, i bool) *GuitarSpec {
 	return &GuitarSpec{
 		model:        model,
 		builder:      builder,
@@ -24,6 +26,7 @@ func NewGuitarSpec(model string, builder b.Builder, typeofGuitar e.GuitarType, b
 		backWood:     backWood,
 		frontWood:    frontWood,
 		noOfStrings:  noOfStrings,
+		isRefundable: i,
 	}
 }
 func (gs GuitarSpec) GetModel() string {
@@ -69,10 +72,9 @@ func (gs *GuitarSpec) SetBuilder(b b.Builder) error {
 	j := int(b)
 	if j > 3 {
 		return fmt.Errorf("please give valid builder type")
-	} else {
-		//fmt.Println("Here")
-		gs.builder = b
 	}
+	gs.builder = b
+
 	return nil
 }
 func (gs *GuitarSpec) SetTypeOfGuitar(b e.GuitarType) error {
@@ -90,10 +92,9 @@ func (gs *GuitarSpec) SetTypeOfGuitar(b e.GuitarType) error {
 	}
 	if !found {
 		return fmt.Errorf("please give valid guitar type")
-	} else {
-		//fmt.Println("Here")
-		gs.typeofGuitar = b
 	}
+	gs.typeofGuitar = b
+
 	return nil
 }
 func (gs *GuitarSpec) SetBackWood(b w.Wood) error {
@@ -110,10 +111,10 @@ func (gs *GuitarSpec) SetBackWood(b w.Wood) error {
 	}
 	if !found {
 		return fmt.Errorf("please give valid wood type")
-	} else {
-		//fmt.Println("Here")
-		gs.backWood = b
 	}
+	//fmt.Println("Here")
+	gs.backWood = b
+
 	return nil
 }
 func (gs *GuitarSpec) SetFrontWood(b w.Wood) error {
@@ -130,10 +131,8 @@ func (gs *GuitarSpec) SetFrontWood(b w.Wood) error {
 	}
 	if !found {
 		return fmt.Errorf("please give valid wood type")
-	} else {
-		//fmt.Println("Here")
-		gs.backWood = b
 	}
+	gs.backWood = b
 	return nil
 }
 func (gs *GuitarSpec) SetNoOfStrings(b uint8) {
@@ -146,4 +145,11 @@ func (gs *GuitarSpec) Matches(otherSpec GuitarSpec) bool {
 		return true
 	}
 	return false
+}
+func (gs *GuitarSpec) SetRefundable(b bool) {
+	gs.isRefundable = b
+	gs.isRefundableSetForSearch = 1
+}
+func (gs GuitarSpec) GetIsRefundableVal() (bool, int) {
+	return gs.isRefundable, gs.isRefundableSetForSearch
 }

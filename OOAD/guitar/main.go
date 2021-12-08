@@ -11,25 +11,25 @@ import (
 
 func main() {
 	i := in.GetInventory()
-	gs := g.NewGuitarSpec("A", b.Fender, e.Accoustic, w.Maple, w.Mahagony, 19)
+	gs := g.NewGuitarSpec("A", b.Fender, e.Accoustic, w.Maple, w.Mahagony, 19, true)
 	guitarOne := g.NewGuitar("123", 1200, *gs)
-	gst := g.NewGuitarSpec("B", b.Martin, e.Accoustic, w.Cedar, w.Maple, 10)
+	gst := g.NewGuitarSpec("B", b.Martin, e.Accoustic, w.Cedar, w.Maple, 10, false)
 	guitarTwo := g.NewGuitar("211", 1900, *gst)
-	gsc := g.NewGuitarSpec("C", b.Gibson, e.Electric, w.Mahagony, w.Maple, 18)
+	gsc := g.NewGuitarSpec("C", b.Gibson, e.Electric, w.Mahagony, w.Maple, 18, true)
 	guitarThree := g.NewGuitar("212", 1100, *gsc)
-	gsm := g.NewGuitarSpec("D", b.Gibson, e.Accoustic, w.Maple, w.Cocobolo, 20)
+	gsm := g.NewGuitarSpec("D", b.Gibson, e.Accoustic, w.Maple, w.Cocobolo, 20, false)
 	guitarFour := g.NewGuitar("213", 1700, *gsm)
-	gh := g.NewGuitarSpec("E", b.Martin, e.Accoustic, w.Sitka, w.Cocobolo, 25)
+	gh := g.NewGuitarSpec("E", b.Martin, e.Accoustic, w.Sitka, w.Cocobolo, 25, false)
 	guitarFive := g.NewGuitar("222", 1000, *gh)
-	gt := g.NewGuitarSpec("F", b.Martin, e.Electric, w.Maple, w.Maple, 21)
+	gt := g.NewGuitarSpec("F", b.Martin, e.Electric, w.Maple, w.Maple, 21, true)
 	guitarSix := g.NewGuitar("234", 1500, *gt)
-	ga := g.NewGuitarSpec("G", b.Gibson, e.Accoustic, w.Sitka, w.Cocobolo, 21)
+	ga := g.NewGuitarSpec("G", b.Gibson, e.Accoustic, w.Sitka, w.Cocobolo, 21, false)
 	guitarSeven := g.NewGuitar("238", 1990, *ga)
-	gb := g.NewGuitarSpec("H", b.Fender, e.Electric, w.Cocobolo, w.Sitka, 21)
+	gb := g.NewGuitarSpec("H", b.Fender, e.Electric, w.Cocobolo, w.Sitka, 21, true)
 	guitarEight := g.NewGuitar("290", 1590, *gb)
-	gd := g.NewGuitarSpec("I", b.Martin, e.Accoustic, w.Mahagony, w.Maple, 20)
+	gd := g.NewGuitarSpec("I", b.Martin, e.Accoustic, w.Mahagony, w.Maple, 20, false)
 	guitarNine := g.NewGuitar("298", 1510, *gd)
-	ge := g.NewGuitarSpec("J", b.Gibson, e.Electric, w.Cedar, w.Sitka, 34)
+	ge := g.NewGuitarSpec("J", b.Gibson, e.Electric, w.Cedar, w.Sitka, 34, false)
 	guitarTen := g.NewGuitar("208", 1515, *ge)
 	var guitars []g.Guitar
 	guitars = append(guitars, *guitarOne, *guitarTwo, *guitarThree, *guitarFour, *guitarFive, *guitarSix, *guitarSeven, *guitarEight,
@@ -44,16 +44,17 @@ func main() {
 	//fmt.Println(i.GetGuitar("123"))
 	gm := &g.GuitarSpec{}
 	//gm.SetModel("A")
-	err := gm.SetBuilder(b.Fender)
-	if err != nil {
+	//err := gm.SetBuilder(b.Fender)
+	/*if err != nil {
 		log.Fatal(err.Error())
-	}
-	e := gm.SetTypeOfGuitar(e.Accoustic)
-	gm.SetNoOfStrings(21)
-	//e := gm.SetBackWood(w.Maple)
+	}*/
+	//e := gm.SetTypeOfGuitar(60001)
+	//gm.SetNoOfStrings(21)
+	e := gm.SetBackWood(w.Cocobolo)
 	if e != nil {
 		log.Fatal(e.Error())
 	}
+	//gm.SetRefundable(true)
 	i.SearchGuitar(*gm)
 	//fmt.Println("Is there any specs match ? -- ", gs.Matches(*gm))
 	//i.GetGuitarsFromInventory()
