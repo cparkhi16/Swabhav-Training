@@ -54,7 +54,7 @@ func main() {
 	if e != nil {
 		log.Fatal(e.Error())
 	}
-	//gm.SetRefundable(true)
+	gm.SetRefundable(true)
 	i.SearchGuitar(*gm)
 	//fmt.Println("Is there any specs match ? -- ", gs.Matches(*gm))
 	//i.GetGuitarsFromInventory()

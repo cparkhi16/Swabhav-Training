@@ -57,18 +57,6 @@ func (gs *GuitarSpec) SetModel(m string) {
 	gs.model = m
 }
 func (gs *GuitarSpec) SetBuilder(b b.Builder) error {
-	/*fmt.Println(b.String())
-	//gs.builder = b
-	s := []string{"Fender", "Martin", "Gibson"}
-	var found bool = false
-	for _, val := range s {
-		//fmt.Println("Val ", val)
-		//fmt.Println("String", b.String())
-		if b.String() == val {
-			//fmt.Println("True")
-			found = true
-		}
-	}*/
 	j := int(b)
 	if j > 3 {
 		return fmt.Errorf("please give valid builder type")
@@ -78,15 +66,10 @@ func (gs *GuitarSpec) SetBuilder(b b.Builder) error {
 	return nil
 }
 func (gs *GuitarSpec) SetTypeOfGuitar(b e.GuitarType) error {
-	//gs.typeofGuitar = b
-	//fmt.Println(b.String())
 	s := []string{"Accoustic", "Electric"}
 	var found bool = false
 	for _, val := range s {
-		//fmt.Println("Val ", val)
-		//fmt.Println("String", b.String())
 		if b.String() == val {
-			//fmt.Println("True")
 			found = true
 		}
 	}
@@ -98,34 +81,25 @@ func (gs *GuitarSpec) SetTypeOfGuitar(b e.GuitarType) error {
 	return nil
 }
 func (gs *GuitarSpec) SetBackWood(b w.Wood) error {
-	//fmt.Println(b.String())
 	s := []string{"Mahagony", "Maple", "Cocobolo", "Cedar", "Sitka"}
 	var found bool = false
 	for _, val := range s {
-		//fmt.Println("Val ", val)
-		//fmt.Println("String", b.String())
 		if b.String() == val {
-			//fmt.Println("True")
 			found = true
 		}
 	}
 	if !found {
 		return fmt.Errorf("please give valid wood type")
 	}
-	//fmt.Println("Here")
 	gs.backWood = b
 
 	return nil
 }
 func (gs *GuitarSpec) SetFrontWood(b w.Wood) error {
-	//gs.frontWood = b
 	s := []string{"Mahagony", "Maple", "Cocobolo", "Cedar", "Sitka"}
 	var found bool = false
 	for _, val := range s {
-		//fmt.Println("Val ", val)
-		//fmt.Println("String", b.String())
 		if b.String() == val {
-			//fmt.Println("True")
 			found = true
 		}
 	}
