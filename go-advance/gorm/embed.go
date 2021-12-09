@@ -46,6 +46,7 @@ func main() {
 		log.Fatal("Cannot connect to DB")
 	}
 	//db.AutoMigrate(&Human{})
+
 	/*hid := uuid.NewV4()
 	h := Human{Name: "Chinmay", Address: "XYZ", Gender: "Male", IsMale: true, MyModel: MyModel{ID: hid, CreatedBy: "Chinmay", CreatedAt: time.Now()}}
 	CreateHuman(db, &h)
@@ -59,6 +60,32 @@ func main() {
 	//var g Human
 	//g.Name = "Keyur"
 	DeleteHuman(db)*/
+
+	/*var updatedHuman Human
+	sID, _ := uuid.FromString("23a1eda2-19ec-489f-9d31-0d91ad76f69f")
+	updatedHuman.ID = sID
+	var b bool = false
+	updatedHuman.IsMale = &b //if ptr is not used here then its value is not updated in DB
+	db.Model(&updatedHuman).Debug().Update(&updatedHuman)*/
+	//Query -  UPDATE `humen` SET `is_male` = false  WHERE `humen`.`deleted_at` IS NULL AND `humen`.
+	//`id` = '23a1eda2-19ec-489f-9d31-0d91ad76f69f'
+
+	/*var user Human
+	user.ID, _ = uuid.FromString("23a1eda2-19ec-489f-9d31-0d91ad76f69f")
+	user.IsMale = true
+	db.Debug().Save(&user)*/
+	//Query
+	// UPDATE `humen` SET `created_by` = '', `deleted_at` = NULL, `name` = '', `address` = '
+	//', `gender` = '', `is_male` = true  WHERE `humen`.`deleted_at` IS NULL AND `humen`.`id` = '23a1eda2-19ec-489f-9d31-0d91ad76f69f'
 	GetHuman(db)
+
+	// USE MAPS TO UPDATE FIELDS
+
+	var updatedHuman Human
+	sID, _ := uuid.FromString("23a1eda2-19ec-489f-9d31-0d91ad76f69f")
+	userMap := make(map[string]interface{})
+	userMap["id"] = sID
+	userMap["is_male"] = true
+	db.Model(&updatedHuman).Debug().Update(userMap)
 
 }
