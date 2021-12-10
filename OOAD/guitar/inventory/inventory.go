@@ -3,6 +3,7 @@ package inventory
 import (
 	g "app/guitar"
 	"fmt"
+	"log"
 )
 
 type Inventory struct {
@@ -21,6 +22,9 @@ func (i *Inventory) AddGuitar(g g.Guitar) {
 	i.allGuitars = append(i.allGuitars, g)
 }
 func (i *Inventory) RemoveGuitar(number string) {
+	if number == "" {
+		log.Fatal("Please enter valid string name ")
+	}
 	index := 0
 	for j, val := range i.allGuitars {
 		if val.GetSerialNumber() == number {
