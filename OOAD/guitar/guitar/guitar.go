@@ -15,6 +15,6 @@ func (g Guitar) GetSerialNumber() string {
 func (g Guitar) GetPrice() uint16 {
 	return g.price
 }
-func (g Guitar) GetSpecs() GuitarSpec {
-	return g.spec
+func (g Guitar) GetSpecs() *GuitarSpec {
+	return &g.spec
 }

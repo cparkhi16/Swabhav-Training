@@ -55,10 +55,10 @@ func (i *Inventory) SearchGuitar(spec g.GuitarSpec) {
 	backWood := spec.GetBackWood()
 	frontWood := spec.GetFrontWood()
 	noOfStrings := spec.GetNumberOfStrings()
-	isRefundable, isSet := spec.GetIsRefundableVal()
+	isRefundable, err := spec.GetIsRefundableVal()
 	recordFound := false
 	for _, val := range i.allGuitars {
-		if isSet == 1 {
+		if err == nil {
 			isRefundableRequired, _ := val.GetSpecs().GetIsRefundableVal()
 			if (val.GetSpecs().GetBuilder() == builder) || (val.GetSpecs().GetTypeOfGuitar() == typeofGuitar) || (val.GetSpecs().GetModel() == model) ||
 				(val.GetSpecs().GetBackWood() == backWood) || (val.GetSpecs().GetFrontWood() == frontWood) || (val.GetSpecs().GetNumberOfStrings() == noOfStrings) ||
@@ -77,7 +77,7 @@ func (i *Inventory) SearchGuitar(spec g.GuitarSpec) {
 				recordFound = true
 			}
 		} else {
-			isRefundable, _ := val.GetSpecs().GetIsRefundableVal()
+			isRefundableRequired, _ := val.GetSpecs().GetIsRefundableVal()
 			if (val.GetSpecs().GetBuilder() == builder) || (val.GetSpecs().GetTypeOfGuitar() == typeofGuitar) || (val.GetSpecs().GetModel() == model) ||
 				(val.GetSpecs().GetBackWood() == backWood) || (val.GetSpecs().GetFrontWood() == frontWood) || (val.GetSpecs().GetNumberOfStrings() == noOfStrings) {
 				fmt.Println("----------Search Results------------")
@@ -89,14 +89,16 @@ func (i *Inventory) SearchGuitar(spec g.GuitarSpec) {
 				fmt.Println("Type of backWood ", val.GetSpecs().GetBackWood())
 				fmt.Println("Type of frontWood ", val.GetSpecs().GetFrontWood())
 				fmt.Println("Number of strings ", val.GetSpecs().GetNumberOfStrings())
-				fmt.Println("Is this refundable ", isRefundable)
+				fmt.Println("Is this refundable ", isRefundableRequired)
 				fmt.Println("Guitar Price --", val.GetPrice())
 				recordFound = true
 			}
+
 		}
-	}
-	if !recordFound {
-		fmt.Println("No record found based on your search")
+
+		if !recordFound && err == nil {
+			fmt.Println("No record found based on your search")
+		}
 	}
 }
 func (i *Inventory) GetGuitarsFromInventory() {
