@@ -21,7 +21,7 @@ func main() {
 	db.AutoMigrate(&m.User{})
 	db.AutoMigrate(&m.Hobby{})
 	db.AutoMigrate(&m.Course{})
-	db.Model(&m.Hobby{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.Model(&m.Hobby{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 
 	//uow := r.NewUnitOfWork(db, true)
 	/*user := m.NewUser("Parth", "JKO")
@@ -32,7 +32,7 @@ func main() {
 	s.AddUser(uow, *user)*/
 
 	//Using complete and commit
-	uw := r.NewUnitOfWork(db, false)
+	//uw := r.NewUnitOfWork(db, false)
 	//ud := m.NewUser("Ram", "KLJ")
 	//s.AddUser(uw, ud)
 
@@ -40,12 +40,26 @@ func main() {
 	var um m.User
 	ramId, _ := uuid.FromString("124f7dba-a07b-45fc-8978-b2b885a20a37")
 	um.ID = ramId
-	s.DeleteUser(uw, &um)
+	//s.DeleteUser(uw, &um)
 
 	//Testing before create hook
 	uow := r.NewUnitOfWork(db, true)
+
 	user := m.NewUser("", "test")
-	s.AddUser(uow, user)
+	userService := s.NewUserService(uow)
+	userService.AddUser(user)
+
+	//uj := m.NewUser("Rohit", "MNJ")
+	//userService.AddUser(uj)
+
+	//Assigning hobby to Rohit 532611a1-58cf-4e91-b276-aa4cd6338f8b
+	var rohit m.User
+	rId, _ := uuid.FromString("532611a1-58cf-4e91-b276-aa4cd6338f8b")
+	rohit.ID = rId
+	roH := m.NewHobby("Table tennis")
+	rohit.Hobbies = append(rohit.Hobbies, *roH)
+	//rHobby := m.Hobby{HobbyName: "Table tennis", TestModel: m.TestModel{ID: uuid.NewV4()}}
+	//uj.Hobbies = append(uj.Hobbies, rHobby)
 
 	//Testing after create hook
 	//us := m.NewUser("Jay", "MHJ") //08607252-7917-4323-aa83-3a4f3ab30cbb
@@ -58,10 +72,10 @@ func main() {
 
 	var users []m.User
 	association := []string{"Hobbies", "Courses"}
-	s.GetUsers(uow, &users, association)
+	userService.GetUsers(&users, association)
 	var u m.User
 	id, _ := uuid.FromString("0a27768d-9759-48c7-8b85-89152783bf76")
-	s.GetUserById(uow, &u, id, association)
+	userService.GetUserById(&u, id, association)
 
 	/*userMap := make(map[string]interface{})
 	userMap["id"] = id
@@ -81,21 +95,24 @@ func main() {
 	//s.AddCourse(uow, *cd)
 	//g := m.NewCourse("Golang")
 	//s.AddCourse(uow, *g)
+	courseService := s.NewCourseService(uow)
 
 	//Getting course Java by ID 3852ce46-3f17-4e51-95ef-979893d31f0a
 	var java m.Course
 	javaId, _ := uuid.FromString("3852ce46-3f17-4e51-95ef-979893d31f0a")
 	a := []string{}
-	j := s.GetCourseById(uow, &java, javaId, a)
+	j := courseService.GetCourseById(&java, javaId, a)
 	fmt.Println("Java obj ", *j)
 
 	var golang m.Course
 	goId, _ := uuid.FromString("f9e9d37e-7d14-405a-9e48-39aa9d291ab6")
 	b := []string{}
-	gl := s.GetCourseById(uow, &golang, goId, b)
+	gl := courseService.GetCourseById(&golang, goId, b)
 	fmt.Println("Golang obj ", *gl)
 
 	jay.Courses = append(jay.Courses, j, gl)
+	rohit.Courses = append(rohit.Courses, j)
+	userService.UpdateUser(&rohit)
 	//s.UpdateUser(uow, &jay) Checking before and update hooks
 
 	//Assigning java to user with ID 0a27768d-9759-48c7-8b85-89152783bf76
@@ -117,7 +134,7 @@ func main() {
 	//Get all courses
 	var courses []m.Course
 	v := []string{}
-	s.GetCourses(uow, &courses, v)
+	courseService.GetCourses(&courses, v)
 
 	// Assigning two courses to parth
 	var ut m.User
@@ -144,13 +161,13 @@ func main() {
 	//s.DeleteCourse(uow, &deleteML)
 
 	//Java course
-	s.GetUsersWithCourse(uow, javaId, v)
+	userService.GetUsersWithCourse(javaId, v)
 
 	//Golang Course
-	s.GetUsersWithCourse(uow, goId, v)
+	userService.GetUsersWithCourse(goId, v)
 
 	//Getting user with name "Jay"
 	fmt.Println("-------- Query processor -----")
-	s.GetUser(uow)
-	s.GetDetailsWithCourseID(uow)
+	userService.GetUser()
+	courseService.GetDetailsWithCourseID()
 }

@@ -18,7 +18,8 @@ type User struct {
 }
 
 func NewUser(Name, Address string) *User {
-	return &User{Name: Name, Address: Address, TestModel: TestModel{ID: uuid.NewV4(), CreatedBy: "Chinmay", CreatedAt: time.Now()}}
+	fmt.Println("Time created in NewUser-----------> ", time.Now())
+	return &User{Name: Name, Address: Address, TestModel: TestModel{CreatedBy: "Chinmay", CreatedAt: time.Now()}}
 }
 
 func (u *User) AddHobbies(h Hobby) {
@@ -26,6 +27,7 @@ func (u *User) AddHobbies(h Hobby) {
 }
 
 func (u *User) BeforeCreate() (err error) {
+	u.ID = uuid.NewV4()
 	if u.Name == "" {
 		err = errors.New("can't save invalid data")
 	}

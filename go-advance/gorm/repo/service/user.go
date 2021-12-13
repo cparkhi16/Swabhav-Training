@@ -8,30 +8,37 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func AddUser(uow *re.UnitOfWork, u *m.User) {
+type UserService struct {
+	uow *re.UnitOfWork
+}
+
+func NewUserService(uow *re.UnitOfWork) *UserService {
+	return &UserService{uow: uow}
+}
+func (us *UserService) AddUser(u *m.User) {
 	r := re.NewRepository()
-	err := r.Add(uow, u)
+	err := r.Add(us.uow, u)
 	if err != nil {
 		fmt.Println("Error in add user ", err)
 	} else {
-		uow.Commit()
+		us.uow.Commit()
 	}
 }
-func GetUser(uow *re.UnitOfWork) {
+func (us *UserService) GetUser() {
 	r := re.NewRepository()
 	qp := re.Filter("name = ?", "Jay")
 	//qps := []re.QueryProcessor{}
 	//qps = append(qps, qp)
 	var user m.User
-	err := r.GetFirst(uow, &user, qp)
+	err := r.GetFirst(us.uow, &user, qp)
 	if err != nil {
 		fmt.Println("Error using quey processor")
 	}
 	fmt.Println("User object from db --- ", user)
 }
-func GetUsers(uow *re.UnitOfWork, out interface{}, preloadAssociations []string) {
+func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
 	r := re.NewRepository()
-	err := r.GetAll(uow, out, preloadAssociations)
+	err := r.GetAll(us.uow, out, preloadAssociations)
 	if err != nil {
 		fmt.Println("Error in get all user ", err)
 	}
@@ -47,9 +54,9 @@ func GetUsers(uow *re.UnitOfWork, out interface{}, preloadAssociations []string)
 	}
 }
 
-func GetUserById(uow *re.UnitOfWork, out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.User {
+func (us *UserService) GetUserById(out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.User {
 	r := re.NewRepository()
-	err := r.GetAllForTenant(uow, out, tenantID, preloadAssociations)
+	err := r.GetAllForTenant(us.uow, out, tenantID, preloadAssociations)
 	if err != nil {
 		fmt.Println("Error in get all user ", err)
 	}
@@ -62,35 +69,35 @@ func GetUserById(uow *re.UnitOfWork, out interface{}, tenantID uuid.UUID, preloa
 	return o
 }
 
-func UpdateUser(uow *re.UnitOfWork, entity interface{}) {
+func (us *UserService) UpdateUser(entity interface{}) {
 	fmt.Println(entity)
 	r := re.NewRepository()
-	err := r.Update(uow, entity)
+	err := r.Update(us.uow, entity)
 	if err != nil {
-		uow.Complete()
+		us.uow.Complete()
 		fmt.Println("Error updating user")
 	} else {
-		uow.Commit()
+		us.uow.Commit()
 	}
 }
 
-func DeleteUser(uow *re.UnitOfWork, entity interface{}) {
+func (us *UserService) DeleteUser(entity interface{}) {
 	r := re.NewRepository()
 	user := entity.(*m.User)
-	err := r.Delete(uow, entity)
+	err := r.Delete(us.uow, entity)
 	if err != nil {
-		uow.Complete()
+		us.uow.Complete()
 		fmt.Println("Error deleting user")
 	} else {
-		defer uow.Commit()
+		defer us.uow.Commit()
 		fmt.Println("Deleting hobby entry for this user --")
 		var h []m.Hobby
 		fmt.Println("User ID ---", user.ID)
-		uow.DB.Where("user_id = ?", user.ID).Find(&h)
+		us.uow.DB.Where("user_id = ?", user.ID).Find(&h)
 		fmt.Println("Hobby for user", h)
 		//ef := uow.DB.Debug().Delete(&h).Error
 		for _, val := range h {
-			ef := r.Delete(uow, &val)
+			ef := r.Delete(us.uow, &val)
 			if ef != nil {
 				fmt.Println("Error deleting hobby for this user")
 			}
@@ -98,7 +105,7 @@ func DeleteUser(uow *re.UnitOfWork, entity interface{}) {
 		fmt.Println("Deleting course user entry from person_courses ")
 		//var courses []m.Course
 		//uow.DB.Where("user_id = ?", user.ID).Find(&courses)
-		we := uow.DB.Model(&user).Debug().Association("courses").Clear().Error
+		we := us.uow.DB.Model(&user).Debug().Association("courses").Clear().Error
 		if we != nil {
 			fmt.Println("Error deleting user course map in person_courses")
 		}
@@ -106,14 +113,14 @@ func DeleteUser(uow *re.UnitOfWork, entity interface{}) {
 	}
 }
 
-func GetUsersWithCourse(uow *re.UnitOfWork, id uuid.UUID, preloadAssociations []string) {
+func (us *UserService) GetUsersWithCourse(id uuid.UUID, preloadAssociations []string) {
 	r := re.NewRepository()
 	var people []m.User
 	a := []string{}
 	var c m.Course
-	r.Get(uow, &c, id, a)
+	r.Get(us.uow, &c, id, a)
 	fmt.Println("Course info ", c)
-	f := uow.DB.Model(&c).Debug().Related(&people, "Users").Error
+	f := us.uow.DB.Model(&c).Debug().Related(&people, "Users").Error
 	if f != nil {
 		fmt.Println("Error :", f)
 	}

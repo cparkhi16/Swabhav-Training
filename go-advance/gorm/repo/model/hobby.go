@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -13,5 +14,6 @@ type Hobby struct {
 }
 
 func NewHobby(n string) *Hobby {
+	fmt.Println("Created at time for new hobby for Rohit ----> ", time.Now())
 	return &Hobby{HobbyName: n, TestModel: TestModel{ID: uuid.NewV4(), CreatedBy: "C", CreatedAt: time.Now()}}
 }
