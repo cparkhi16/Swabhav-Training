@@ -1,7 +1,7 @@
 package board
 
 type Cell struct {
-	Cells       [][]string
+	Cells       []string
 	Marks       [2]Mark
 	CurrentMark Mark
 }

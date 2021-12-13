@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 type TicTacToeGame struct {
@@ -37,13 +36,13 @@ func (g *TicTacToeGame) Initialize(size int) error {
 	}
 	return nil
 }
-func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int, int) {
-	split := strings.Split(mov, "")
-	if len(split) > 2 || len(split) == 1 {
+func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
+	//split := strings.Split(mov, "")
+	/*if len(split) > 2 || len(split) == 1 {
 		fmt.Println("Invalid move :", mov)
 		return false, -1, -1
-	}
-	r, err := strconv.Atoi(split[0])
+	}*/
+	/*r, err := strconv.Atoi(split[0])
 	if err != nil {
 		fmt.Println("Invalid move :", mov)
 		return false, -1, -1
@@ -52,32 +51,31 @@ func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int, int) {
 	if err != nil {
 		fmt.Println("Invalid move:", mov)
 		return false, -1, -1
+	}*/
+	r, err := strconv.Atoi(mov)
+	if err != nil {
+		fmt.Println("Invalid move :", mov)
+		return false, -1
 	}
 	r = r - 1
-	c = c - 1
 
 	switch {
 	case r < 0, r >= g.Board.Size:
 		fmt.Println("Invalid move:", mov)
-		return false, -1, -1
+		return false, r
 	}
 
-	switch {
-	case c < 0, c >= g.Board.Size:
-		fmt.Println("Invalid move:", mov)
-		return false, -1, -1
-	}
-	if g.Board.GameBoard.Cells[r][c] != "" {
+	if g.Board.GameBoard.Cells[r] != "" {
 		fmt.Println(mov, "is already occupied on the board !! ")
-		return false, -1, -1
+		return false, -1
 	}
-	return true, r, c
+	return true, r
 }
 func (g *TicTacToeGame) MakeMove(mov string, mark b.Mark) bool {
-	isValid, r, c := g.CheckIsValidMove(mov)
+	isValid, pos := g.CheckIsValidMove(mov)
 	if isValid {
-		if g.Board.GameBoard.Cells[r][c] == "" {
-			g.Board.GameBoard.Cells[r][c] = string(mark)
+		if g.Board.GameBoard.Cells[pos] == "" {
+			g.Board.GameBoard.Cells[pos] = string(mark)
 			return true
 		}
 	}
@@ -125,7 +123,7 @@ func (g *TicTacToeGame) inGame() bool {
 		if !successfulMove {
 			return false
 		}
-		gameStatus := g.Result.CheckWinning()
+		gameStatus, _ := g.Result.CheckWinning()
 		if gameStatus == r.Win {
 			g.Board.ShowBoard()
 			if g.Player.Players[g.Player.Player1] == g.Board.GameBoard.CurrentMark {

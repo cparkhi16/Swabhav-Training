@@ -17,9 +17,9 @@ const (
 func NewAnalyzer(Board *b.Board) *Result {
 	return &Result{Board: Board}
 }
-func (ra *Result) CheckWinning() ResultAnalysis {
+func (ra *Result) CheckWinning() (ResultAnalysis, string) {
 	// check horizontal
-	for _, r := range ra.Board.GameBoard.Cells {
+	/*for _, r := range ra.Board.GameBoard.Cells {
 		check := make(map[string]int)
 
 		for _, c := range r {
@@ -118,5 +118,44 @@ func (ra *Result) CheckWinning() ResultAnalysis {
 	}
 	//return false, false
 	ra.resutlt = GameOn
-	return ra.resutlt
+	return ra.resutlt*/
+	i := 0
+	test := false
+	//horizantel test
+	for i < 9 {
+		test = ra.Board.GameBoard.Cells[i] == ra.Board.GameBoard.Cells[i+1] && ra.Board.GameBoard.Cells[i+1] == ra.Board.GameBoard.Cells[i+2] &&
+			ra.Board.GameBoard.Cells[i] != ""
+		if !test {
+			i += 3
+		} else {
+			ra.resutlt = Win
+			return ra.resutlt, ra.Board.GameBoard.Cells[i]
+		}
+	}
+	i = 0
+	//vertical test
+	for i < 3 {
+		test = ra.Board.GameBoard.Cells[i] == ra.Board.GameBoard.Cells[i+3] && ra.Board.GameBoard.Cells[i+3] == ra.Board.GameBoard.Cells[i+6] && ra.Board.GameBoard.Cells[i] != ""
+		if !test {
+			i += 1
+		} else {
+			ra.resutlt = Win
+			return ra.resutlt, ra.Board.GameBoard.Cells[i]
+		}
+	}
+
+	//diagonal 1 test
+	if ra.Board.GameBoard.Cells[0] == ra.Board.GameBoard.Cells[4] && ra.Board.GameBoard.Cells[4] == ra.Board.GameBoard.Cells[8] && ra.Board.GameBoard.Cells[0] != "" {
+		return ra.resutlt, ra.Board.GameBoard.Cells[i]
+	}
+	//diagonal 2 test
+	if ra.Board.GameBoard.Cells[2] == ra.Board.GameBoard.Cells[4] && ra.Board.GameBoard.Cells[4] == ra.Board.GameBoard.Cells[6] && ra.Board.GameBoard.Cells[2] != "" {
+		return ra.resutlt, ra.Board.GameBoard.Cells[i]
+	}
+	if ra.Board.Size == 9 {
+		ra.resutlt = Draw
+		return ra.resutlt, ""
+	}
+	ra.resutlt = GameOn
+	return ra.resutlt, ""
 }
