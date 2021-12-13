@@ -8,7 +8,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type User struct {
+type Usera struct {
 	ID      int
 	Name    string
 	Address string
