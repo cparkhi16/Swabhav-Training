@@ -15,18 +15,19 @@ type TicTacToeGame struct {
 	Player          *pl.Player
 	Board           *b.Board
 	Result          *r.Result
-	Players         map[string]b.Mark
 }
 
 func New() *TicTacToeGame {
 	return &TicTacToeGame{GameInitialized: false}
 }
-func (g *TicTacToeGame) Initialize(size int, n1, n2 string) error {
+func (g *TicTacToeGame) Initialize(size int) error {
 	if size <= 1 {
 		return fmt.Errorf("size should not be less than or equal to one")
 	} else {
-		g.Players = make(map[string]b.Mark)
-		g.Player = pl.NewPlayers(n1, n2)
+		g.Player = pl.NewPlayers()
+		g.Player.Players = make(map[string]b.Mark)
+		n1, n2 := g.Player.GetPlayerDetails()
+		g.Player.SetPlayerDetails(n1, n2)
 		cell := b.NewCell()
 		g.Board = b.MakeNewBoard(size, cell)
 		g.Board.GameBoard.CurrentMark = ""
@@ -36,22 +37,21 @@ func (g *TicTacToeGame) Initialize(size int, n1, n2 string) error {
 	}
 	return nil
 }
-
-func (g *TicTacToeGame) MakeMove(mov string, mark b.Mark) bool {
+func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int, int) {
 	split := strings.Split(mov, "")
 	if len(split) > 2 || len(split) == 1 {
 		fmt.Println("Invalid move :", mov)
-		return false
+		return false, -1, -1
 	}
 	r, err := strconv.Atoi(split[0])
 	if err != nil {
 		fmt.Println("Invalid move :", mov)
-		return false
+		return false, -1, -1
 	}
 	c, err := strconv.Atoi(split[1])
 	if err != nil {
 		fmt.Println("Invalid move:", mov)
-		return false
+		return false, -1, -1
 	}
 	r = r - 1
 	c = c - 1
@@ -59,22 +59,29 @@ func (g *TicTacToeGame) MakeMove(mov string, mark b.Mark) bool {
 	switch {
 	case r < 0, r >= g.Board.Size:
 		fmt.Println("Invalid move:", mov)
-		return false
+		return false, -1, -1
 	}
 
 	switch {
 	case c < 0, c >= g.Board.Size:
 		fmt.Println("Invalid move:", mov)
-		return false
+		return false, -1, -1
 	}
-
-	if g.Board.GameBoard.Cells[r][c] == "" {
-		g.Board.GameBoard.Cells[r][c] = string(mark)
-		return true
-	} else {
+	if g.Board.GameBoard.Cells[r][c] != "" {
 		fmt.Println(mov, "is already occupied on the board !! ")
-		return false
+		return false, -1, -1
 	}
+	return true, r, c
+}
+func (g *TicTacToeGame) MakeMove(mov string, mark b.Mark) bool {
+	isValid, r, c := g.CheckIsValidMove(mov)
+	if isValid {
+		if g.Board.GameBoard.Cells[r][c] == "" {
+			g.Board.GameBoard.Cells[r][c] = string(mark)
+			return true
+		}
+	}
+	return false
 }
 
 func (g *TicTacToeGame) ShowMenu() {
@@ -86,7 +93,7 @@ func (g *TicTacToeGame) ShowMenu() {
 		g.ShowMenu()
 	} else {
 		g.Board.GameBoard.CurrentMark = b.Mark(input)
-		g.Players[g.Player.Player1] = b.Mark(input)
+		g.Player.Players[g.Player.Player1] = b.Mark(input)
 	}
 }
 
@@ -95,7 +102,7 @@ func (g *TicTacToeGame) GameOver() {
 	os.Exit(0)
 }
 func (g *TicTacToeGame) getMarkForCurrentPlayer() string {
-	if g.Board.GameBoard.CurrentMark == g.Players[g.Player.Player1] {
+	if g.Board.GameBoard.CurrentMark == g.Player.Players[g.Player.Player1] {
 		fmt.Println("Current player : ", g.Player.Player1)
 	} else {
 		fmt.Println("Current player : ", g.Player.Player2)
@@ -121,7 +128,7 @@ func (g *TicTacToeGame) inGame() bool {
 		gameStatus := g.Result.CheckWinning()
 		if gameStatus == r.Win {
 			g.Board.ShowBoard()
-			if g.Players[g.Player.Player1] == g.Board.GameBoard.CurrentMark {
+			if g.Player.Players[g.Player.Player1] == g.Board.GameBoard.CurrentMark {
 				fmt.Println(g.Player.Player1, "wins!")
 			} else {
 				fmt.Println(g.Player.Player2, "wins!")
@@ -147,19 +154,11 @@ func (g *TicTacToeGame) takeTurns() {
 }
 
 func (g *TicTacToeGame) Play() {
-	fmt.Println("Enter name of player1")
-	var n1 string
-	fmt.Scanln(&n1)
-	fmt.Println("Enter name of player2")
-	var n2 string
-	fmt.Scanln(&n2)
-	fmt.Println("Enter desired size of board")
-	var size int
-	fmt.Scanln(&size)
+	size := b.GetDesiredBoardSize()
 	for {
 		switch g.GameInitialized {
 		case false:
-			e := g.Initialize(size, n1, n2)
+			e := g.Initialize(size)
 			if e != nil {
 				fmt.Println(e.Error())
 				g.Play()

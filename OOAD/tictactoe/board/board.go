@@ -9,6 +9,12 @@ type Board struct {
 	GameBoard *Cell
 }
 
+func GetDesiredBoardSize() int {
+	fmt.Println("Enter desired size of board")
+	var size int
+	fmt.Scanln(&size)
+	return size
+}
 func MakeNewBoard(size int, c *Cell) *Board {
 	GameBoard := make([][]string, size)
 	for r, _ := range GameBoard {

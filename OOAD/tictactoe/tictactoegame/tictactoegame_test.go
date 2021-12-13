@@ -14,7 +14,7 @@ func TestNewTicTacToe(t *testing.T) {
 
 func TestMakeMove(t *testing.T) {
 	game := New()
-	game.Initialize(3, "Chinmay", "Keyur")
+	game.Initialize(3)
 	var list = []struct {
 		mov      string
 		p        b.Mark
@@ -39,18 +39,16 @@ func TestMakeMove(t *testing.T) {
 func TestInitialize(t *testing.T) {
 	var list = []struct {
 		size     int
-		n1       string
-		n2       string
 		expected string
 	}{{
-		0, "Chinmay", "keyur", "size should not be less than or equal to one",
+		0, "size should not be less than or equal to one",
 	}, {
-		-5, "Chinmay", "keyur", "size should not be less than or equal to one",
+		-5, "size should not be less than or equal to one",
 	},
 	}
 	for _, val := range list {
 		game := New()
-		actual := game.Initialize(val.size, val.n1, val.n2)
+		actual := game.Initialize(val.size)
 		if actual.Error() != val.expected {
 			t.Errorf("Error found for initialize function ")
 		}
@@ -59,7 +57,7 @@ func TestInitialize(t *testing.T) {
 
 func TestTakeTurns(t *testing.T) {
 	game := New()
-	game.Initialize(3, "Chinmay", "Keyur")
+	game.Initialize(3)
 	game.Board.GameBoard.CurrentMark = b.X
 	game.takeTurns()
 	actual := game.Board.GameBoard.CurrentMark
