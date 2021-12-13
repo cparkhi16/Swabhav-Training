@@ -67,7 +67,10 @@ func UpdateUser(uow *re.UnitOfWork, entity interface{}) {
 	r := re.NewRepository()
 	err := r.Update(uow, entity)
 	if err != nil {
+		uow.Complete()
 		fmt.Println("Error updating user")
+	} else {
+		uow.Commit()
 	}
 }
 
@@ -76,8 +79,10 @@ func DeleteUser(uow *re.UnitOfWork, entity interface{}) {
 	user := entity.(*m.User)
 	err := r.Delete(uow, entity)
 	if err != nil {
+		uow.Complete()
 		fmt.Println("Error deleting user")
 	} else {
+		defer uow.Commit()
 		fmt.Println("Deleting hobby entry for this user --")
 		var h []m.Hobby
 		fmt.Println("User ID ---", user.ID)

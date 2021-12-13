@@ -13,7 +13,10 @@ func AddCourse(uow *r.UnitOfWork, c m.Course) {
 	r := re.NewRepository()
 	e := r.Add(uow, c)
 	if e != nil {
+		uow.Complete()
 		fmt.Println("Error while adding course")
+	} else {
+		uow.Commit()
 	}
 }
 
@@ -46,7 +49,10 @@ func UpdateCourse(uow *r.UnitOfWork, entity interface{}) {
 	r := re.NewRepository()
 	err := r.Update(uow, entity)
 	if err != nil {
+		uow.Complete()
 		fmt.Println("Error updating course")
+	} else {
+		uow.Commit()
 	}
 }
 
@@ -54,7 +60,10 @@ func DeleteCourse(uow *r.UnitOfWork, entity interface{}) {
 	r := re.NewRepository()
 	err := r.Delete(uow, entity)
 	if err != nil {
+		uow.Complete()
 		fmt.Println("Error deleting course")
+	} else {
+		uow.Commit()
 	}
 
 }

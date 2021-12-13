@@ -33,8 +33,15 @@ func main() {
 
 	//Using complete and commit
 	uw := r.NewUnitOfWork(db, false)
-	ud := m.NewUser("Ram", "KLJ")
-	s.AddUser(uw, ud)
+	//ud := m.NewUser("Ram", "KLJ")
+	//s.AddUser(uw, ud)
+
+	//Delete user ram with ID 124f7dba-a07b-45fc-8978-b2b885a20a37
+	var um m.User
+	ramId, _ := uuid.FromString("124f7dba-a07b-45fc-8978-b2b885a20a37")
+	um.ID = ramId
+	s.DeleteUser(uw, &um)
+
 	//Testing before create hook
 	uow := r.NewUnitOfWork(db, true)
 	user := m.NewUser("", "test")
