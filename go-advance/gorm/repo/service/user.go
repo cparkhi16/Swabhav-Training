@@ -29,12 +29,18 @@ func (us *UserService) GetUser() {
 	qp := re.Filter("name = ?", "Jay")
 	//qps := []re.QueryProcessor{}
 	//qps = append(qps, qp)
+	preloadAssoc := []string{"Hobbies", "Courses"}
+	pqp := re.PreloadAssociations(preloadAssoc)
 	var user m.User
-	err := r.GetFirst(us.uow, &user, qp)
+	err := r.GetFirst(us.uow, &user, qp, pqp)
 	if err != nil {
 		fmt.Println("Error using quey processor")
 	}
 	fmt.Println("User object from db --- ", user)
+	fmt.Println("User courses ")
+	for _, val := range user.Courses {
+		fmt.Println("---", val.Name)
+	}
 }
 func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
 	r := re.NewRepository()
