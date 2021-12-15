@@ -4,6 +4,7 @@ import (
 	m "app/model"
 	re "app/repository"
 	"fmt"
+	"log"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -17,6 +18,7 @@ func NewUserService(uow *re.UnitOfWork) *UserService {
 }
 func (us *UserService) AddUser(u *m.User) {
 	r := re.NewRepository()
+	fmt.Println("User ID after before create ", u.ID)
 	err := r.Add(us.uow, u)
 	if err != nil {
 		fmt.Println("Error in add user ", err)
@@ -41,8 +43,21 @@ func (us *UserService) GetUser() {
 	for _, val := range user.Courses {
 		fmt.Println("---", val.Name)
 	}
+
+	fmt.Println("--= Combined filter and preload --=")
+	var JayUser m.User
+	cqp := re.FilterAndPreloadAssociations("name = ?", preloadAssoc, "Jay")
+	errt := r.GetFirst(us.uow, &JayUser, cqp)
+	if errt != nil {
+		fmt.Println("Error for combined query")
+	}
+	fmt.Println("User object from db for combined query --- ", JayUser)
+	fmt.Println("User courses for combined query ")
+	for _, val := range JayUser.Courses {
+		fmt.Println("---", val.Name)
+	}
 }
-func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
+func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) []m.User {
 	r := re.NewRepository()
 	err := r.GetAll(us.uow, out, preloadAssociations)
 	if err != nil {
@@ -58,6 +73,7 @@ func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
 			fmt.Println("Courses ---", vl.Name)
 		}
 	}
+	return *o
 }
 
 func (us *UserService) GetUserById(out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.User {
@@ -75,18 +91,28 @@ func (us *UserService) GetUserById(out interface{}, tenantID uuid.UUID, preloadA
 	return o
 }
 
-func (us *UserService) UpdateUser(entity interface{}) {
+func (us *UserService) UpdateUser(entity interface{}) error {
 	fmt.Println(entity)
 	r := re.NewRepository()
 	err := r.Update(us.uow, entity)
 	if err != nil {
 		us.uow.Complete()
 		fmt.Println("Error updating user")
+		return err
 	} else {
 		us.uow.Commit()
 	}
+	return nil
 }
 
+/*func (us *UserService) DeletePassportDetails(entity interface{}) error {
+	r := re.NewRepository()
+	err := r.Delete(us.uow, entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}*/
 func (us *UserService) DeleteUser(entity interface{}) {
 	r := re.NewRepository()
 	user := entity.(*m.User)
@@ -138,4 +164,83 @@ func (us *UserService) GetUsersWithCourse(id uuid.UUID, preloadAssociations []st
 		}
 	}
 
+}
+
+func (us *UserService) GetPassportIDForUser(ID uuid.UUID) m.Passport {
+	r := re.NewRepository()
+	qp := re.Filter("user_id = ?", ID)
+	var p m.Passport
+	err := r.GetFirst(us.uow, &p, qp)
+	if err != nil {
+		log.Fatal("Error in get passport id ", err)
+	}
+	return p
+}
+
+func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby string, out interface{}) []m.User {
+	r := re.NewRepository()
+	offset := (page - 1) * limit
+	//fmt.Println("h", hobby)
+	//queryBuider := us.uow.DB.Debug().Limit(limit).Offset(offset)
+	queryLimit := re.Limit(limit)
+	queryOffset := re.Offset(offset)
+	preload := []string{"Hobbies", "Passport"}
+	pqp := re.PreloadAssociations(preload)
+	//result := queryBuider.Model(out).Find(out)
+	qp := []re.QueryProcessor{queryLimit, queryOffset, pqp}
+	result := r.GetAllUsers(us.uow, out, qp)
+	//res := result.Debug().Preload("Hobbies").Find(out)
+	if result != nil {
+		log.Fatal("Error in pagination ")
+		return nil
+	}
+	o := out.(*[]m.User)
+	var u []m.User
+	if hobby != "" {
+		for _, user := range *o {
+			for _, hob := range user.Hobbies {
+				//fmt.Println(hob.HobbyName)
+				if hob.HobbyName == hobby {
+					u = append(u, user)
+				}
+			}
+		}
+		fmt.Println("u val ", len(u))
+		return u
+	}
+	return *o
+}
+
+func (us *UserService) UpdatePassportDetailForUser(entity interface{}) error {
+	r := re.NewRepository()
+	err := r.Update(us.uow, entity)
+	if err != nil {
+		us.uow.Complete()
+		fmt.Println("Error updating user's passport")
+		return err
+	} else {
+		us.uow.Commit()
+	}
+	return nil
+}
+
+func (us *UserService) FindAndDeletePassport(entity interface{}, preloadAssociations []string) error {
+	r := re.NewRepository()
+	pqp := re.PreloadAssociations(preloadAssociations)
+	err := r.GetFirst(us.uow, entity, pqp)
+	if err != nil {
+		fmt.Println("error finding user", err)
+		return err
+	} else {
+		o := entity.(*m.User)
+		var p m.Passport
+		p.ID = o.Passport.ID
+		fmt.Println("Passport ID for user", p.ID)
+		e := r.Delete(us.uow, &p)
+		if e != nil {
+			fmt.Println("Error deleting passport for user", e)
+			return e
+		}
+	}
+	return nil
 }

@@ -11,10 +11,11 @@ import (
 
 type User struct {
 	TestModel
-	Name    string
-	Address string    `gorm:"column:ADDR"`
-	Courses []*Course `gorm:"many2many:person_courses;association_autoupdate:false;association_autocreate:false"`
-	Hobbies []Hobby
+	Name     string
+	Address  string    `gorm:"column:ADDR"`
+	Courses  []*Course `gorm:"many2many:person_courses;association_autoupdate:false;association_autocreate:false"`
+	Hobbies  []Hobby
+	Passport Passport
 }
 
 func NewUser(Name, Address string) *User {
@@ -26,8 +27,10 @@ func (u *User) AddHobbies(h Hobby) {
 	u.Hobbies = append(u.Hobbies, h)
 }
 
-func (u *User) BeforeCreate() (err error) {
+func (u *User) BeforeCreate(scope *gorm.Scope) (err error) {
 	u.ID = uuid.NewV4()
+	//fmt.Println("Assigning ID TO user", u.ID)
+	//scope.SetColumn("id", uuid.NewV4())
 	if u.Name == "" {
 		err = errors.New("can't save invalid data")
 	}
@@ -47,4 +50,8 @@ func (u *User) BeforeUpdate() (err error) {
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 	fmt.Println("-- After update fired ---")
 	return
+}
+
+func (u *User) SetPassportForUser(p *Passport) {
+	u.Passport = *p
 }

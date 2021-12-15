@@ -1,12 +1,16 @@
 package main
 
 import (
+	c "app/controller"
 	m "app/model"
 	r "app/repository"
 	s "app/service"
 	"fmt"
 	"log"
+	"net/http"
 
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	uuid "github.com/satori/go.uuid"
@@ -21,7 +25,9 @@ func main() {
 	db.AutoMigrate(&m.User{})
 	db.AutoMigrate(&m.Hobby{})
 	db.AutoMigrate(&m.Course{})
+	db.AutoMigrate(&m.Passport{})
 	db.Model(&m.Hobby{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+	db.Model(&m.Passport{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 
 	//uow := r.NewUnitOfWork(db, true)
 	/*user := m.NewUser("Parth", "JKO")
@@ -49,8 +55,15 @@ func main() {
 	userService := s.NewUserService(uow)
 	userService.AddUser(user)
 
-	//uj := m.NewUser("Rohit", "MNJ")
+	//uj := m.NewUser("Ritesh", "JIH")
 	//userService.AddUser(uj)
+	var Ritesh m.User
+	ritID, _ := uuid.FromString("9d294f19-9332-4774-9889-a02c025a2424")
+	Ritesh.ID = ritID
+	p := m.NewPassport(100)
+	Ritesh.Passport = *p
+	ujHob := m.NewHobby("Gymming")
+	Ritesh.Hobbies = append(Ritesh.Hobbies, *ujHob)
 
 	//Assigning hobby to Rohit 532611a1-58cf-4e91-b276-aa4cd6338f8b
 	var rohit m.User
@@ -102,7 +115,7 @@ func main() {
 	javaId, _ := uuid.FromString("3852ce46-3f17-4e51-95ef-979893d31f0a")
 	a := []string{}
 	j := courseService.GetCourseById(&java, javaId, a)
-	fmt.Println("Java obj ", *j)
+	//fmt.Println("Java obj ", *j)
 
 	var golang m.Course
 	goId, _ := uuid.FromString("f9e9d37e-7d14-405a-9e48-39aa9d291ab6")
@@ -110,9 +123,11 @@ func main() {
 	gl := courseService.GetCourseById(&golang, goId, b)
 	fmt.Println("Golang obj ", *gl)
 
-	jay.Courses = append(jay.Courses, j, gl)
-	rohit.Courses = append(rohit.Courses, j)
-	userService.UpdateUser(&rohit)
+	//jay.Courses = append(jay.Courses, j, gl)
+	//rohit.Courses = append(rohit.Courses, j)
+	Ritesh.Courses = append(Ritesh.Courses, j, gl)
+
+	//userService.UpdateUser(&Ritesh)
 	//s.UpdateUser(uow, &jay) Checking before and update hooks
 
 	//Assigning java to user with ID 0a27768d-9759-48c7-8b85-89152783bf76
@@ -168,6 +183,10 @@ func main() {
 
 	//Getting user with name "Jay"
 	fmt.Println("-------- Query processor -----")
-	userService.GetUser()
-	courseService.GetDetailsWithCourseID()
+	//userService.GetUser()
+	//courseService.GetDetailsWithCourseID()
+
+	router := mux.NewRouter()
+	c.RegisterRoutesForUser(userService, router)
+	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
 }
