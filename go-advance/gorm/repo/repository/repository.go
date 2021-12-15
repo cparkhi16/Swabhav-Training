@@ -85,6 +85,19 @@ func (repository *GormRepository) GetFirst(uow *UnitOfWork, out interface{}, que
 }
 func PreloadAssociations(preloadAssociations []string) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+
+		if preloadAssociations != nil {
+			for _, association := range preloadAssociations {
+				fmt.Println("Association --> ", association)
+				db = db.Preload(association)
+			}
+		}
+		return db, nil
+	}
+}
+func FilterAndPreloadAssociations(condition string, preloadAssociations []string, args ...interface{}) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		db = db.Where(condition, args...)
 		if preloadAssociations != nil {
 			for _, association := range preloadAssociations {
 				fmt.Println("Association --> ", association)

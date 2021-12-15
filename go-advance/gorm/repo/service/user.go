@@ -4,6 +4,7 @@ import (
 	m "app/model"
 	re "app/repository"
 	"fmt"
+	"log"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -41,8 +42,21 @@ func (us *UserService) GetUser() {
 	for _, val := range user.Courses {
 		fmt.Println("---", val.Name)
 	}
+
+	fmt.Println("--= Combined filter and preload --=")
+	var JayUser m.User
+	cqp := re.FilterAndPreloadAssociations("name = ?", preloadAssoc, "Jay")
+	errt := r.GetFirst(us.uow, &JayUser, cqp)
+	if errt != nil {
+		fmt.Println("Error for combined query")
+	}
+	fmt.Println("User object from db for combined query --- ", JayUser)
+	fmt.Println("User courses for combined query ")
+	for _, val := range JayUser.Courses {
+		fmt.Println("---", val.Name)
+	}
 }
-func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
+func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) []m.User {
 	r := re.NewRepository()
 	err := r.GetAll(us.uow, out, preloadAssociations)
 	if err != nil {
@@ -58,6 +72,7 @@ func (us *UserService) GetUsers(out interface{}, preloadAssociations []string) {
 			fmt.Println("Courses ---", vl.Name)
 		}
 	}
+	return *o
 }
 
 func (us *UserService) GetUserById(out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.User {
@@ -138,4 +153,38 @@ func (us *UserService) GetUsersWithCourse(id uuid.UUID, preloadAssociations []st
 		}
 	}
 
+}
+
+func (us *UserService) GetPassportIDForUser(ID uuid.UUID) m.Passport {
+	r := re.NewRepository()
+	qp := re.Filter("user_id = ?", ID)
+	var p m.Passport
+	err := r.GetFirst(us.uow, &p, qp)
+	if err != nil {
+		log.Fatal("Error in get passport id ", err)
+	}
+	return p
+}
+
+func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby string, out interface{}) []m.User {
+	offset := (page - 1) * limit
+	queryBuider := us.uow.DB.Debug().Limit(limit).Offset(offset)
+	result := queryBuider.Model(out).Find(out)
+	res := result.Debug().Preload("Hobbies").Find(out)
+	if res.Error != nil {
+		log.Fatal("Error in pagination ")
+		return nil
+	}
+	o := out.(*[]m.User)
+	var u []m.User
+	for _, user := range *o {
+		for _, hob := range user.Hobbies {
+			fmt.Println(hob.HobbyName)
+			if hob.HobbyName == hobby {
+				u = append(u, user)
+			}
+		}
+	}
+	fmt.Println("u val ", len(u))
+	return u
 }

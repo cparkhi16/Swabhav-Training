@@ -11,10 +11,11 @@ import (
 
 type User struct {
 	TestModel
-	Name    string
-	Address string    `gorm:"column:ADDR"`
-	Courses []*Course `gorm:"many2many:person_courses;association_autoupdate:false;association_autocreate:false"`
-	Hobbies []Hobby
+	Name     string
+	Address  string    `gorm:"column:ADDR"`
+	Courses  []*Course `gorm:"many2many:person_courses;association_autoupdate:false;association_autocreate:false"`
+	Hobbies  []Hobby
+	Passport Passport
 }
 
 func NewUser(Name, Address string) *User {
@@ -47,4 +48,8 @@ func (u *User) BeforeUpdate() (err error) {
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 	fmt.Println("-- After update fired ---")
 	return
+}
+
+func (u *User) SetPassportForUser(p *Passport) {
+	u.Passport = *p
 }
