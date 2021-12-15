@@ -95,6 +95,16 @@ func PreloadAssociations(preloadAssociations []string) QueryProcessor {
 		return db, nil
 	}
 }
+func Limit(val int) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Limit(val), nil
+	}
+}
+func Offset(val int) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Offset(val), nil
+	}
+}
 func FilterAndPreloadAssociations(condition string, preloadAssociations []string, args ...interface{}) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
 		db = db.Where(condition, args...)
@@ -154,7 +164,8 @@ func (repository *GormRepository) GetAllForTenant(uow *UnitOfWork, out interface
 
 // Add specified Entity
 func (repository *GormRepository) Add(uow *UnitOfWork, entity interface{}) error {
-	return uow.DB.Create(entity).Error
+	fmt.Println("Here in add func")
+	return uow.DB.Debug().Create(entity).Error
 }
 
 // Update specified Entity

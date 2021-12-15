@@ -7,7 +7,9 @@ import (
 	s "app/service"
 	"fmt"
 	"log"
+	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -186,5 +188,5 @@ func main() {
 
 	router := mux.NewRouter()
 	c.RegisterRoutesForUser(userService, router)
-
+	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
 }

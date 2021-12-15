@@ -1,8 +1,10 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
+	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -13,11 +15,12 @@ type Passport struct {
 }
 
 func NewPassport(PassportID uint) *Passport {
-	return &Passport{PassportID: PassportID, TestModel: TestModel{CreatedBy: "Chinmay", CreatedAt: time.Now(), ID: uuid.NewV4()}}
+	return &Passport{PassportID: PassportID, TestModel: TestModel{CreatedBy: "J", CreatedAt: time.Now(), ID: uuid.NewV4()}}
 }
 
-/*func (p *Passport) BeforeCreate() (err error) {
+func (p *Passport) BeforeCreate(scope *gorm.Scope) (err error) {
 	p.ID = uuid.NewV4()
+	scope.SetColumn("id", p.ID)
 	fmt.Println("Setting passport uuid")
 	return
-}*/
+}

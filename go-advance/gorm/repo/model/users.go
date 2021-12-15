@@ -27,8 +27,10 @@ func (u *User) AddHobbies(h Hobby) {
 	u.Hobbies = append(u.Hobbies, h)
 }
 
-func (u *User) BeforeCreate() (err error) {
+func (u *User) BeforeCreate(scope *gorm.Scope) (err error) {
 	u.ID = uuid.NewV4()
+	//fmt.Println("Assigning ID TO user", u.ID)
+	//scope.SetColumn("id", uuid.NewV4())
 	if u.Name == "" {
 		err = errors.New("can't save invalid data")
 	}
