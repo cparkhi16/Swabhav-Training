@@ -3,6 +3,7 @@ package tictactoegame
 import (
 	b "cmdgame/board"
 	"testing"
+	
 )
 
 func TestNewTicTacToe(t *testing.T) {
@@ -12,29 +13,6 @@ func TestNewTicTacToe(t *testing.T) {
 	}
 }
 
-func TestMakeMove(t *testing.T) {
-	game := New()
-	game.Initialize(3)
-	var list = []struct {
-		mov      string
-		p        b.Mark
-		expected bool
-	}{{
-		"121", b.X, false,
-	}, {
-		"11", b.O, true,
-	}, {
-		"11", b.X, false,
-	}, {
-		"5", b.X, false,
-	}}
-	for _, val := range list {
-		actual := game.MakeMove(val.mov, val.p)
-		if actual != val.expected {
-			t.Errorf("Error found for makeMove function ")
-		}
-	}
-}
 
 func TestInitialize(t *testing.T) {
 	var list = []struct {

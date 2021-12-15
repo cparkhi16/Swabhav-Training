@@ -1,6 +1,7 @@
 package player
 
-import "testing"
+import ("testing"
+b "cmdgame/board")
 
 func TestNewPlayer(t *testing.T) {
 	actual := NewPlayers()
@@ -11,8 +12,22 @@ func TestNewPlayer(t *testing.T) {
 
 func TestSetPlayerDetails(t *testing.T) {
 	p := NewPlayers()
-	p.SetPlayerDetails("Chinmay", "Keyur")
-	if p.Player1 != "Chinmay" || p.Player2 != "Keyur" {
+	p.Players=make(map[string]b.Mark)
+	p.SetPlayerDetails("Chinmay")
+	if p.Name != "Chinmay" {
 		t.Errorf("Wrong player details")
 	}
+}
+
+func TestGetPlayerFromMap(t *testing.T){
+	p := NewPlayers()
+	m:=make(map[string]b.Mark)
+	m["Chinmay"]=b.X
+	expected:="Chinmay"
+	expectedStatus:=true
+	actual,actualStatus:=p.GetPlayerFromMap(m,b.X)
+	if actual!=expected || expectedStatus!=actualStatus{
+		t.Errorf("Wrong player got from map")
+	}
+	
 }

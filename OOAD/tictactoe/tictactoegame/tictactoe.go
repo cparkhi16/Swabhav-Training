@@ -6,7 +6,7 @@ import (
 	r "cmdgame/resultAnalyzer"
 	"fmt"
 	"os"
-	"strconv"
+	
 )
 
 type TicTacToeGame struct {
@@ -25,18 +25,20 @@ func (g *TicTacToeGame) Initialize(size int) error {
 	} else {
 		g.Player = pl.NewPlayers()
 		g.Player.Players = make(map[string]b.Mark)
-		n1, n2 := g.Player.GetPlayerDetails()
-		g.Player.SetPlayerDetails(n1, n2)
+		n1 := g.Player.GetPlayerDetails()
+		g.Player.SetPlayerDetails(n1)
+		n2:=g.Player.GetPlayerDetails()
+		g.Player.SetPlayerDetails(n2)
 		cell := b.NewCell()
 		g.Board = b.MakeNewBoard(size, cell)
-		g.Board.GameBoard.CurrentMark = ""
+		g.Board.GameBoard.CurrentMark = b.Empty
 		g.Board.GameBoard.Marks = [2]b.Mark{b.X, b.O}
 		g.Result = r.NewAnalyzer(g.Board)
 		g.GameInitialized = true
 	}
 	return nil
 }
-func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
+//func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
 	//split := strings.Split(mov, "")
 	/*if len(split) > 2 || len(split) == 1 {
 		fmt.Println("Invalid move :", mov)
@@ -52,7 +54,7 @@ func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
 		fmt.Println("Invalid move:", mov)
 		return false, -1, -1
 	}*/
-	r, err := strconv.Atoi(mov)
+	/*r, err := strconv.Atoi(mov)
 	if err != nil {
 		fmt.Println("Invalid move :", mov)
 		return false, -1
@@ -60,12 +62,12 @@ func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
 	r = r - 1
 
 	switch {
-	case r < 0, r >= g.Board.Size:
+	case r < 0, r >= g.Board.Size*g.Board.Size:
 		fmt.Println("Invalid move:", mov)
 		return false, r
 	}
 
-	if g.Board.GameBoard.Cells[r] != "" {
+	if g.Board.GameBoard.Cells[r] != string(b.Empty) {
 		fmt.Println(mov, "is already occupied on the board !! ")
 		return false, -1
 	}
@@ -74,24 +76,24 @@ func (g *TicTacToeGame) CheckIsValidMove(mov string) (bool, int) {
 func (g *TicTacToeGame) MakeMove(mov string, mark b.Mark) bool {
 	isValid, pos := g.CheckIsValidMove(mov)
 	if isValid {
-		if g.Board.GameBoard.Cells[pos] == "" {
+		if g.Board.GameBoard.Cells[pos] == string(b.Empty) {
 			g.Board.GameBoard.Cells[pos] = string(mark)
 			return true
 		}
 	}
 	return false
-}
+}*/
 
 func (g *TicTacToeGame) ShowMenu() {
-	fmt.Printf("Choose x/o for player1 %v \n", g.Player.Player1)
+	fmt.Printf("Choose x/o for player2 %v \n", g.Player.Name)
 	var input string
 	fmt.Scanln(&input)
-	if input != "x" && input != "o" {
+	if input != string(b.X) && input != string(b.O) {
 		fmt.Println("Please provide valid input to start the game ")
 		g.ShowMenu()
 	} else {
 		g.Board.GameBoard.CurrentMark = b.Mark(input)
-		g.Player.Players[g.Player.Player1] = b.Mark(input)
+		g.Player.Players[g.Player.Name] = b.Mark(input)
 	}
 }
 
@@ -100,10 +102,13 @@ func (g *TicTacToeGame) GameOver() {
 	os.Exit(0)
 }
 func (g *TicTacToeGame) getMarkForCurrentPlayer() string {
-	if g.Board.GameBoard.CurrentMark == g.Player.Players[g.Player.Player1] {
-		fmt.Println("Current player : ", g.Player.Player1)
+	
+	if g.Board.GameBoard.CurrentMark == g.Player.Players[g.Player.Name] {
+		p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Board.GameBoard.CurrentMark)
+		fmt.Println("Current player : ",p)
 	} else {
-		fmt.Println("Current player : ", g.Player.Player2)
+		k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+		fmt.Println("Current player : ",k)
 	}
 	g.Board.ShowBoard()
 	fmt.Print("Make a move or enter 'exit' to end the game : ")
@@ -119,17 +124,19 @@ func (g *TicTacToeGame) inGame() bool {
 	case "exit":
 		g.GameOver()
 	default:
-		successfulMove := g.MakeMove(input, g.Board.GameBoard.CurrentMark)
+		successfulMove := g.Board.MakeMove(input, g.Board.GameBoard.CurrentMark)
 		if !successfulMove {
 			return false
 		}
 		gameStatus, _ := g.Result.CheckWinning()
 		if gameStatus == r.Win {
 			g.Board.ShowBoard()
-			if g.Player.Players[g.Player.Player1] == g.Board.GameBoard.CurrentMark {
-				fmt.Println(g.Player.Player1, "wins!")
+			if g.Player.Players[g.Player.Name] == g.Board.GameBoard.CurrentMark {
+				p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Board.GameBoard.CurrentMark)
+				fmt.Println(p, "wins!")
 			} else {
-				fmt.Println(g.Player.Player2, "wins!")
+				k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+				fmt.Println(k, "wins!")
 			}
 			g.GameOver()
 		} else if gameStatus == r.Draw {

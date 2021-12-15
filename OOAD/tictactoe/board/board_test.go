@@ -8,7 +8,14 @@ func TestNewCell(t *testing.T) {
 		t.Errorf("New Cell returned nil instance !")
 	}
 }
+func TestMakeNewBoard(t *testing.T){
+	cell := NewCell()
+	ActualBoard := MakeNewBoard(3, cell)
+	if ActualBoard==nil{
+		t.Errorf("New Board returned nil instance !")
+	}
 
+}
 func TestShowBoard(t *testing.T) {
 	cell := NewCell()
 	Board := MakeNewBoard(3, cell)
@@ -16,5 +23,31 @@ func TestShowBoard(t *testing.T) {
 	actual := Board.ShowBoard()
 	if actual != expected {
 		t.Errorf("Error found for show board")
+	}
+}
+
+func TestMakeMove(t *testing.T) {
+	//game := New()
+	//game.Initialize(3)
+	cell := NewCell()
+	Board := MakeNewBoard(3, cell)
+	var list = []struct {
+		mov      string
+		p        Mark
+		expected bool
+	}{{
+		"121", X, false,
+	}, {
+		"1", O, true,
+	}, {
+		"1", X, false,
+	}, {
+		"500", X, false,
+	}}
+	for _, val := range list {
+		actual := Board.MakeMove(val.mov, val.p)
+		if actual != val.expected {
+			t.Errorf("Error found for makeMove function ")
+		}
 	}
 }
