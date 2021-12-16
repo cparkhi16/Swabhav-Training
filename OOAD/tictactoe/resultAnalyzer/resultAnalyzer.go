@@ -1,6 +1,7 @@
 package resultAnalyzer
 
-import (b "cmdgame/board")
+import (b "cmdgame/board"
+"fmt")
 
 
 type Result struct {
@@ -131,14 +132,20 @@ func (ra *Result)CheckCol(i int )bool{
 
 func (ra *Result)CheckFirstDiagonal()bool{
 	val:=ra.Board.GameBoard.Cells[0]
-	index:=ra.Board.Size+1
-	for i:=0;i<ra.Board.Size-1;i++{
+	index:=0
+	for i:=0;i<ra.Board.Size;i++{
+		fmt.Println("index i ",i)
+		
 		if ra.Board.GameBoard.Cells[index]==val{
-			index=index+index
+			fmt.Println("index val ",index)
+			//if index<ra.Board.Size{
+			index=index+ra.Board.Size+1
 			continue
+			//}
 		}else{
 			return false
 		}
+
 	}
 return true
 }
