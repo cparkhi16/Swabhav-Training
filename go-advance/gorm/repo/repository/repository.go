@@ -97,12 +97,12 @@ func PreloadAssociations(preloadAssociations []string) QueryProcessor {
 }
 func Limit(val int) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
-		return db.Limit(val), nil
+		return db.Debug().Limit(val), nil
 	}
 }
 func Offset(val int) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
-		return db.Offset(val), nil
+		return db.Debug().Offset(val), nil
 	}
 }
 func FilterAndPreloadAssociations(condition string, preloadAssociations []string, args ...interface{}) QueryProcessor {

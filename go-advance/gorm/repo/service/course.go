@@ -5,30 +5,32 @@ import (
 	re "app/repository"
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 )
 
 type CourseService struct {
-	uow *re.UnitOfWork
+	Repo re.Repository
+	DB   *gorm.DB
 }
 
-func NewCourseService(uow *re.UnitOfWork) *CourseService {
-	return &CourseService{uow: uow}
+func NewCourseService(r re.Repository, DB *gorm.DB) *CourseService {
+	return &CourseService{Repo: r, DB: DB}
 }
 func (cs *CourseService) AddCourse(c m.Course) {
-	r := re.NewRepository()
-	e := r.Add(cs.uow, c)
+	uow := re.NewUnitOfWork(cs.DB, false)
+	e := cs.Repo.Add(uow, c)
 	if e != nil {
-		cs.uow.Complete()
+		uow.Complete()
 		fmt.Println("Error while adding course")
 	} else {
-		cs.uow.Commit()
+		uow.Commit()
 	}
 }
 
 func (cs *CourseService) GetCourseById(out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.Course {
-	r := re.NewRepository()
-	err := r.GetAllForTenant(cs.uow, out, tenantID, preloadAssociations)
+	uow := re.NewUnitOfWork(cs.DB, true)
+	err := cs.Repo.GetAllForTenant(uow, out, tenantID, preloadAssociations)
 	if err != nil {
 		fmt.Println("Error in get all user ", err)
 	}
@@ -40,8 +42,8 @@ func (cs *CourseService) GetCourseById(out interface{}, tenantID uuid.UUID, prel
 }
 
 func (cs *CourseService) GetCourses(out interface{}, preloadAssociations []string) {
-	r := re.NewRepository()
-	err := r.GetAll(cs.uow, out, preloadAssociations)
+	uow := re.NewUnitOfWork(cs.DB, true)
+	err := cs.Repo.GetAll(uow, out, preloadAssociations)
 	if err != nil {
 		fmt.Println("Error in get all courses ", err)
 	}
@@ -52,35 +54,35 @@ func (cs *CourseService) GetCourses(out interface{}, preloadAssociations []strin
 }
 
 func (cs *CourseService) UpdateCourse(entity interface{}) {
-	r := re.NewRepository()
-	err := r.Update(cs.uow, entity)
+	uow := re.NewUnitOfWork(cs.DB, false)
+	err := cs.Repo.Update(uow, entity)
 	if err != nil {
-		cs.uow.Complete()
+		uow.Complete()
 		fmt.Println("Error updating course")
 	} else {
-		cs.uow.Commit()
+		uow.Commit()
 	}
 }
 
 func (cs *CourseService) DeleteCourse(entity interface{}) {
-	r := re.NewRepository()
-	err := r.Delete(cs.uow, entity)
+	uow := re.NewUnitOfWork(cs.DB, false)
+	err := cs.Repo.Delete(uow, entity)
 	if err != nil {
-		cs.uow.Complete()
+		uow.Complete()
 		fmt.Println("Error deleting course")
 	} else {
-		cs.uow.Commit()
+		uow.Commit()
 	}
 
 }
 func (cs *CourseService) GetDetailsWithCourseID() {
-	r := re.NewRepository()
+	uow := re.NewUnitOfWork(cs.DB, true)
 	var c m.Course
 	cID, _ := uuid.FromString("3852ce46-3f17-4e51-95ef-979893d31f0a")
 	qp := re.Filter("id = ?", cID)
 	//qps := []re.QueryProcessor{}
 	//qps = append(qps, qp)
-	err := r.GetFirst(cs.uow, &c, qp)
+	err := cs.Repo.GetFirst(uow, &c, qp)
 	if err != nil {
 		fmt.Println("Error using quey processor")
 	}

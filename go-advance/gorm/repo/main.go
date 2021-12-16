@@ -49,10 +49,10 @@ func main() {
 	//s.DeleteUser(uw, &um)
 
 	//Testing before create hook
-	uow := r.NewUnitOfWork(db, true)
-
+	//uow := r.NewUnitOfWork(db, true)
+	repo := r.NewRepository()
 	user := m.NewUser("", "test")
-	userService := s.NewUserService(uow)
+	userService := s.NewUserService(repo, db)
 	userService.AddUser(user)
 
 	//uj := m.NewUser("Ritesh", "JIH")
@@ -108,7 +108,7 @@ func main() {
 	//s.AddCourse(uow, *cd)
 	//g := m.NewCourse("Golang")
 	//s.AddCourse(uow, *g)
-	courseService := s.NewCourseService(uow)
+	courseService := s.NewCourseService(repo, db)
 
 	//Getting course Java by ID 3852ce46-3f17-4e51-95ef-979893d31f0a
 	var java m.Course
@@ -187,6 +187,8 @@ func main() {
 	//courseService.GetDetailsWithCourseID()
 
 	router := mux.NewRouter()
-	c.RegisterRoutesForUser(userService, router)
+	userController := c.NewUserController(userService)
+	c.RegisterRoutesForUser(userController, router)
 	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
+
 }
