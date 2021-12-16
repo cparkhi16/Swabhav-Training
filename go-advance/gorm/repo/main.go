@@ -187,6 +187,8 @@ func main() {
 	//courseService.GetDetailsWithCourseID()
 
 	router := mux.NewRouter()
-	c.RegisterRoutesForUser(userService, router)
+	userController := c.NewUserController(userService)
+	c.RegisterRoutesForUser(userController, router)
 	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
+
 }

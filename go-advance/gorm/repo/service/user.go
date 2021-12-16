@@ -177,7 +177,7 @@ func (us *UserService) GetPassportIDForUser(ID uuid.UUID) m.Passport {
 	return p
 }
 
-func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby string, out interface{}) []m.User {
+func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby []string, out interface{}) []m.User {
 	r := re.NewRepository()
 	offset := (page - 1) * limit
 	//fmt.Println("h", hobby)
@@ -196,12 +196,19 @@ func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby string, 
 	}
 	o := out.(*[]m.User)
 	var u []m.User
-	if hobby != "" {
+	fmt.Println(len(hobby))
+	if len(hobby)-1 != 0 {
 		for _, user := range *o {
 			for _, hob := range user.Hobbies {
 				//fmt.Println(hob.HobbyName)
-				if hob.HobbyName == hobby {
+				/*if hob.HobbyName == hobby {
 					u = append(u, user)
+				}*/
+				for _, val := range hobby {
+					//fmt.Println("Val in hobbies slice", val)
+					if hob.HobbyName == val {
+						u = append(u, user)
+					}
 				}
 			}
 		}
