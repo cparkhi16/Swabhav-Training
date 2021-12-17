@@ -19,9 +19,9 @@ func TestInitialize(t *testing.T) {
 		size     int
 		expected string
 	}{{
-		0, "size should not be less than or equal to one",
+		0, "size should not be less than or equal to two",
 	}, {
-		-5, "size should not be less than or equal to one",
+		-5, "size should not be less than or equal to two",
 	},
 	}
 	for _, val := range list {

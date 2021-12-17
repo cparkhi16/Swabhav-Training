@@ -18,10 +18,6 @@ func GetDesiredBoardSize() int {
 }
 func MakeNewBoard(size int, c *Cell) *Board {
 	GameBoard := make([]string, size*size)
-	/*for r, _ := range GameBoard {
-		GameBoard[r] = make([]string, size)
-	}*/
-	//fmt.Println("V",GameBoard)
 	c.Cells = GameBoard
 	return &Board{GameBoard: c, Size: size}
 }
@@ -50,21 +46,6 @@ func (b *Board) ShowBoard() error {
 }
 
 func (b *Board) CheckIsValidMove(mov string) (bool, int) {
-	//split := strings.Split(mov, "")
-	/*if len(split) > 2 || len(split) == 1 {
-		fmt.Println("Invalid move :", mov)
-		return false, -1, -1
-	}*/
-	/*r, err := strconv.Atoi(split[0])
-	if err != nil {
-		fmt.Println("Invalid move :", mov)
-		return false, -1, -1
-	}
-	c, err := strconv.Atoi(split[1])
-	if err != nil {
-		fmt.Println("Invalid move:", mov)
-		return false, -1, -1
-	}*/
 	r, err := strconv.Atoi(mov)
 	if err != nil {
 		fmt.Println("Invalid move :", mov)
