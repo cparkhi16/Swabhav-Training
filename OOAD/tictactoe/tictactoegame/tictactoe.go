@@ -22,7 +22,7 @@ func New() *TicTacToeGame {
 func (g *TicTacToeGame) Initialize(size int) error {
 	if size <= 2 {
 		return fmt.Errorf("minimum size should be three")
-	} else {
+	} 
 		g.Player = pl.NewPlayers()
 		g.Player.Players = make(map[string]b.Mark)
 		n1,err := g.Player.GetPlayerDetails()
@@ -40,7 +40,7 @@ func (g *TicTacToeGame) Initialize(size int) error {
 		g.Player.Marks = [2]b.Mark{b.X, b.O}
 		g.Result = r.NewAnalyzer(g.Board)
 		g.GameInitialized = true
-	}
+	
 	return nil
 }
 
