@@ -8,19 +8,22 @@ import (
 type Player struct {
 	Name string
 	Players map[string]b.Mark
+	Mark b.Mark
+	Marks [2]b.Mark
 }
 
 func NewPlayers() *Player {
 	return &Player{}
 }
 
-func (p *Player) GetPlayerDetails() (string) {
+func (p *Player) GetPlayerDetails() (string,error) {
 	fmt.Println("Enter name of player")
 	var n1 string
 	fmt.Scanln(&n1)
-	
-	
-	return n1
+	if n1==string(b.Empty){
+		return n1 ,fmt.Errorf("please enter a valid name")
+	}
+	return n1,nil
 }
 
 func (p *Player) SetPlayerDetails(n1 string) {

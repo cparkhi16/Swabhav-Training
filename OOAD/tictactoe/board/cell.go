@@ -1,11 +1,19 @@
 package board
 
 type Cell struct {
-	Cells       []string
-	Marks       [2]Mark
+	//Cells       []string
+	
 	CurrentMark Mark
 }
 
-func NewCell() *Cell {
-	return &Cell{}
+func NewCell(m Mark) *Cell {
+	
+	return &Cell{CurrentMark:m}
+}
+func (c *Cell)GetMark()Mark{
+	return  c.CurrentMark
+}
+
+func (c *Cell)SetMark(m Mark){
+	c.CurrentMark=m
 }

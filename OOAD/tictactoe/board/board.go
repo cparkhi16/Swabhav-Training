@@ -7,7 +7,7 @@ import (
 
 type Board struct {
 	Size      int
-	GameBoard *Cell
+	GameBoard []*Cell
 }
 
 func GetDesiredBoardSize() int {
@@ -16,30 +16,35 @@ func GetDesiredBoardSize() int {
 	fmt.Scanln(&size)
 	return size
 }
-func MakeNewBoard(size int, c *Cell) *Board {
-	GameBoard := make([]string, size*size)
-	c.Cells = GameBoard
-	return &Board{GameBoard: c, Size: size}
+func MakeNewBoard(size int) *Board {
+	GameBoard := make([]*Cell, size*size)
+	//c.Cells = GameBoard
+	for i:=0;i<size*size;i++{
+		GameBoard[i]=NewCell(Empty)
+	}
+	return &Board{GameBoard: GameBoard, Size: size}
 }
 func (b *Board) ShowBoard() error {
 	if b == nil {
 		return fmt.Errorf("null Board receiver")
 	}
-	for i, v := range b.GameBoard.Cells {
-		if v == string(Empty) {
+	c:=1
+	for i:=0;i< b.Size*b.Size ;i++{
+		c++
+		if b.GameBoard[i].GetMark() == Empty {
 			fmt.Printf("-")
 		} else {
-			fmt.Printf(v)
+			fmt.Printf( string(b.GameBoard[i].GetMark()))
 		}
-		
-		if i > 0 && (i+1)%b.Size==0 {
-			//fmt.Println("Val", (i+1)%((b.Size/2)-1))
-			fmt.Printf("\n")
-		} else {
+		/*fmt.Printf( string(b.GameBoard[i].GetMark()))
+		fmt.Printf("|")*/
+		if c>b.Size{
+			//fmt.Printf("|")
+			fmt.Println("")
+			c=1
+		}else{
 			fmt.Printf("|")
-
 		}
-
 	}
 	
 	return nil
@@ -59,7 +64,7 @@ func (b *Board) CheckIsValidMove(mov string) (bool, int) {
 		return false, r
 	}
 
-	if b.GameBoard.Cells[r] != string(Empty) {
+	if b.GameBoard[r].GetMark() != Empty{
 		fmt.Println(mov, "is already occupied on the board !! ")
 		return false, -1
 	}
@@ -68,8 +73,8 @@ func (b *Board) CheckIsValidMove(mov string) (bool, int) {
 func (b *Board) MakeMove(mov string, mark Mark) bool {
 	isValid, pos := b.CheckIsValidMove(mov)
 	if isValid {
-		if b.GameBoard.Cells[pos] == string(Empty) {
-			b.GameBoard.Cells[pos] = string(mark)
+		if b.GameBoard[pos].GetMark() == Empty{
+			b.GameBoard[pos].SetMark(mark)
 			return true
 		}
 	}

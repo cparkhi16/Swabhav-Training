@@ -19,9 +19,9 @@ func TestInitialize(t *testing.T) {
 		size     int
 		expected string
 	}{{
-		0, "size should not be less than or equal to two",
+		0, "minimum size should be three",
 	}, {
-		-5, "size should not be less than or equal to two",
+		-5, "minimum size should be three",
 	},
 	}
 	for _, val := range list {
@@ -36,9 +36,9 @@ func TestInitialize(t *testing.T) {
 func TestTakeTurns(t *testing.T) {
 	game := New()
 	game.Initialize(3)
-	game.Board.GameBoard.CurrentMark = b.X
+	game.Player.Mark = b.X
 	game.takeTurns()
-	actual := game.Board.GameBoard.CurrentMark
+	actual := game.Player.Mark
 	expected := b.O
 	if actual != expected {
 		t.Errorf("Error while taking player turns ")
