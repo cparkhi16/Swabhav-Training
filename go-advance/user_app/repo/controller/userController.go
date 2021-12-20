@@ -6,7 +6,6 @@ import (
 	s "app/service"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -60,8 +59,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	er := json.NewDecoder(r.Body).Decode(&newUser)
 
 	if er != nil {
-
-		logger.Error().Msg("Error in user JSON decoding")
+		uc.us.Logger.Error().Msg("Error in user JSON decoding")
 	}
 	uc.us.AddUser(&newUser)
 
@@ -71,7 +69,7 @@ func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *htt
 	er := json.NewDecoder(r.Body).Decode(&updateUser)
 	if er != nil {
 		//log.Fatal("Here in update passport detail", er)
-		logger.Error().Msgf("Error while decoding user passport details", er)
+		uc.us.Logger.Error().Msgf("Error while decoding user passport details", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -79,7 +77,7 @@ func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *htt
 	e := uc.us.UpdateUser(&updateUser)
 	if e != nil {
 		//log.Fatal("Error updating passport detail", e)
-		logger.Error().Msgf("Error while updating user passport details", er)
+		uc.us.Logger.Error().Msgf("Error while updating user passport details", er)
 	}
 
 }
@@ -87,16 +85,16 @@ func (uc *UserController) AddPassportForUser(w http.ResponseWriter, r *http.Requ
 	var updateUser m.User
 	er := json.NewDecoder(r.Body).Decode(&updateUser)
 	if er != nil {
-		log.Fatal("Here in add passport detail", er)
+		uc.us.Logger.Error().Msgf("Error in decoding passport JSON %v", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
 	updateUser.ID = id
-	newPassportID := updateUser.Passport.PassportID
-	fmt.Println("Got PASSPORT ID ", newPassportID)
+	//newPassportID := updateUser.Passport.PassportID
+	//fmt.Println("Got PASSPORT ID ", newPassportID)
 	e := uc.us.UpdateUser(&updateUser)
 	if e != nil {
-		log.Fatal("Error updating passport detail", e)
+		uc.us.Logger.Error().Msgf("Error updating passport detail %v", e)
 	}
 
 }
@@ -108,7 +106,6 @@ func (uc *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	limit := r.FormValue("limit")
 	hobby := r.FormValue("hobby")
 	hob := strings.Split(hobby, ",")
-	fmt.Println("Hobbies comma separated list ", hob)
 	if page != "" && limit != "" {
 		pageInt, _ := strconv.Atoi(page)
 		limitInt, _ := strconv.Atoi(limit)
@@ -133,7 +130,7 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var updateUser m.User
 	er := json.NewDecoder(r.Body).Decode(&updateUser)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding user JSON", er)
+		uc.us.Logger.Error().Msgf("Error in decoding user JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -142,17 +139,17 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		updateUser.ID = id
 		e := uc.us.UpdateUser(&updateUser)
 		if e != nil {
-			logger.Error().Msgf("Error updating user detail %v", e)
+			uc.us.Logger.Error().Msgf("Error updating user detail %v", e)
 		}
 	} else {
-		logger.Error().Msg("Please give a User ID in params")
+		uc.us.Logger.Error().Msg("Please give a User ID in params")
 	}
 }
 func (uc *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var deleteUser m.User
 	er := json.NewDecoder(r.Body).Decode(&deleteUser)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding user JSON", er)
+		uc.us.Logger.Error().Msgf("Error in decoding user JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -161,14 +158,14 @@ func (uc *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		deleteUser.ID = id
 		uc.us.DeleteUser(&deleteUser)
 	} else {
-		logger.Error().Msg("Please enter a User ID in params")
+		uc.us.Logger.Error().Msg("Please enter a User ID in params")
 	}
 }
 func (uc *UserController) DeletePassportDetailsForUser(w http.ResponseWriter, r *http.Request) {
 	var deleteUserPassportDetail m.User
 	er := json.NewDecoder(r.Body).Decode(&deleteUserPassportDetail)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding user JSON", er)
+		uc.us.Logger.Error().Msgf("Error in decoding user JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -176,7 +173,8 @@ func (uc *UserController) DeletePassportDetailsForUser(w http.ResponseWriter, r 
 	p := []string{"Passport"}
 	e := uc.us.FindAndDeletePassport(&deleteUserPassportDetail, p)
 	if e != nil {
-		log.Fatal("Error deleting passport detail", e)
+		//log.Fatal("Error deleting passport detail", e)
+		uc.us.Logger.Error().Msgf("Error deleting passport detail ", e)
 	}
 
 }
@@ -196,14 +194,14 @@ func (uc *UserController) AddHobbiesForUser(w http.ResponseWriter, r *http.Reque
 	var user m.User
 	er := json.NewDecoder(r.Body).Decode(&user)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding user hobby JSON", er)
+		uc.us.Logger.Error().Msgf("Error in decoding user hobby JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
 	user.ID = id
 	e := uc.us.AddUserHobbies(&user)
 	if e != nil {
-		logger.Error().Msgf("Error updating user hobbies %v", e)
+		uc.us.Logger.Error().Msgf("Error updating user hobbies %v", e)
 	}
 
 }
@@ -212,13 +210,13 @@ func (uc *UserController) DeleteHobbiesForUser(w http.ResponseWriter, r *http.Re
 	var user m.User
 	er := json.NewDecoder(r.Body).Decode(&user)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding user hobby JSON", er)
+		uc.us.Logger.Error().Msgf("Error in decoding user hobby JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
 	user.ID = id
 	e := uc.us.DeleteUserHobbies(&user)
 	if e != nil {
-		logger.Error().Msgf("Error deleting user hobbies %v", e)
+		uc.us.Logger.Error().Msgf("Error deleting user hobbies %v", e)
 	}
 }

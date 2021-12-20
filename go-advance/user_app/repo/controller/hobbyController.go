@@ -37,10 +37,10 @@ func (hc *HobbyController) DeleteHobby(w http.ResponseWriter, r *http.Request) {
 		hobby.ID = id
 		err := hc.us.DeleteHobbyById(&hobby)
 		if err != nil {
-			logger.Error().Msgf("Error while deleting hobby by ID %v", err)
+			hc.us.Logger.Error().Msgf("Error while deleting hobby by ID %v", err)
 		}
 	} else {
-		logger.Error().Msg("Please give a hobby ID in params")
+		hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 	}
 }
 func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +48,7 @@ func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
 	var hobby m.Hobby
 	er := json.NewDecoder(r.Body).Decode(&hobby)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding hobby JSON", er)
+		hc.us.Logger.Error().Msgf("Error in decoding hobby JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -58,10 +58,10 @@ func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
 		hobby.ID = id
 		e := hc.us.UpdateHobbyById(&hobby)
 		if e != nil {
-			logger.Error().Msgf("Error updating hobby detail %v", e)
+			hc.us.Logger.Error().Msgf("Error updating hobby detail %v", e)
 		}
 	} else {
-		logger.Error().Msg("Please give a hobby ID in params")
+		hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 	}
 }
 func (hc *HobbyController) GetAllHobbies(w http.ResponseWriter, r *http.Request) {

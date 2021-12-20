@@ -1,10 +1,8 @@
 package service
 
 import (
-	lr "app/logger"
 	m "app/model"
 	re "app/repository"
-	"fmt"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -15,8 +13,7 @@ func (us *UserService) GetPassportIDForUser(ID uuid.UUID) m.Passport {
 	var p m.Passport
 	err := us.Repo.GetFirst(uow, &p, qp)
 	if err != nil {
-		l := lr.GetLogger()
-		l.Fatal().Msg("No passport found for user")
+		us.Logger.Error().Msg("No passport found for user")
 	}
 	return p
 }
@@ -25,7 +22,8 @@ func (us *UserService) UpdatePassportDetailForUser(entity interface{}) error {
 	err := us.Repo.Update(uow, entity)
 	if err != nil {
 		uow.Complete()
-		fmt.Println("Error updating user's passport")
+		//fmt.Println("Error updating user's passport")
+		us.Logger.Error().Msgf("Error updating user's passport %v", err)
 		return err
 	} else {
 		uow.Commit()
@@ -40,7 +38,7 @@ func (us *UserService) FindAndDeletePassport(entity interface{}, preloadAssociat
 	user := entity.(*m.User)
 	err := us.Repo.GetFirst(uow, &user, pqp)
 	if err != nil {
-		logger.Error().Msgf("Error finding user %v", logger)
+		us.Logger.Error().Msgf("Error finding user %v", err)
 		return err
 	} else {
 		o := entity.(*m.User)
@@ -53,7 +51,7 @@ func (us *UserService) FindAndDeletePassport(entity interface{}, preloadAssociat
 			if e != nil {
 				uow.Complete()
 				//fmt.Println("Error deleting passport for user", e)
-				logger.Error().Msg("Error deleting passport for user")
+				us.Logger.Error().Msg("Error deleting passport for user")
 				return e
 			}
 			uow.Commit()

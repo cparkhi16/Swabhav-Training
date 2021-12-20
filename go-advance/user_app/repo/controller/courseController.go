@@ -24,7 +24,7 @@ func (cc *CourseController) CreateCourse(w http.ResponseWriter, r *http.Request)
 	var newCourse m.Course
 	er := json.NewDecoder(r.Body).Decode(&newCourse)
 	if er != nil {
-		logger.Error().Msg("Error in course JSON decoding")
+		cc.cs.Logger.Error().Msg("Error in course JSON decoding")
 	}
 	cc.cs.AddCourse(&newCourse)
 }
@@ -54,7 +54,7 @@ func (cc *CourseController) UpdateCourse(w http.ResponseWriter, r *http.Request)
 	var updateCourse m.Course
 	er := json.NewDecoder(r.Body).Decode(&updateCourse)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding course JSON", er)
+		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -63,10 +63,10 @@ func (cc *CourseController) UpdateCourse(w http.ResponseWriter, r *http.Request)
 		updateCourse.ID = id
 		e := cc.cs.UpdateCourse(&updateCourse)
 		if e != nil {
-			logger.Error().Msgf("Error updating user detail %v", e)
+			cc.cs.Logger.Error().Msgf("Error updating user detail %v", e)
 		}
 	} else {
-		logger.Error().Msg("Please enter a User ID in params")
+		cc.cs.Logger.Error().Msg("Please enter a User ID in params")
 	}
 }
 
@@ -74,7 +74,7 @@ func (cc *CourseController) DeleteCourse(w http.ResponseWriter, r *http.Request)
 	var deleteCourse m.Course
 	er := json.NewDecoder(r.Body).Decode(&deleteCourse)
 	if er != nil {
-		logger.Error().Msgf("Error in decoding course JSON", er)
+		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
 	}
 	params := mux.Vars(r)
 	id, _ := uuid.FromString(params["id"])
@@ -83,9 +83,9 @@ func (cc *CourseController) DeleteCourse(w http.ResponseWriter, r *http.Request)
 		deleteCourse.ID = id
 		e := cc.cs.DeleteCourse(&deleteCourse)
 		if e != nil {
-			logger.Error().Msg("Error deleting course")
+			cc.cs.Logger.Error().Msg("Error deleting course")
 		}
 	} else {
-		logger.Error().Msg("Please enter a User ID in params")
+		cc.cs.Logger.Error().Msg("Please enter a User ID in params")
 	}
 }

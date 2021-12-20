@@ -1,7 +1,6 @@
 package controller
 
 import (
-	lr "app/logger"
 	"fmt"
 	"net/http"
 	"time"
@@ -11,7 +10,8 @@ import (
 )
 
 var mySigningKey = []byte("captainjacksparrowsayshi")
-var logger = lr.GetLogger()
+
+//var logger = lr.GetLogger()
 
 func RegisterRoutesForUser(uc *UserController, router *mux.Router) {
 	router.Use(isAuthorized)

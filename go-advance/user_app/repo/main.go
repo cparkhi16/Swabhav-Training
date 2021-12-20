@@ -31,10 +31,10 @@ func main() {
 
 	repo := r.NewRepository()
 	user := m.NewUser("", "", "test")
-	userService := s.NewUserService(repo, db)
+	userService := s.NewUserService(repo, db, logger)
 	userService.AddUser(user)
 
-	courseService := s.NewCourseService(repo, db)
+	courseService := s.NewCourseService(repo, db, logger)
 	//http://localhost:9000/users/token?email=rk@fp.com&password=Role23
 	router := mux.NewRouter()
 	userController := c.NewUserController(userService)

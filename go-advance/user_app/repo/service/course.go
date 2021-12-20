@@ -1,25 +1,23 @@
 package service
 
 import (
-	lr "app/logger"
 	m "app/model"
 	re "app/repository"
 	"fmt"
-	"log"
 
 	"github.com/jinzhu/gorm"
+	"github.com/rs/zerolog"
 	uuid "github.com/satori/go.uuid"
 )
 
-var logger = lr.GetLogger()
-
 type CourseService struct {
-	Repo re.Repository
-	DB   *gorm.DB
+	Repo   re.Repository
+	DB     *gorm.DB
+	Logger *zerolog.Logger
 }
 
-func NewCourseService(r re.Repository, DB *gorm.DB) *CourseService {
-	return &CourseService{Repo: r, DB: DB}
+func NewCourseService(r re.Repository, DB *gorm.DB, l *zerolog.Logger) *CourseService {
+	return &CourseService{Repo: r, DB: DB, Logger: l}
 }
 func (cs *CourseService) AddCourse(c *m.Course) {
 	uow := re.NewUnitOfWork(cs.DB, false)
@@ -27,7 +25,7 @@ func (cs *CourseService) AddCourse(c *m.Course) {
 	if e != nil {
 		uow.Complete()
 		//	fmt.Println("Error while adding course")
-		logger.Error().Msgf("Error adding course %v", e)
+		cs.Logger.Error().Msgf("Error adding course %v", e)
 	} else {
 		uow.Commit()
 	}
@@ -37,7 +35,7 @@ func (cs *CourseService) GetCourseById(out interface{}, tenantID uuid.UUID, prel
 	uow := re.NewUnitOfWork(cs.DB, true)
 	err := cs.Repo.GetAllForTenant(uow, out, tenantID, preloadAssociations)
 	if err != nil {
-		fmt.Println("Error in get all user ", err)
+		cs.Logger.Error().Msgf("Error in get course by ID")
 	}
 	o := out.(*m.Course)
 
@@ -50,7 +48,7 @@ func (cs *CourseService) GetCourses(out interface{}, preloadAssociations []strin
 	uow := re.NewUnitOfWork(cs.DB, true)
 	err := cs.Repo.GetAll(uow, out, preloadAssociations)
 	if err != nil {
-		fmt.Println("Error in get all courses ", err)
+		cs.Logger.Error().Msgf("Error in get all courses %v", err)
 	}
 	o := out.(*[]m.Course)
 	for _, val := range *o {
@@ -64,7 +62,7 @@ func (cs *CourseService) UpdateCourse(entity interface{}) error {
 	if err != nil {
 		uow.Complete()
 		//fmt.Println("Error updating course")
-		logger.Error().Msgf("Error updating course %v ", err)
+		cs.Logger.Error().Msgf("Error updating course %v ", err)
 		return err
 	} else {
 		uow.Commit()
@@ -78,7 +76,7 @@ func (cs *CourseService) DeleteCourse(entity interface{}) error {
 	if err != nil {
 		uow.Complete()
 		//fmt.Println("Error deleting course")
-		logger.Error().Msgf("Error deleting course %v", err)
+		cs.Logger.Error().Msgf("Error deleting course %v", err)
 		return err
 	} else {
 		uow.Commit()
@@ -94,7 +92,7 @@ func (cs *CourseService) GetDetailsWithCourseID() {
 	//qps = append(qps, qp)
 	err := cs.Repo.GetFirst(uow, &c, qp)
 	if err != nil {
-		fmt.Println("Error using quey processor")
+		cs.Logger.Error().Msgf("Error while getting course with ID %v", err)
 	}
 	fmt.Println("Course object from db --- ", c)
 }
@@ -106,9 +104,8 @@ func (cs *CourseService) GetAllCoursesWithPagination(page, limit int, out interf
 	queryOffset := re.Offset(offset)
 	qp := []re.QueryProcessor{queryLimit, queryOffset}
 	result := cs.Repo.GetAllWithQueryProcessor(uow, out, qp)
-	//res := result.Debug().Preload("Hobbies").Find(out)
 	if result != nil {
-		log.Fatal("Error in pagination for courses ")
+		cs.Logger.Error().Msgf("Error while getting all courses with pagination %v", result)
 		return nil
 	}
 	o := out.(*[]m.Course)
