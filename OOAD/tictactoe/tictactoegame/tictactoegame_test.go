@@ -36,9 +36,9 @@ func TestInitialize(t *testing.T) {
 func TestTakeTurns(t *testing.T) {
 	game := New()
 	game.Initialize(3)
-	game.Player.Mark = b.X
+	game.currentPlayer.Mark = b.X
 	game.takeTurns()
-	actual := game.Player.Mark
+	actual := game.currentPlayer.Mark
 	expected := b.O
 	if actual != expected {
 		t.Errorf("Error while taking player turns ")

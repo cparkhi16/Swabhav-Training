@@ -11,7 +11,8 @@ import (
 
 type TicTacToeGame struct {
 	GameInitialized bool
-	Player          *pl.Player
+	Players          []*pl.Player
+	currentPlayer    *pl.Player
 	Board           *b.Board
 	Result          *r.Result
 }
@@ -23,25 +24,23 @@ func (g *TicTacToeGame) Initialize(size int) error {
 	if size <= 2 {
 		return fmt.Errorf("minimum size should be three")
 	} 
-		g.Player = pl.NewPlayers()
-		g.Player.Players = make(map[string]b.Mark)
+		PlayerOne:= pl.NewPlayers()
+		g.currentPlayer=pl.NewPlayers()
+		//g.Player.Players = make(map[string]b.Mark)
 		n1,err := g.GetPlayerDetails()
 		if err!=nil{
 			return err
 		}
-		e:=g.Player.SetPlayerDetails(n1)
-		if e!=nil{
-			return e
-		}
+		PlayerOne.SetPlayerDetails(n1)
 		n2,err:=g.GetPlayerDetails()
-		if err!=nil{
-			return err
+		if n1==n2{
+			return fmt.Errorf("please enter different player name")
 		}
-		er:=g.Player.SetPlayerDetails(n2)
-		if er!=nil{
-			return er
-		}
-		g.Player.Mark=b.Empty
+		PlayerTwo:=pl.NewPlayers()
+		PlayerTwo.SetPlayerDetails(n2)
+		//g.Player.Mark=b.Empty
+		g.currentPlayer.Mark=b.Empty
+		g.Players=append(g.Players,PlayerOne,PlayerTwo)
 		g.Board = b.MakeNewBoard(size)
 		g.Result = r.NewAnalyzer(g.Board)
 		g.GameInitialized = true
@@ -64,15 +63,23 @@ func (g *TicTacToeGame) GetPlayerDetails() (string,error) {
 	return n1,nil
 }
 func (g *TicTacToeGame) ShowMenu() {
-	fmt.Printf("Choose x/o for player2 %v \n", g.Player.Name)
+	fmt.Printf("Choose x/o for player2 %v \n", g.Players[1].Name)
 	var input string
 	fmt.Scanln(&input)
 	if input != string(b.X) && input != string(b.O) {
 		fmt.Println("Please provide valid input to start the game ")
 		g.ShowMenu()
 	} else {
-		g.Player.Mark = b.Mark(input)
-		g.Player.Players[g.Player.Name] = b.Mark(input)
+		//g.Player.Mark = b.Mark(input)
+		g.Players[1].SetPlayerMark(b.Mark(input))
+		g.currentPlayer.Mark=b.Mark(input)
+		g.currentPlayer.Name=g.Players[1].Name
+		//g.Player.Players[g.Player.Name] = b.Mark(input)
+	}
+	if input == string(b.X){
+	g.Players[0].SetPlayerMark(b.O)
+	}else{
+		g.Players[0].SetPlayerMark(b.X)
 	}
 }
 
@@ -81,13 +88,13 @@ func (g *TicTacToeGame) GameOver() {
 	os.Exit(0)
 }
 func (g *TicTacToeGame) getMarkForCurrentPlayer() string {
-
-	if g.Player.Mark == g.Player.Players[g.Player.Name] {
-		p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
-		fmt.Println("Current player : ",p)
+	fmt.Println("mark -- ",g.currentPlayer.Mark)
+	if g.currentPlayer.Mark == g.Players[1].Mark {
+		//p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
+		fmt.Println("Current player : ",g.Players[1].Name)
 	} else {
-		k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
-		fmt.Println("Current player : ",k)
+		//k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+		fmt.Println("Current player : ",g.Players[0].Name)
 	}
 	g.Board.ShowBoard()
 	fmt.Print("Make a move or enter 'exit' to end the game : ")
@@ -103,7 +110,7 @@ func (g *TicTacToeGame) inGame() bool {
 	case "exit":
 		g.GameOver()
 	default:
-		successfulMove,s := g.Board.MakeMove(input, g.Player.Mark)
+		successfulMove,s := g.Board.MakeMove(input, g.currentPlayer.Mark)
 		if !successfulMove {
 			fmt.Println(s)
 			return false
@@ -114,12 +121,12 @@ func (g *TicTacToeGame) inGame() bool {
 		gameStatus, _ := g.Result.CheckWinning(currRow,currCol)
 		if gameStatus == r.Win {
 			g.Board.ShowBoard()
-			if g.Player.Players[g.Player.Name] == g.Player.Mark {
-				p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
-				fmt.Println(p, "wins!")
+			if g.Players[1].Mark == g.currentPlayer.Mark {
+				//p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
+				fmt.Println(g.Players[1].Name, "wins!")
 			} else {
-				k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
-				fmt.Println(k, "wins!")
+				//k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+				fmt.Println(g.Players[0].Name, "wins!")
 			}
 			g.GameOver()
 		} else if gameStatus == r.Draw {
@@ -134,10 +141,10 @@ func (g *TicTacToeGame) inGame() bool {
 }
 
 func (g *TicTacToeGame) takeTurns() {
-	if g.Player.Mark == b.X {
-		g.Player.Mark = b.O
+	if g.currentPlayer.Mark == b.X {
+		g.currentPlayer.Mark = b.O
 	} else {
-		g.Player.Mark = b.X
+		g.currentPlayer.Mark = b.X
 	}
 }
 
