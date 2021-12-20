@@ -29,12 +29,18 @@ func (g *TicTacToeGame) Initialize(size int) error {
 		if err!=nil{
 			return err
 		}
-		g.Player.SetPlayerDetails(n1)
+		e:=g.Player.SetPlayerDetails(n1)
+		if e!=nil{
+			return e
+		}
 		n2,err:=g.GetPlayerDetails()
 		if err!=nil{
 			return err
 		}
-		g.Player.SetPlayerDetails(n2)
+		er:=g.Player.SetPlayerDetails(n2)
+		if er!=nil{
+			return er
+		}
 		g.Player.Mark=b.Empty
 		g.Board = b.MakeNewBoard(size)
 		g.Result = r.NewAnalyzer(g.Board)
