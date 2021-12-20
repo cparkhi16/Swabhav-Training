@@ -45,7 +45,7 @@ func TestMakeMove(t *testing.T) {
 		"500", X, false,
 	}}
 	for _, val := range list {
-		actual := Board.MakeMove(val.mov, val.p)
+		actual,_ := Board.MakeMove(val.mov, val.p)
 		if actual != val.expected {
 			t.Errorf("Error found for makeMove function ")
 		}

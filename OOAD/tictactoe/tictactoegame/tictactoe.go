@@ -25,25 +25,38 @@ func (g *TicTacToeGame) Initialize(size int) error {
 	} 
 		g.Player = pl.NewPlayers()
 		g.Player.Players = make(map[string]b.Mark)
-		n1,err := g.Player.GetPlayerDetails()
+		n1,err := g.GetPlayerDetails()
 		if err!=nil{
 			return err
 		}
 		g.Player.SetPlayerDetails(n1)
-		n2,err:=g.Player.GetPlayerDetails()
+		n2,err:=g.GetPlayerDetails()
 		if err!=nil{
 			return err
 		}
 		g.Player.SetPlayerDetails(n2)
 		g.Player.Mark=b.Empty
 		g.Board = b.MakeNewBoard(size)
-		g.Player.Marks = [2]b.Mark{b.X, b.O}
 		g.Result = r.NewAnalyzer(g.Board)
 		g.GameInitialized = true
 	
 	return nil
 }
-
+func GetDesiredBoardSize() int {
+	fmt.Println("Enter desired size of board")
+	var size int
+	fmt.Scanln(&size)
+	return size
+}
+func (g *TicTacToeGame) GetPlayerDetails() (string,error) {
+	fmt.Println("Enter name of player")
+	var n1 string
+	fmt.Scanln(&n1)
+	if n1==string(b.Empty){
+		return n1 ,fmt.Errorf("please enter a valid name")
+	}
+	return n1,nil
+}
 func (g *TicTacToeGame) ShowMenu() {
 	fmt.Printf("Choose x/o for player2 %v \n", g.Player.Name)
 	var input string
@@ -62,7 +75,7 @@ func (g *TicTacToeGame) GameOver() {
 	os.Exit(0)
 }
 func (g *TicTacToeGame) getMarkForCurrentPlayer() string {
-	
+
 	if g.Player.Mark == g.Player.Players[g.Player.Name] {
 		p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
 		fmt.Println("Current player : ",p)
@@ -84,8 +97,9 @@ func (g *TicTacToeGame) inGame() bool {
 	case "exit":
 		g.GameOver()
 	default:
-		successfulMove := g.Board.MakeMove(input, g.Player.Mark)
+		successfulMove,s := g.Board.MakeMove(input, g.Player.Mark)
 		if !successfulMove {
+			fmt.Println(s)
 			return false
 		}
 		val,_:= strconv.Atoi(input)
@@ -122,7 +136,7 @@ func (g *TicTacToeGame) takeTurns() {
 }
 
 func (g *TicTacToeGame) Play() {
-	size := b.GetDesiredBoardSize()
+	size := GetDesiredBoardSize()
 	for {
 		switch g.GameInitialized {
 		case false:
