@@ -11,4 +11,7 @@ path2=''
 console.assert(path2,"Path.relative failed")
 const myArgs = process.argv.slice(2);
 console.log('myArgs: ', myArgs);
+for (let i = 0; i < myArgs.length; i++) {
+    console.log(`Args[${i}]`,myArgs[i])
+}
 
