@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/mail"
 	"strconv"
 	"strings"
 
@@ -20,6 +21,10 @@ type UserController struct {
 
 func NewUserController(us *s.UserService) *UserController {
 	return &UserController{us: us}
+}
+func isValidMailFormat(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 func (uc *UserController) GetUserPassport(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -56,12 +61,22 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 }
 func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser m.User
+	fmt.Println("Here in create user")
 	er := json.NewDecoder(r.Body).Decode(&newUser)
-
 	if er != nil {
 		uc.us.Logger.Error().Msg("Error in user JSON decoding")
 	}
-	uc.us.AddUser(&newUser)
+	c := uc.us.GetUsersCount(newUser.Email)
+	//fmt.Println("User count with this email ", c)
+	if c == 0 {
+		if isValidMailFormat(newUser.Email) {
+			uc.us.AddUser(&newUser)
+		} else {
+			uc.us.Logger.Error().Msg("Invalid email format")
+		}
+	} else {
+		fmt.Fprintf(w, "User already exists with this email address!!")
+	}
 
 }
 func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *http.Request) {

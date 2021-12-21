@@ -31,6 +31,16 @@ func (us *UserService) AddUser(u *m.User) {
 		uow.Commit()
 	}
 }
+func (us *UserService) GetUsersCount(email string) int {
+	uow := re.NewUnitOfWork(us.DB, true)
+	var c int = 0
+	err := us.Repo.GetCount(uow, m.User{}, &c, email)
+	if err != nil {
+		us.Logger.Error().Msgf("error in getting user count")
+	}
+	//fmt.Println("Count --", c)
+	return c
+}
 func (us *UserService) GetUser() {
 	uow := re.NewUnitOfWork(us.DB, true)
 	qp := re.Filter("name = ?", "Jay")

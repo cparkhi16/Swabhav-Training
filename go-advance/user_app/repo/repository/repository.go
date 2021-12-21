@@ -17,6 +17,7 @@ type Repository interface {
 	Delete(uow *UnitOfWork, out interface{}) error
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error
+	GetCount(uow *UnitOfWork, model interface{}, out interface{}, email string) error
 }
 
 // UnitOfWork represents a connection
@@ -130,6 +131,10 @@ func (repository *GormRepository) Get(uow *UnitOfWork, out interface{}, id uuid.
 		db = db.Preload(association)
 	}
 	return db.First(out, "id = ?", id).Error
+}
+func (repository *GormRepository) GetCount(uow *UnitOfWork, model interface{}, out interface{}, email string) error {
+	db := uow.DB
+	return db.Model(model).Debug().Where("email= ?", email).Count(out).Error
 }
 
 // GetAll retrieves all the records for a specified entity and returns it

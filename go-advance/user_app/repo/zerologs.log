@@ -222,3 +222,53 @@
 {"level":"info","time":"2021-12-18T22:51:03+05:30","message":"Starting server"}
 {"level":"error","time":"2021-12-20T10:33:19+05:30","message":"Error in add user can't save invalid data"}
 {"level":"info","time":"2021-12-20T10:33:19+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T09:07:02+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T09:07:02+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T09:32:20+05:30","message":"Error while updating user Error 1062: Duplicate entry 'amit@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T09:32:20+05:30","message":"Error updating user detail Error 1062: Duplicate entry 'amit@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T10:04:06+05:30","message":"Error in add user Error 1062: Duplicate entry 'raj@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T10:06:47+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T10:06:47+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:13:51+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:13:51+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:16:24+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:16:24+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:17:37+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:17:37+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:18:00+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:18:00+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:21:22+05:30","message":"Error in add user Error 1062: Duplicate entry 'amr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:22:27+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:22:27+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:24:26+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:24:26+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:25:58+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:25:58+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:26:03+05:30","message":"Error in add user Error 1062: Duplicate entry '156' for key 'passport_id'"}
+{"level":"error","time":"2021-12-21T14:26:31+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:26:31+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:27:41+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:27:41+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:27:46+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:28:31+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:28:31+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:28:35+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:31:30+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:31:30+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:31:38+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:31:56+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:31:56+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:32:03+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:32:52+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:32:52+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:32:55+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:34:08+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:34:08+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:34:12+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:34:25+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:34:25+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T14:34:29+05:30","message":"Error in add user Error 1062: Duplicate entry 'sjr@fp.com' for key 'email'"}
+{"level":"error","time":"2021-12-21T14:38:02+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T14:38:02+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-21T22:16:12+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-21T22:16:12+05:30","message":"Starting server"}

@@ -40,9 +40,9 @@ func main() {
 	userController := c.NewUserController(userService)
 	courseController := c.NewCourseController(courseService)
 	hobbyController := c.NewHobbyController(userService)
-	c.RegisterRoutesForHobby(hobbyController, router)
-	c.RegisterRoutesForUser(userController, router)
-	c.RegisterRoutesForCourse(courseController, router)
+	hobbyController.RegisterRoutesForHobby(router)
+	userController.RegisterRoutesForUser(router)
+	courseController.RegisterRoutesForCourse(router)
 	logger.Info().Msgf("Starting server")
 	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
 

@@ -13,34 +13,34 @@ var mySigningKey = []byte("captainjacksparrowsayshi")
 
 //var logger = lr.GetLogger()
 
-func RegisterRoutesForUser(uc *UserController, router *mux.Router) {
+func (uc *UserController) RegisterRoutesForUser(router *mux.Router) {
 	router.Use(isAuthorized)
 	router.HandleFunc("/users/{id}/passport", uc.GetUserPassport).Methods("GET")
 	router.HandleFunc("/users/{id}/hobbies", uc.GetAllUserHobbies).Methods("GET")
 	router.HandleFunc("/users/{id}/hobbies", uc.AddHobbiesForUser).Methods("PUT")
 	router.HandleFunc("/users/{id}/hobbies", uc.DeleteHobbiesForUser).Methods("DELETE")
-	router.HandleFunc("/users/token", uc.GetUserToken).Methods("GET")
+	router.HandleFunc("/login", uc.GetUserToken).Methods("GET")
 	router.HandleFunc("/users/{id}/passport", uc.UpdateUserPassportDetail).Methods("PUT")
 	router.HandleFunc("/users/{id}/passport", uc.AddPassportForUser).Methods("POST")
 	router.HandleFunc("/users/{id}/passport", uc.DeletePassportDetailsForUser).Methods("DELETE")
 	router.HandleFunc("/users", uc.GetAllUsers).Methods("GET")
 	router.HandleFunc("/users", uc.CreateUser).Methods("POST")
-	router.HandleFunc("/users/{id}/", uc.DeleteUser).Methods("DELETE")
-	router.HandleFunc("/users/{id}/", uc.UpdateUser).Methods("PUT")
+	router.HandleFunc("/users/{id}", uc.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/users/{id}", uc.UpdateUser).Methods("PUT")
 }
-func RegisterRoutesForCourse(cc *CourseController, router *mux.Router) {
+func (cc *CourseController) RegisterRoutesForCourse(router *mux.Router) {
 	router.Use(isAuthorized)
 	router.HandleFunc("/courses", cc.GetAllCourses).Methods("GET")
 	router.HandleFunc("/courses", cc.CreateCourse).Methods("POST")
-	router.HandleFunc("/course/{id}", cc.DeleteCourse).Methods("DELETE")
-	router.HandleFunc("/course/{id}", cc.UpdateCourse).Methods("PUT")
+	router.HandleFunc("/courses/{id}", cc.DeleteCourse).Methods("DELETE")
+	router.HandleFunc("/courses/{id}", cc.UpdateCourse).Methods("PUT")
 }
-func RegisterRoutesForHobby(hc *HobbyController, router *mux.Router) {
+func (hc *HobbyController) RegisterRoutesForHobby(router *mux.Router) {
 	router.Use(isAuthorized)
-	router.HandleFunc("/hobby/{id}", hc.GetHobby).Methods("GET")
 	router.HandleFunc("/hobbies", hc.GetAllHobbies).Methods("GET")
-	router.HandleFunc("/hobby/{id}", hc.DeleteHobby).Methods("DELETE")
-	router.HandleFunc("/hobby/{id}", hc.UpdateHobby).Methods("PUT")
+	router.HandleFunc("/hobbies/{id}", hc.GetHobby).Methods("GET")
+	router.HandleFunc("/hobbies/{id}", hc.DeleteHobby).Methods("DELETE")
+	router.HandleFunc("/hobbies/{id}", hc.UpdateHobby).Methods("PUT")
 }
 
 //client id
@@ -51,7 +51,7 @@ func RegisterRoutesForHobby(hc *HobbyController, router *mux.Router) {
 func isAuthorized(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
-		if r.URL.Path == "/users/token" || (r.URL.Path == "/users" && r.Method == "POST") || r.URL.Path == "/users/"+params["id"]+"/hobbies" ||
+		if r.URL.Path == "/login" || (r.URL.Path == "/users" && r.Method == "POST") || r.URL.Path == "/users/"+params["id"]+"/hobbies" ||
 			r.URL.Path == "/courses" && r.Method == "GET" || r.URL.Path == "/hobbies" {
 			next.ServeHTTP(w, r)
 			return
