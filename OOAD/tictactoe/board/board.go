@@ -10,12 +10,7 @@ type Board struct {
 	GameBoard []*Cell
 }
 
-func GetDesiredBoardSize() int {
-	fmt.Println("Enter desired size of board")
-	var size int
-	fmt.Scanln(&size)
-	return size
-}
+
 func MakeNewBoard(size int) *Board {
 	GameBoard := make([]*Cell, size*size)
 	//c.Cells = GameBoard
@@ -50,33 +45,35 @@ func (b *Board) ShowBoard() error {
 	return nil
 }
 
-func (b *Board) CheckIsValidMove(mov string) (bool, int) {
+func (b *Board) CheckIsValidMove(mov string) (bool, int,string) {
 	r, err := strconv.Atoi(mov)
 	if err != nil {
-		fmt.Println("Invalid move :", mov)
-		return false, -1
+		s:=fmt.Sprintf("Invalid move : %v", mov)
+		return false, -1,s
 	}
 	r = r - 1
 
 	switch {
 	case r < 0, r >= b.Size*b.Size:
-		fmt.Println("Invalid move:", mov)
-		return false, r
+		//fmt.Println("Invalid move:", mov)
+		s:=fmt.Sprintf("Invalid move : %v", mov)
+		return false, r,s
 	}
 
 	if b.GameBoard[r].GetMark() != Empty{
-		fmt.Println(mov, "is already occupied on the board !! ")
-		return false, -1
+		//fmt.Println(mov, "is already occupied on the board !! ")
+		s:=fmt.Sprintf(" %v is already occupied on the board !! ",mov)
+		return false, -1,s
 	}
-	return true, r
+	return true, r,"Valid move"
 }
-func (b *Board) MakeMove(mov string, mark Mark) bool {
-	isValid, pos := b.CheckIsValidMove(mov)
+func (b *Board) MakeMove(mov string, mark Mark) (bool,string) {
+	isValid, pos,s := b.CheckIsValidMove(mov)
 	if isValid {
 		if b.GameBoard[pos].GetMark() == Empty{
 			b.GameBoard[pos].SetMark(mark)
-			return true
+			return true,s
 		}
 	}
-	return false
+	return false,s
 }

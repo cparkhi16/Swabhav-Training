@@ -11,7 +11,8 @@ import (
 
 type TicTacToeGame struct {
 	GameInitialized bool
-	Player          *pl.Player
+	Players          []*pl.Player
+	currentPlayer    *pl.Player
 	Board           *b.Board
 	Result          *r.Result
 }
@@ -23,37 +24,62 @@ func (g *TicTacToeGame) Initialize(size int) error {
 	if size <= 2 {
 		return fmt.Errorf("minimum size should be three")
 	} 
-		g.Player = pl.NewPlayers()
-		g.Player.Players = make(map[string]b.Mark)
-		n1,err := g.Player.GetPlayerDetails()
+		PlayerOne:= pl.NewPlayers()
+		g.currentPlayer=pl.NewPlayers()
+		//g.Player.Players = make(map[string]b.Mark)
+		n1,err := g.GetPlayerDetails()
 		if err!=nil{
 			return err
 		}
-		g.Player.SetPlayerDetails(n1)
-		n2,err:=g.Player.GetPlayerDetails()
-		if err!=nil{
-			return err
+		PlayerOne.SetPlayerDetails(n1)
+		n2,err:=g.GetPlayerDetails()
+		if n1==n2{
+			return fmt.Errorf("please enter different player name")
 		}
-		g.Player.SetPlayerDetails(n2)
-		g.Player.Mark=b.Empty
+		PlayerTwo:=pl.NewPlayers()
+		PlayerTwo.SetPlayerDetails(n2)
+		//g.Player.Mark=b.Empty
+		g.currentPlayer.Mark=b.Empty
+		g.Players=append(g.Players,PlayerOne,PlayerTwo)
 		g.Board = b.MakeNewBoard(size)
-		g.Player.Marks = [2]b.Mark{b.X, b.O}
 		g.Result = r.NewAnalyzer(g.Board)
 		g.GameInitialized = true
 	
 	return nil
 }
-
+func GetDesiredBoardSize() int {
+	fmt.Println("Enter desired size of board")
+	var size int
+	fmt.Scanln(&size)
+	return size
+}
+func (g *TicTacToeGame) GetPlayerDetails() (string,error) {
+	fmt.Println("Enter name of player")
+	var n1 string
+	fmt.Scanln(&n1)
+	if n1==string(b.Empty){
+		return n1 ,fmt.Errorf("please enter a valid name")
+	}
+	return n1,nil
+}
 func (g *TicTacToeGame) ShowMenu() {
-	fmt.Printf("Choose x/o for player2 %v \n", g.Player.Name)
+	fmt.Printf("Choose x/o for player2 %v \n", g.Players[1].Name)
 	var input string
 	fmt.Scanln(&input)
 	if input != string(b.X) && input != string(b.O) {
 		fmt.Println("Please provide valid input to start the game ")
 		g.ShowMenu()
 	} else {
-		g.Player.Mark = b.Mark(input)
-		g.Player.Players[g.Player.Name] = b.Mark(input)
+		//g.Player.Mark = b.Mark(input)
+		g.Players[1].SetPlayerMark(b.Mark(input))
+		g.currentPlayer.Mark=b.Mark(input)
+		g.currentPlayer.Name=g.Players[1].Name
+		//g.Player.Players[g.Player.Name] = b.Mark(input)
+	}
+	if input == string(b.X){
+	g.Players[0].SetPlayerMark(b.O)
+	}else{
+		g.Players[0].SetPlayerMark(b.X)
 	}
 }
 
@@ -62,13 +88,13 @@ func (g *TicTacToeGame) GameOver() {
 	os.Exit(0)
 }
 func (g *TicTacToeGame) getMarkForCurrentPlayer() string {
-	
-	if g.Player.Mark == g.Player.Players[g.Player.Name] {
-		p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
-		fmt.Println("Current player : ",p)
+	fmt.Println("mark -- ",g.currentPlayer.Mark)
+	if g.currentPlayer.Mark == g.Players[1].Mark {
+		//p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
+		fmt.Println("Current player : ",g.Players[1].Name)
 	} else {
-		k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
-		fmt.Println("Current player : ",k)
+		//k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+		fmt.Println("Current player : ",g.Players[0].Name)
 	}
 	g.Board.ShowBoard()
 	fmt.Print("Make a move or enter 'exit' to end the game : ")
@@ -84,8 +110,9 @@ func (g *TicTacToeGame) inGame() bool {
 	case "exit":
 		g.GameOver()
 	default:
-		successfulMove := g.Board.MakeMove(input, g.Player.Mark)
+		successfulMove,s := g.Board.MakeMove(input, g.currentPlayer.Mark)
 		if !successfulMove {
+			fmt.Println(s)
 			return false
 		}
 		val,_:= strconv.Atoi(input)
@@ -94,12 +121,12 @@ func (g *TicTacToeGame) inGame() bool {
 		gameStatus, _ := g.Result.CheckWinning(currRow,currCol)
 		if gameStatus == r.Win {
 			g.Board.ShowBoard()
-			if g.Player.Players[g.Player.Name] == g.Player.Mark {
-				p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
-				fmt.Println(p, "wins!")
+			if g.Players[1].Mark == g.currentPlayer.Mark {
+				//p,_:=g.Player.GetPlayerFromMap(g.Player.Players,g.Player.Mark)
+				fmt.Println(g.Players[1].Name, "wins!")
 			} else {
-				k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
-				fmt.Println(k, "wins!")
+				//k,_:=g.Player.GetPlayerFromMap(g.Player.Players,b.Empty)
+				fmt.Println(g.Players[0].Name, "wins!")
 			}
 			g.GameOver()
 		} else if gameStatus == r.Draw {
@@ -114,15 +141,15 @@ func (g *TicTacToeGame) inGame() bool {
 }
 
 func (g *TicTacToeGame) takeTurns() {
-	if g.Player.Mark == b.X {
-		g.Player.Mark = b.O
+	if g.currentPlayer.Mark == b.X {
+		g.currentPlayer.Mark = b.O
 	} else {
-		g.Player.Mark = b.X
+		g.currentPlayer.Mark = b.X
 	}
 }
 
 func (g *TicTacToeGame) Play() {
-	size := b.GetDesiredBoardSize()
+	size := GetDesiredBoardSize()
 	for {
 		switch g.GameInitialized {
 		case false:
