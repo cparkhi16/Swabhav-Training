@@ -36,11 +36,11 @@ console.log("Type of g ",typeof(g))
 console.log("Bigint type of",typeof BigInt('1') === 'bigint')  // true
 
 //Boolean
-let ab=[a]
+let ab=[5]
 //console.log("Boolean",Boolean(ab))
 let s=[]
 console.log("Type of s",typeof(s))
-if ([a]===ab){
+if ([5]===ab){
     console.log("True")
 }
 else{
