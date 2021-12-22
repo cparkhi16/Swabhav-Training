@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Date-time app</title>
+<script type="text/javascript"> 
+function display(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout(displayDateTime,refresh)
+}
+
+function displayDateTime() {
+var x = new Date()
+document.getElementById('ct').innerHTML = x;
+display();
+ }
+</script>
+</head>
+
+<body onload=displayDateTime();>
+<span id='ct'style="color:red" ></span>
+
+</body>
+</html>
