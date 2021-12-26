@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -16,7 +17,9 @@ type Repository interface {
 	Update(uow *UnitOfWork, out interface{}) error
 	Delete(uow *UnitOfWork, out interface{}) error
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
-	GetAllUsers(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error
+	//GetCount(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
+	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
+	GetAllRows(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) (*sql.Rows, error)
 }
 
 // UnitOfWork represents a connection
@@ -57,6 +60,54 @@ func Filter(condition string, args ...interface{}) QueryProcessor {
 		return db, nil
 	}
 }
+func GroupBy(entity interface{}, statement string, group string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		db = db.Debug().Model(entity).Select(statement).Group(group)
+		return db, nil
+	}
+}
+func Count(out interface{}, count *int) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		db = db.Model(out).Count(&count)
+		return db, nil
+	}
+}
+func OrderBy(condition string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Order(condition), nil
+	}
+}
+func Model() QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Model(out), nil
+	}
+}
+func Select(statement string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Select(statement), nil
+	}
+}
+func Joins(condition string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Joins(condition), nil
+	}
+}
+func Group(group string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		db = db.Debug().Group(group)
+		return db, nil
+	}
+}
+func Join(entity interface{}, statement, condition string) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Model(entity).Select(statement).Joins(condition), nil
+	}
+}
+func Having(condition string, val int) QueryProcessor {
+	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
+		return db.Debug().Having(condition, val), nil
+	}
+}
 
 // GormRepository implements Repository
 type GormRepository struct {
@@ -83,7 +134,9 @@ func (repository *GormRepository) GetFirst(uow *UnitOfWork, out interface{}, que
 	}
 	return nil
 }
-func (repository *GormRepository) GetAllUsers(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error {
+
+//func (repository *GormRepository) ExecuteGroupBy(row
+func (repository *GormRepository) GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error {
 	db := uow.DB
 
 	if queryProcessors != nil {
@@ -99,6 +152,25 @@ func (repository *GormRepository) GetAllUsers(uow *UnitOfWork, out interface{}, 
 		return err
 	}
 	return nil
+}
+
+func (repository *GormRepository) GetAllRows(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) (*sql.Rows, error) {
+	db := uow.DB
+	var rows *sql.Rows
+	var err error
+	for _, queryProcessor := range queryProcessors {
+		db, err = queryProcessor(db, out)
+		if err != nil {
+			return nil, err
+		}
+	}
+	//db, err = queryProcessors(db, out)
+	rows, err = db.Rows()
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, nil
 }
 
 // Get a record for specified entity with specific id
