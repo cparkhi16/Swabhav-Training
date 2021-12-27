@@ -10,6 +10,10 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type Login struct {
+	Email    string
+	Password string
+}
 type User struct {
 	TestModel
 	FirstName string

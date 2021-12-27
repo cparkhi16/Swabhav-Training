@@ -23,24 +23,31 @@ func (hc *HobbyController) GetHobby(w http.ResponseWriter, r *http.Request) {
 	var hobby m.Hobby
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	id, _ := uuid.FromString(params["id"])
-	hobby.ID = id
-	hobby = hc.us.GetHobbyById(&hobby, id)
-	json.NewEncoder(w).Encode(hobby)
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
+		hobby.ID = id
+		hobby = hc.us.GetHobbyById(&hobby, id)
+		json.NewEncoder(w).Encode(hobby)
+	} else {
+		fmt.Fprintf(w, "Incorrect UUID ")
+	}
 }
 func (hc *HobbyController) DeleteHobby(w http.ResponseWriter, r *http.Request) {
 	var hobby m.Hobby
 	params := mux.Vars(r)
-	id, _ := uuid.FromString(params["id"])
-	zeroUUID, _ := uuid.FromString("00000000-0000-0000-0000-000000000000")
-	if id != zeroUUID {
-		hobby.ID = id
-		err := hc.us.DeleteHobbyById(&hobby)
-		if err != nil {
-			hc.us.Logger.Error().Msgf("Error while deleting hobby by ID %v", err)
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
+		if id != uuid.Nil {
+			hobby.ID = id
+			err := hc.us.DeleteHobbyById(&hobby)
+			if err != nil {
+				hc.us.Logger.Error().Msgf("Error while deleting hobby by ID %v", err)
+			}
+		} else {
+			hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 		}
 	} else {
-		hc.us.Logger.Error().Msg("Please give a hobby ID in params")
+		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
 func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
@@ -51,17 +58,21 @@ func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
 		hc.us.Logger.Error().Msgf("Error in decoding hobby JSON", er)
 	}
 	params := mux.Vars(r)
-	id, _ := uuid.FromString(params["id"])
-	hobby.ID = id
-	zeroUUID, _ := uuid.FromString("00000000-0000-0000-0000-000000000000")
-	if id != zeroUUID {
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
 		hobby.ID = id
-		e := hc.us.UpdateHobbyById(&hobby)
-		if e != nil {
-			hc.us.Logger.Error().Msgf("Error updating hobby detail %v", e)
+		//zeroUUID, _ := uuid.FromString("00000000-0000-0000-0000-000000000000")
+		if id != uuid.Nil {
+			hobby.ID = id
+			e := hc.us.UpdateHobbyById(&hobby)
+			if e != nil {
+				hc.us.Logger.Error().Msgf("Error updating hobby detail %v", e)
+			}
+		} else {
+			hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 		}
 	} else {
-		hc.us.Logger.Error().Msg("Please give a hobby ID in params")
+		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
 func (hc *HobbyController) GetAllHobbies(w http.ResponseWriter, r *http.Request) {

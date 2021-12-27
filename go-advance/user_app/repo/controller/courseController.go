@@ -21,12 +21,16 @@ func NewCourseController(cs *s.CourseService) *CourseController {
 }
 
 func (cc *CourseController) CreateCourse(w http.ResponseWriter, r *http.Request) {
+	//fmt.Fprintf(w, "Here in create course")
 	var newCourse m.Course
 	er := json.NewDecoder(r.Body).Decode(&newCourse)
 	if er != nil {
 		cc.cs.Logger.Error().Msg("Error in course JSON decoding")
 	}
-	cc.cs.AddCourse(&newCourse)
+	err := cc.cs.AddCourse(&newCourse)
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
 }
 func (cc *CourseController) GetAllCourses(w http.ResponseWriter, r *http.Request) {
 	var courses []m.Course
@@ -57,16 +61,20 @@ func (cc *CourseController) UpdateCourse(w http.ResponseWriter, r *http.Request)
 		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
 	}
 	params := mux.Vars(r)
-	id, _ := uuid.FromString(params["id"])
-	zeroUUID, _ := uuid.FromString("00000000-0000-0000-0000-000000000000")
-	if id != zeroUUID {
-		updateCourse.ID = id
-		e := cc.cs.UpdateCourse(&updateCourse)
-		if e != nil {
-			cc.cs.Logger.Error().Msgf("Error updating user detail %v", e)
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
+		if id != uuid.Nil {
+			updateCourse.ID = id
+			e := cc.cs.UpdateCourse(&updateCourse)
+			if e != nil {
+				cc.cs.Logger.Error().Msgf("Error updating course detail %v", e)
+				fmt.Fprintf(w, e.Error())
+			}
+		} else {
+			cc.cs.Logger.Error().Msg("Please enter a course ID in params")
 		}
 	} else {
-		cc.cs.Logger.Error().Msg("Please enter a User ID in params")
+		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
 
@@ -77,15 +85,19 @@ func (cc *CourseController) DeleteCourse(w http.ResponseWriter, r *http.Request)
 		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
 	}
 	params := mux.Vars(r)
-	id, _ := uuid.FromString(params["id"])
-	zeroUUID, _ := uuid.FromString("00000000-0000-0000-0000-000000000000")
-	if id != zeroUUID {
-		deleteCourse.ID = id
-		e := cc.cs.DeleteCourse(&deleteCourse)
-		if e != nil {
-			cc.cs.Logger.Error().Msg("Error deleting course")
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
+		if id != uuid.Nil {
+			deleteCourse.ID = id
+			e := cc.cs.DeleteCourse(&deleteCourse)
+			if e != nil {
+				cc.cs.Logger.Error().Msg("Error deleting course")
+				fmt.Fprintf(w, "Course already deleted")
+			}
+		} else {
+			cc.cs.Logger.Error().Msg("Please enter a User ID in params")
 		}
 	} else {
-		cc.cs.Logger.Error().Msg("Please enter a User ID in params")
+		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }

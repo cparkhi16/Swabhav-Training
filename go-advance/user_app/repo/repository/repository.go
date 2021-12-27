@@ -11,13 +11,14 @@ import (
 type Repository interface {
 	Get(uow *UnitOfWork, out interface{}, id uuid.UUID, preloadAssociations []string) error
 	GetAll(uow *UnitOfWork, out interface{}, preloadAssociations []string) error
+	ClearAssociation(uow *UnitOfWork, entity interface{}, tableName string) error
 	GetAllForTenant(uow *UnitOfWork, out interface{}, tenantID uuid.UUID, preloadAssociations []string) error
 	Add(uow *UnitOfWork, out interface{}) error
 	Update(uow *UnitOfWork, out interface{}) error
 	Delete(uow *UnitOfWork, out interface{}) error
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error
-	GetCount(uow *UnitOfWork, model interface{}, out interface{}, email string) error
+	GetCount(uow *UnitOfWork, model interface{}, out interface{}, condition string, value interface{}) error
 }
 
 // UnitOfWork represents a connection
@@ -67,6 +68,7 @@ type GormRepository struct {
 func NewRepository() Repository {
 	return &GormRepository{}
 }
+
 func (repository *GormRepository) GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error {
 	db := uow.DB
 
@@ -79,7 +81,7 @@ func (repository *GormRepository) GetFirst(uow *UnitOfWork, out interface{}, que
 			}
 		}
 	}
-	if err := db.First(out).Error; err != nil {
+	if err := db.Debug().First(out).Error; err != nil {
 		return err
 	}
 	return nil
@@ -132,9 +134,9 @@ func (repository *GormRepository) Get(uow *UnitOfWork, out interface{}, id uuid.
 	}
 	return db.First(out, "id = ?", id).Error
 }
-func (repository *GormRepository) GetCount(uow *UnitOfWork, model interface{}, out interface{}, email string) error {
+func (repository *GormRepository) GetCount(uow *UnitOfWork, model interface{}, out interface{}, condition string, value interface{}) error {
 	db := uow.DB
-	return db.Model(model).Debug().Where("email= ?", email).Count(out).Error
+	return db.Model(model).Debug().Where(condition, value).Count(out).Error
 }
 
 // GetAll retrieves all the records for a specified entity and returns it
@@ -144,6 +146,11 @@ func (repository *GormRepository) GetAll(uow *UnitOfWork, out interface{}, prelo
 		db = db.Preload(association)
 	}
 	return db.Find(out).Error
+}
+
+func (repository *GormRepository) ClearAssociation(uow *UnitOfWork, entity interface{}, tableName string) error {
+	db := uow.DB
+	return db.Model(entity).Debug().Association(tableName).Clear().Error
 }
 
 // GetAllForTenant returns all objects of specified tenantID
@@ -157,13 +164,13 @@ func (repository *GormRepository) GetAllForTenant(uow *UnitOfWork, out interface
 
 // Add specified Entity
 func (repository *GormRepository) Add(uow *UnitOfWork, entity interface{}) error {
-	fmt.Println("Here in add func")
+	//fmt.Printf("Here in add func", entity)
 	return uow.DB.Debug().Create(entity).Error
 }
 
 // Update specified Entity
 func (repository *GormRepository) Update(uow *UnitOfWork, entity interface{}) error {
-	fmt.Println("Here in update")
+	fmt.Printf("Here in update %T", entity)
 	return uow.DB.Model(entity).Debug().Update(entity).Error
 }
 

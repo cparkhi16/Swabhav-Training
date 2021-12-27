@@ -1,113 +1,111 @@
 package service
 
 import (
-	m "app/model"
-	re "app/repository"
+	"app/model"
+	"app/repository"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
 	"github.com/rs/zerolog"
-	uuid "github.com/satori/go.uuid"
 )
 
 type CourseService struct {
-	Repo   re.Repository
+	Repo   repository.Repository
 	DB     *gorm.DB
 	Logger *zerolog.Logger
 }
 
-func NewCourseService(r re.Repository, DB *gorm.DB, l *zerolog.Logger) *CourseService {
+func NewCourseService(r repository.Repository, DB *gorm.DB, l *zerolog.Logger) *CourseService {
 	return &CourseService{Repo: r, DB: DB, Logger: l}
 }
-func (cs *CourseService) AddCourse(c *m.Course) {
-	uow := re.NewUnitOfWork(cs.DB, false)
-	e := cs.Repo.Add(uow, c)
-	if e != nil {
+
+func (cs *CourseService) GetCourseCount(condition string, value interface{}) int {
+	uow := repository.NewUnitOfWork(cs.DB, true)
+	var c int = 0
+	err := cs.Repo.GetCount(uow, model.Course{}, &c, condition, value)
+	if err != nil {
+		cs.Logger.Error().Msgf("error in getting course count")
+	}
+	//fmt.Println("Count --", c)
+	return c
+}
+func (cs *CourseService) AddCourse(c *model.Course) error {
+	uow := repository.NewUnitOfWork(cs.DB, false)
+	count := cs.GetCourseCount("name = ?", c.Name)
+	fmt.Println("Courses  count ", count)
+	if count != 0 {
+		err := fmt.Errorf("a course with same name already exists")
+		return err
+	}
+	err := cs.Repo.Add(uow, c)
+	if err != nil {
 		uow.Complete()
 		//	fmt.Println("Error while adding course")
-		cs.Logger.Error().Msgf("Error adding course %v", e)
-	} else {
-		uow.Commit()
-	}
-}
-
-func (cs *CourseService) GetCourseById(out interface{}, tenantID uuid.UUID, preloadAssociations []string) *m.Course {
-	uow := re.NewUnitOfWork(cs.DB, true)
-	err := cs.Repo.GetAllForTenant(uow, out, tenantID, preloadAssociations)
-	if err != nil {
-		cs.Logger.Error().Msgf("Error in get course by ID")
-	}
-	o := out.(*m.Course)
-
-	fmt.Println(o.Name)
-	return o
-
-}
-
-func (cs *CourseService) GetCourses(out interface{}, preloadAssociations []string) {
-	uow := re.NewUnitOfWork(cs.DB, true)
-	err := cs.Repo.GetAll(uow, out, preloadAssociations)
-	if err != nil {
-		cs.Logger.Error().Msgf("Error in get all courses %v", err)
-	}
-	o := out.(*[]m.Course)
-	for _, val := range *o {
-		fmt.Println("Courses available in db", val.Name)
-	}
-}
-
-func (cs *CourseService) UpdateCourse(entity interface{}) error {
-	uow := re.NewUnitOfWork(cs.DB, false)
-	err := cs.Repo.Update(uow, entity)
-	if err != nil {
-		uow.Complete()
-		//fmt.Println("Error updating course")
-		cs.Logger.Error().Msgf("Error updating course %v ", err)
+		cs.Logger.Error().Msgf("Error adding course %v", err)
 		return err
-	} else {
-		uow.Commit()
 	}
+	uow.Commit()
+	return nil
+}
+func (cs *CourseService) UpdateCourse(course *model.Course) error {
+	uow := repository.NewUnitOfWork(cs.DB, false)
+	coursesWithSameName := cs.GetCourseCount("name = ?", course.Name)
+	if coursesWithSameName > 0 {
+		cs.Logger.Error().Msg("Course with same name already exists in db")
+		err := fmt.Errorf("course with same name already exists in db")
+		return err
+	}
+	count := cs.GetCourseCount("id = ?", course.ID)
+	if count == 0 {
+		cs.Logger.Error().Msg("Could not find course")
+		err := fmt.Errorf("could not find course")
+		return err
+	}
+	er := cs.Repo.Update(uow, course)
+	if er != nil {
+		uow.Complete()
+		cs.Logger.Error().Msgf("Error updating course %v ", er)
+		return er
+	}
+	uow.Commit()
 	return nil
 }
 
-func (cs *CourseService) DeleteCourse(entity interface{}) error {
-	uow := re.NewUnitOfWork(cs.DB, false)
-	err := cs.Repo.Delete(uow, entity)
+func (cs *CourseService) DeleteCourse(course *model.Course) error {
+	uow := repository.NewUnitOfWork(cs.DB, false)
+	count := cs.GetCourseCount("id = ?", course.ID)
+	if count == 0 {
+		cs.Logger.Error().Msg("Could not find course")
+		err := fmt.Errorf("could not find course")
+		return err
+	}
+	err := cs.Repo.Delete(uow, course)
 	if err != nil {
 		uow.Complete()
-		//fmt.Println("Error deleting course")
 		cs.Logger.Error().Msgf("Error deleting course %v", err)
 		return err
-	} else {
-		uow.Commit()
 	}
+	we := cs.Repo.ClearAssociation(uow, course, "users")
+	if we != nil {
+		uow.Complete()
+		cs.Logger.Error().Msgf("Error while deleting associated users %v ", we)
+		return we
+	}
+	uow.Commit()
 	return nil
 }
-func (cs *CourseService) GetDetailsWithCourseID() {
-	uow := re.NewUnitOfWork(cs.DB, true)
-	var c m.Course
-	cID, _ := uuid.FromString("3852ce46-3f17-4e51-95ef-979893d31f0a")
-	qp := re.Filter("id = ?", cID)
-	//qps := []re.QueryProcessor{}
-	//qps = append(qps, qp)
-	err := cs.Repo.GetFirst(uow, &c, qp)
-	if err != nil {
-		cs.Logger.Error().Msgf("Error while getting course with ID %v", err)
-	}
-	fmt.Println("Course object from db --- ", c)
-}
 
-func (cs *CourseService) GetAllCoursesWithPagination(page, limit int, out interface{}) []m.Course {
-	uow := re.NewUnitOfWork(cs.DB, true)
+func (cs *CourseService) GetAllCoursesWithPagination(page, limit int, courses *[]model.Course) []model.Course {
+	uow := repository.NewUnitOfWork(cs.DB, true)
 	offset := (page - 1) * limit
-	queryLimit := re.Limit(limit)
-	queryOffset := re.Offset(offset)
-	qp := []re.QueryProcessor{queryLimit, queryOffset}
-	result := cs.Repo.GetAllWithQueryProcessor(uow, out, qp)
+	queryLimit := repository.Limit(limit)
+	queryOffset := repository.Offset(offset)
+	qp := []repository.QueryProcessor{queryLimit, queryOffset}
+	result := cs.Repo.GetAllWithQueryProcessor(uow, courses, qp)
 	if result != nil {
 		cs.Logger.Error().Msgf("Error while getting all courses with pagination %v", result)
 		return nil
 	}
-	o := out.(*[]m.Course)
-	return *o
+	//o := out.(*[]m.Course)
+	return *courses
 }

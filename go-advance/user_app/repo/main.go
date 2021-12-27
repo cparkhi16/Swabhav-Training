@@ -1,11 +1,11 @@
 package main
 
 import (
-	c "app/controller"
-	lr "app/logger"
-	m "app/model"
-	r "app/repository"
-	s "app/service"
+	"app/controller"
+	zerologger "app/logger"
+	"app/model"
+	"app/repository"
+	"app/service"
 	"log"
 	"net/http"
 
@@ -21,28 +21,39 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot connect to DB")
 	}
-	logger := lr.GetLogger()
-	db.AutoMigrate(&m.User{})
-	db.AutoMigrate(&m.Hobby{})
-	db.AutoMigrate(&m.Course{})
-	db.AutoMigrate(&m.Passport{})
-	db.Model(&m.Hobby{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
-	db.Model(&m.Passport{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+	logger := zerologger.GetLogger()
+	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Hobby{})
+	db.AutoMigrate(&model.Course{})
+	db.AutoMigrate(&model.Passport{})
+	db.Model(&model.Hobby{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+	db.Model(&model.Passport{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 
-	repo := r.NewRepository()
-	user := m.NewUser("", "", "test")
-	userService := s.NewUserService(repo, db, logger)
+	repo := repository.NewRepository()
+	user := model.NewUser("", "", "test")
+	userService := service.NewUserService(repo, db, logger)
 	userService.AddUser(user)
 
-	courseService := s.NewCourseService(repo, db, logger)
-	//http://localhost:9000/users/token?email=rk@fp.com&password=Role23
+	courseService := service.NewCourseService(repo, db, logger)
+	//http://localhost:9000/login?email=SP@fp.com&password=sahil
+	/* {
+	    "Email":"jjk@fp.com",
+	    "Password":"jjk"
+	}*/
 	router := mux.NewRouter()
-	userController := c.NewUserController(userService)
-	courseController := c.NewCourseController(courseService)
-	hobbyController := c.NewHobbyController(userService)
-	hobbyController.RegisterRoutesForHobby(router)
-	userController.RegisterRoutesForUser(router)
-	courseController.RegisterRoutesForCourse(router)
+	authRoute := router.MatcherFunc(func(r *http.Request, rm *mux.RouteMatch) bool {
+		return true
+	}).Subrouter()
+	nonAuthRoute := router.MatcherFunc(func(r *http.Request, rm *mux.RouteMatch) bool {
+		return true
+	}).Subrouter()
+
+	userController := controller.NewUserController(userService)
+	courseController := controller.NewCourseController(courseService)
+	hobbyController := controller.NewHobbyController(userService)
+	hobbyController.RegisterRoutesForHobby(authRoute, nonAuthRoute)
+	userController.RegisterRoutesForUser(authRoute, nonAuthRoute)
+	courseController.RegisterRoutesForCourse(authRoute, nonAuthRoute)
 	logger.Info().Msgf("Starting server")
 	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"abc.com"}))(router)))
 
