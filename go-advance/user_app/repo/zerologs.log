@@ -507,3 +507,10 @@
 {"level":"info","time":"2021-12-27T19:17:31+05:30","message":"Starting server"}
 {"level":"error","time":"2021-12-27T19:17:42+05:30","message":"Error in add user can't save invalid data"}
 {"level":"info","time":"2021-12-27T19:17:42+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-27T19:32:29+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-27T19:32:29+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-27T19:40:42+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2021-12-27T19:40:42+05:30","message":"Could not find course"}
+{"level":"error","time":"2021-12-27T19:40:42+05:30","message":"Error deleting course"}
+{"level":"error","time":"2021-12-27T19:41:14+05:30","message":"Course with same name already exists in db"}
+{"level":"error","time":"2021-12-27T19:41:14+05:30","message":"Error updating course detail course with same name already exists in db"}

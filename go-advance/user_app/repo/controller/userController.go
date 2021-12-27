@@ -34,6 +34,7 @@ func (uc *UserController) GetUserPassport(w http.ResponseWriter, r *http.Request
 		userPassportDetail := uc.us.GetPassportIDForUser(id)
 		json.NewEncoder(w).Encode(userPassportDetail)
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 
@@ -72,6 +73,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println("Here in create user")
 	er := json.NewDecoder(r.Body).Decode(&newUser)
 	if er != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		uc.us.Logger.Error().Msg("Error in user JSON decoding")
 	}
 	c := uc.us.GetUsersCount("email = ?", newUser.Email)
@@ -82,6 +84,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 			uc.us.Logger.Error().Msg("Invalid email format")
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "User already exists with this email address!!")
 	}
 
@@ -90,6 +93,7 @@ func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *htt
 	var updateUser m.User
 	er := json.NewDecoder(r.Body).Decode(&updateUser)
 	if er != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		uc.us.Logger.Error().Msgf("Error while decoding user passport details", er)
 	}
 	params := mux.Vars(r)
@@ -98,9 +102,11 @@ func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *htt
 		updateUser.ID = id
 		e := uc.us.UpdateUser(&updateUser)
 		if e != nil {
+			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msgf("Error while updating user passport details", er)
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 
@@ -117,9 +123,11 @@ func (uc *UserController) AddPassportForUser(w http.ResponseWriter, r *http.Requ
 		updateUser.ID = id
 		e := uc.us.UpdateUser(&updateUser)
 		if e != nil {
+			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msgf("Error updating passport detail %v", e)
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 
@@ -166,13 +174,16 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 			updateUser.ID = id
 			e := uc.us.UpdateUser(&updateUser)
 			if e != nil {
+				w.WriteHeader(http.StatusBadRequest)
 				fmt.Fprintf(w, e.Error())
 				uc.us.Logger.Error().Msgf("Error updating user detail %v", e)
 			}
 		} else {
+			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msg("Please give a User ID in params")
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
@@ -244,9 +255,11 @@ func (uc *UserController) AddHobbiesForUser(w http.ResponseWriter, r *http.Reque
 		user.ID = id
 		e := uc.us.AddUserHobbies(&user)
 		if e != nil {
+			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msgf("Error updating user hobbies %v", e)
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 
@@ -260,9 +273,11 @@ func (uc *UserController) DeleteHobbiesForUser(w http.ResponseWriter, r *http.Re
 		user.ID = id
 		e := uc.us.DeleteUserHobbies(&user)
 		if e != nil {
+			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msgf("Error deleting user hobbies %v", e)
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }

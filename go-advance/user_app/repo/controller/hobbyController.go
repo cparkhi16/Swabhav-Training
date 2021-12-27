@@ -29,6 +29,7 @@ func (hc *HobbyController) GetHobby(w http.ResponseWriter, r *http.Request) {
 		hobby = hc.us.GetHobbyById(&hobby, id)
 		json.NewEncoder(w).Encode(hobby)
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
@@ -41,12 +42,15 @@ func (hc *HobbyController) DeleteHobby(w http.ResponseWriter, r *http.Request) {
 			hobby.ID = id
 			err := hc.us.DeleteHobbyById(&hobby)
 			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
 				hc.us.Logger.Error().Msgf("Error while deleting hobby by ID %v", err)
 			}
 		} else {
+			w.WriteHeader(http.StatusBadRequest)
 			hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
@@ -66,12 +70,15 @@ func (hc *HobbyController) UpdateHobby(w http.ResponseWriter, r *http.Request) {
 			hobby.ID = id
 			e := hc.us.UpdateHobbyById(&hobby)
 			if e != nil {
+				w.WriteHeader(http.StatusBadRequest)
 				hc.us.Logger.Error().Msgf("Error updating hobby detail %v", e)
 			}
 		} else {
+			w.WriteHeader(http.StatusBadRequest)
 			hc.us.Logger.Error().Msg("Please give a hobby ID in params")
 		}
 	} else {
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 }
