@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+var bank_module_1 = require("./bank-module");
+var BankModule = require("./bank-module");
+var bank = new bank_module_1["default"]("ICICI", "Dom");
+console.log(bank);
+var c = new bank_module_1.Account(78, "23n2");
+console.log(c);
+var newBank = new BankModule["default"]("DNS", "THA");
+console.log(newBank);
+var newAcc = new BankModule.Account(231, "hwd");
+console.log(newAcc);
