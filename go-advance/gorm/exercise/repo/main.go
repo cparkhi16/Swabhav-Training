@@ -39,7 +39,7 @@ func main() {
 	//If no boss give null -> //SELECT  e.ename 'Employee', m.ename 'Manager' FROM emp e left join emp m ON (e.mgr = m.empno);
 	employeeService.GetEmployeeAndBossName(&ep, "e.ename,m.ename", "e left join emp m on e.mgr=m.empno")
 	//SELECT  e.ename 'Employee', m.ename 'Manager',dname FROM emp e left join emp m ON (e.mgr = m.empno) join dept d ON e.deptno=d.deptno ;
-	employeeService.GetEmpBossAndDeptName(&ep, "e.ename,m.ename,dname", "e left join emp m on e.mgr=m.empno", " join dept d on e.deptno=d.deptno")
+	employeeService.GetEmpBossAndDeptName(&ep, "e.ename as ENAME ,m.ename as ENAME ,dname as DNAME", "e left join emp m on e.mgr=m.empno", " join dept d on e.deptno=d.deptno")
 	regionService.GetRegionsWithNoCountries(&reg, "region_name", "left join countries on regions.region_id=countries.REGION_ID")
 	//select country_name from countries left join locations on countries.COUNTRY_ID=locations.COUNTRY_ID group by countries.country_id having count(state_province)=0
 	regionService.GetCountriesWithNoStates(&c, "`countries`.*", "left join locations on countries.COUNTRY_ID = locations.COUNTRY_ID", "countries.country_id")
@@ -49,4 +49,5 @@ func main() {
 	//newEntry := m.NewLocation(1555, "IN", "Swabhav techlabs", "Mumbai", "Maharashtra", "431202")
 	//regionService.CreateNewEntry(newEntry)
 	regionService.GetEnitiesWithCity("Mumbai")
+	//regionService.FooTable()
 }

@@ -23,11 +23,11 @@ func (rs *RegionService) GetRegionsWithNoCountries(entity interface{}, statement
 	uow := r.NewUnitOfWork(rs.DB, true)
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	var result []m.Region
 	where := r.Filter("country_name is null")
-	rows, err := rs.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins, where)
+	rows, err := rs.Repo.GetAllRows(uow, entityModel, selectStatement, joins, where)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -49,7 +49,7 @@ func (rs *RegionService) GetCountriesWithNoStates(entity interface{}, statement,
 	uow := r.NewUnitOfWork(rs.DB, true)
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	//g := r.GroupBy(entity, statement, group)
 	g := r.Group(group)
@@ -77,12 +77,12 @@ func (rs *RegionService) GetRegionCountryState(entity interface{}, statement str
 	uow := r.NewUnitOfWork(rs.DB, true)
 	//var reg []m.Region
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	join := r.Joins(condition[0])
 	joinTwo := r.Joins(condition[1])
 	//join := r.Join(entity, statement, condition[0])
 	//joinTwo := r.Join(entity, statement, condition[1])
-	rows, err := rs.Repo.GetAllRows(uow, entity, entityModel, selectStatement, join, joinTwo)
+	rows, err := rs.Repo.GetAllRows(uow, entityModel, selectStatement, join, joinTwo)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -121,4 +121,20 @@ func (rs *RegionService) GetEnitiesWithCity(city string) {
 	} else {
 		fmt.Println(entities)
 	}
+}
+
+func (rs *RegionService) FooTable() {
+	uow := r.NewUnitOfWork(rs.DB, false)
+	type Foo struct {
+		Name string
+		Age  int
+	}
+	rs.DB.AutoMigrate(&Foo{})
+	entry := Foo{Name: "Chinmay", Age: 21}
+	er := rs.Repo.Add(uow, &entry)
+	if er != nil {
+		uow.Complete()
+		fmt.Println("Error adding in foo table")
+	}
+	uow.Commit()
 }

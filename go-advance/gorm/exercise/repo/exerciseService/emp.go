@@ -62,11 +62,11 @@ func (e *EmployeeService) GetDeptWiseCount(entity interface{}, statement, group 
 	uow := r.NewUnitOfWork(e.DB, true)
 	//qr := r.GroupBy(entity, statement, group)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	qr := r.Group(group)
 	//var emp []m.Employee
 	//db, _ := qr(e.uow.DB, &emp)
-	rows, _ := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, qr)
+	rows, _ := e.Repo.GetAllRows(uow, entityModel, selectStatement, qr)
 	var result []m.Employee
 	for rows.Next() {
 		emp := m.Employee{}
@@ -85,11 +85,11 @@ func (e *EmployeeService) GetJobWiseCount(entity interface{}, statement, group s
 	uow := r.NewUnitOfWork(e.DB, true)
 	//qr := r.GroupBy(entity, statement, group)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	qr := r.Group(group)
 	//var emp []m.Employee
 	//db, _ := qr(e.uow.DB, &emp)
-	rows, _ := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, qr)
+	rows, _ := e.Repo.GetAllRows(uow, entityModel, selectStatement, qr)
 	var result []m.Employee
 	for rows.Next() {
 		emp := m.Employee{}
@@ -110,9 +110,9 @@ func (e *EmployeeService) GetDeptAndJobWiseCount(entity interface{}, statement, 
 	//var emp []m.Employee
 	//db, _ := qr(e.uow.DB, &emp)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	qr := r.Group(group)
-	rows, _ := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, qr)
+	rows, _ := e.Repo.GetAllRows(uow, entityModel, selectStatement, qr)
 	var result []m.Employee
 	for rows.Next() {
 		emp := m.Employee{}
@@ -133,13 +133,13 @@ func (e *EmployeeService) GetDeptWiseCountWithSpecificCondition(entity interface
 	whereClause := r.Filter("deptNo = ? or deptNo = ?", 10, 20)
 	//qr := r.GroupBy(entity, statement, group)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	qr := r.Group(group)
 	havingClause := r.Having("count(*)>= ?", 2)
 	orderBy := r.OrderBy("count(*) desc")
 	//var emp []m.Employee
 	//err := e.Repo.GetAllWithQueryProcessor(uow, &emp, whereClause, qr, havingClause, orderBy)
-	rows, _ := e.Repo.GetAllRows(uow, entity, whereClause, entityModel, selectStatement, qr, havingClause, orderBy)
+	rows, _ := e.Repo.GetAllRows(uow, entityModel, selectStatement, whereClause, qr, havingClause, orderBy)
 	var result []m.Employee
 	for rows.Next() {
 		emp := m.Employee{}
@@ -160,9 +160,9 @@ func (e *EmployeeService) GetEmployeeDeptNames(entity interface{}, statement, co
 	//rows, _ := e.DB.Table("emp").Select("emp.ename, dept.dname").Joins("join dept on emp.deptno = dept.deptno").Rows()
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -188,12 +188,12 @@ func (e *EmployeeService) GetDeptNameWiseCount(entity interface{}, statement, gr
 	//join := r.Join(entity, statement, condition)
 	//qr := r.GroupBy(entity, statement, group)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	qr := r.Group(group)
 	//var emp []m.Employee
 	result := make(map[*m.Employee]*m.Department)
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins, qr)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins, qr)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -216,13 +216,13 @@ func (e *EmployeeService) GetDeptNameJobWiseCount(entity interface{}, statement,
 	//SELECT count(*),dname,job from emp join dept on emp.DEPTNO = dept.DEPTNO group by dname,job;
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	//qr := r.GroupBy(entity, statement, group)
 	qp := r.Group(group)
 	//var emp []m.Employee
 	result := make(map[*m.Employee]*m.Department)
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins, qp)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins, qp)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -247,16 +247,26 @@ func (e *EmployeeService) GetEmpNameDeptNameWithNoEmployeeAsNull(entity interfac
 	//SELECT ename,dname,job from dept left join emp on emp.DEPTNO = dept.DEPTNO ;
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	//var dep []m.Department
 	result := make(map[*m.Department]*m.Employee)
 	//where := r.Filter("emp.deptno = ?", "IS Null")
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
 	}
+	type ResStruct struct {
+		EName string `gorm:"column:ENAME"`
+		DName string `gorm:"column:DNAME"`
+		Job   string `gorm:"column:JOB"`
+	}
+	var ans []ResStruct
+	//e.DB.Model(entity).Select("ename as ENAME,dname as DNAME,job as JOB").Joins("left join emp on emp.DEPTNO = dept.DEPTNO").Scan(&ans)
+	//fmt.Println("-------", ans)
+	e.Repo.GetAllResult(uow, &ans, entityModel, selectStatement, joins)
+	fmt.Println("-------", ans)
 	//rows,_=e.DB.Table("dept").Select("ename as ENAME,dname as DNAME,job as JOB").Joins("left join emp on emp.DEPTNO = dept.DEPTNO").Rows()
 	for rows.Next() {
 		emp := m.Employee{}
@@ -278,12 +288,12 @@ func (e *EmployeeService) GetDeptNameWhereEmployeesAreNull(entity interface{}, s
 	//SELECT dname FROM dept left join emp on emp.deptno=dept.deptno where emp.DEPTNO is NUll;
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	//var emp []m.Employee
 	result := make(map[*m.Department]*m.Employee)
 	where := r.Filter("emp.deptno is null")
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins, where)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins, where)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -306,10 +316,10 @@ func (e *EmployeeService) GetEmployeeAndBossName(entity interface{}, statement, 
 	uow := r.NewUnitOfWork(e.DB, true)
 	//join := r.Join(entity, statement, condition)
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
 	//var emp []m.Employee
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, joins)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
@@ -334,10 +344,21 @@ func (e *EmployeeService) GetEmpBossAndDeptName(entity interface{}, statement st
 	//join := r.Join(entity, statement, condition[0])
 	//joinTwo := r.Join(entity, statement, condition[1])
 	selectStatement := r.Select(statement)
-	entityModel := r.Model()
+	entityModel := r.Model(entity)
 	join := r.Joins(condition[0])
 	joinTwo := r.Joins(condition[1])
-	rows, err := e.Repo.GetAllRows(uow, entity, entityModel, selectStatement, join, joinTwo)
+	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, join, joinTwo)
+	type ResStruct struct {
+		EmpName     string `gorm:"column:ENAME"`
+		ManagerName string `gorm:"column:ENAME"`
+		DeptName    string `gorm:"column:DNAME"`
+	}
+	var ans []ResStruct
+	er := e.Repo.GetAllResult(uow, &ans, entityModel, selectStatement, join, joinTwo)
+	if er != nil {
+		fmt.Println(er)
+	}
+	fmt.Println("---> ", ans)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return

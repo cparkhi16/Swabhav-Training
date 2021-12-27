@@ -19,7 +19,8 @@ type Repository interface {
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	//GetCount(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
-	GetAllRows(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) (*sql.Rows, error)
+	GetAllRows(uow *UnitOfWork, queryProcessors ...QueryProcessor) (*sql.Rows, error)
+	GetAllResult(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 }
 
 // UnitOfWork represents a connection
@@ -77,9 +78,10 @@ func OrderBy(condition string) QueryProcessor {
 		return db.Debug().Order(condition), nil
 	}
 }
-func Model() QueryProcessor {
+
+func Model(entity interface{}) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {
-		return db.Debug().Model(out), nil
+		return db.Debug().Model(entity), nil
 	}
 }
 func Select(statement string) QueryProcessor {
@@ -153,11 +155,28 @@ func (repository *GormRepository) GetAllWithQueryProcessor(uow *UnitOfWork, out 
 	}
 	return nil
 }
+func (repository *GormRepository) GetAllResult(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error {
+	db := uow.DB
+	if queryProcessors != nil {
+		var err error
+		for _, queryProcessor := range queryProcessors {
+			db, err = queryProcessor(db, out)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	if err := db.Scan(out).Error; err != nil {
+		return err
+	}
+	return nil
+}
 
-func (repository *GormRepository) GetAllRows(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) (*sql.Rows, error) {
+func (repository *GormRepository) GetAllRows(uow *UnitOfWork, queryProcessors ...QueryProcessor) (*sql.Rows, error) {
 	db := uow.DB
 	var rows *sql.Rows
 	var err error
+	var out interface{}
 	for _, queryProcessor := range queryProcessors {
 		db, err = queryProcessor(db, out)
 		if err != nil {
@@ -165,7 +184,7 @@ func (repository *GormRepository) GetAllRows(uow *UnitOfWork, out interface{}, q
 		}
 	}
 	//db, err = queryProcessors(db, out)
-	rows, err = db.Rows()
+	rows, err = db.Debug().Rows()
 	if err != nil {
 		return nil, err
 	}
