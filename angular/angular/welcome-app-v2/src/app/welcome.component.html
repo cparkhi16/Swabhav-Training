@@ -1,0 +1,13 @@
+<h1>{{welcome}}</h1>
+
+<p>Today is {{today | date}}</p>
+<p>Or if you prefer, {{today | date:'fullDate'}}</p>
+<p>The time is {{today | date:'h:mm a z'}}</p>
+<p>Month is {{today | date:'M'}}</p>
+<p>My name is {{name | uppercase}} using upper case pipes</p>
+<p>My name is {{name | lowercase}} using lower case pipes</p>
+<p>Currency In dollars : {{a | currency}}</p>
+<p>Currency in INR : {{a | currency:'INR':'symbol-narrow':'4.2-2'}}</p>
+<p>Pi value using number pipe :{{pi | number:'4.1-5'}}</p>
+
+<p>Date Time app {{dateTime}}</p>
