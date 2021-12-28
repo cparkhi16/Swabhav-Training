@@ -249,14 +249,12 @@ func (e *EmployeeService) GetEmpNameDeptNameWithNoEmployeeAsNull(entity interfac
 	selectStatement := r.Select(statement)
 	entityModel := r.Model(entity)
 	joins := r.Joins(condition)
-	//var dep []m.Department
-	result := make(map[*m.Department]*m.Employee)
-	//where := r.Filter("emp.deptno = ?", "IS Null")
+	/*result := make(map[*m.Department]*m.Employee)
 	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, joins)
 	if err != nil {
 		fmt.Println("Error in join ", err)
 		return
-	}
+	}*/
 	type ResStruct struct {
 		EName string `gorm:"column:ENAME"`
 		DName string `gorm:"column:DNAME"`
@@ -268,7 +266,7 @@ func (e *EmployeeService) GetEmpNameDeptNameWithNoEmployeeAsNull(entity interfac
 	e.Repo.GetAllResult(uow, &ans, entityModel, selectStatement, joins)
 	fmt.Println("-------", ans)
 	//rows,_=e.DB.Table("dept").Select("ename as ENAME,dname as DNAME,job as JOB").Joins("left join emp on emp.DEPTNO = dept.DEPTNO").Rows()
-	for rows.Next() {
+	/*for rows.Next() {
 		emp := m.Employee{}
 		dep := m.Department{}
 		rows.Scan(&emp.EmpName, &dep.DeptName, &emp.Job)
@@ -281,7 +279,7 @@ func (e *EmployeeService) GetEmpNameDeptNameWithNoEmployeeAsNull(entity interfac
 		fmt.Println("Emp Name - ", val.EmpName)
 		fmt.Println("JOB -", val.Job)
 		fmt.Println("=============")
-	}
+	}*/
 }
 func (e *EmployeeService) GetDeptNameWhereEmployeesAreNull(entity interface{}, statement, condition string) {
 	uow := r.NewUnitOfWork(e.DB, true)
@@ -347,7 +345,7 @@ func (e *EmployeeService) GetEmpBossAndDeptName(entity interface{}, statement st
 	entityModel := r.Model(entity)
 	join := r.Joins(condition[0])
 	joinTwo := r.Joins(condition[1])
-	rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, join, joinTwo)
+	//rows, err := e.Repo.GetAllRows(uow, entityModel, selectStatement, join, joinTwo)
 	type ResStruct struct {
 		EmpName     string `gorm:"column:ENAME"`
 		ManagerName string `gorm:"column:ENAME"`
@@ -359,7 +357,7 @@ func (e *EmployeeService) GetEmpBossAndDeptName(entity interface{}, statement st
 		fmt.Println(er)
 	}
 	fmt.Println("---> ", ans)
-	if err != nil {
+	/*if err != nil {
 		fmt.Println("Error in join ", err)
 		return
 	}
@@ -376,5 +374,5 @@ func (e *EmployeeService) GetEmpBossAndDeptName(entity interface{}, statement st
 		fmt.Println("Manager name -", k.ManagerName) //Getting empty dept name for king
 		fmt.Println("Dept Name - ", val.DeptName)
 		fmt.Println("=========")
-	}
+	}*/
 }
