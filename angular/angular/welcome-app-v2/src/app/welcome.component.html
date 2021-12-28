@@ -12,7 +12,7 @@
 
 <!--<p>Date Time app {{dateTime}}</p>-->
 <h2 *ngIf="show;else elseBlock">Date Time app {{dateTime}}</h2>
-<ng-template #elseBlock><h2>Clock Hidden</h2></ng-template>
+<ng-template #elseBlock><h2></h2></ng-template>
 <br>
 <button (click)="toggleClock()">Toggle</button>
 <p>File size using custom pipe {{ file.size | filesize:"MB" }}</p>
