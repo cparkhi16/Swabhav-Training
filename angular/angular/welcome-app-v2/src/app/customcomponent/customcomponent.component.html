@@ -1,0 +1,6 @@
+<h1>Name:{{name}}</h1>
+<button (click)="onClickMe()">Click me!</button>
+<p>{{clickMessage}}</p>
+<input (keyup)="onKey($event)">
+<div *ngIf="even; else elseBlock">The entered value is even</div>
+<ng-template #elseBlock>The entered value is odd</ng-template>

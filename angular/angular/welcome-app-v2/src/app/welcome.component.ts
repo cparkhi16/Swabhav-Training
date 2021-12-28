@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,Pipe, PipeTransform } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +13,7 @@ export class WelcomeComponent implements OnInit{
   a:number=15
   pi: number = 3.14159265359;
   dateTime!:any
+  file = { name: 'logo.svg', size: 2120109, type: 'image/svg' };
   constructor(){
     this.welcome="Welcome to angular"
   }
@@ -26,4 +27,10 @@ export class WelcomeComponent implements OnInit{
   displayDateTime() :void{
     this.dateTime = new Date()
    }
+}
+@Pipe({ name: 'filesize' })
+export class FileSizePipe implements PipeTransform {
+  transform(size: number,extension:string): string {
+    return (size / (1024 * 1024)).toFixed(2) + extension;
+  }
 }
