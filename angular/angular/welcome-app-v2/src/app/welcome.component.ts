@@ -13,6 +13,7 @@ export class WelcomeComponent implements OnInit{
   a:number=15
   pi: number = 3.14159265359;
   dateTime!:any
+  show:boolean=true;
   file = { name: 'logo.svg', size: 2120109, type: 'image/svg' };
   constructor(){
     this.welcome="Welcome to angular"
@@ -25,8 +26,14 @@ export class WelcomeComponent implements OnInit{
   }, 1000);
   }
   displayDateTime() :void{
+    if (this.show==true)
     this.dateTime = new Date()
+    else
+    this.dateTime=""
    }
+   toggleClock(){
+    this.show=!this.show
+  }
 }
 @Pipe({ name: 'filesize' })
 export class FileSizePipe implements PipeTransform {
