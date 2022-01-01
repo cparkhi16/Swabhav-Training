@@ -54,7 +54,7 @@ func (e *EmployeeService) GetAverageSalaryofEmployees() {
 	for _, val := range emp {
 		sal = sal + val.Salary
 	}
-	fmt.Println("Average salary of employees ", sal/count)
+	fmt.Println("Average salary of employees", float64(sal)/float64(count))
 }
 
 func (e *EmployeeService) GetDeptWiseCount(entity interface{}, statement, group string) {
