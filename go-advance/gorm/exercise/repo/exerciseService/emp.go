@@ -56,7 +56,20 @@ func (e *EmployeeService) GetAverageSalaryofEmployees() {
 	}
 	fmt.Println("Average salary of employees", float64(sal)/float64(count))
 }
-
+func (e *EmployeeService) GetCountSumAverageSalaryofEmployees() {
+	uow := r.NewUnitOfWork(e.DB, true)
+	var emp []m.Employee
+	type Result struct {
+		Count   string `gorm:"column:Count"`
+		Sum     string `gorm:"column:Sum"`
+		Average string `gorm:"column:Average"`
+	}
+	var res Result
+	selectStatement := r.Select("count(*) as Count , sum(sal) as Sum, avg(sal) as Average")
+	entityModel := r.Model(emp)
+	e.Repo.GetAllResult(uow, &res, entityModel, selectStatement)
+	fmt.Println("Count, sum ,average ", res)
+}
 func (e *EmployeeService) GetDeptWiseCount(entity interface{}, statement, group string) {
 	//SELECT count(*) as DeptWiseCount,deptNo as DeptNo FROM `emp`   GROUP BY deptNo
 	uow := r.NewUnitOfWork(e.DB, true)

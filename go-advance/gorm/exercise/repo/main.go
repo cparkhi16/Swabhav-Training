@@ -50,4 +50,5 @@ func main() {
 	//regionService.CreateNewEntry(newEntry)
 	regionService.GetEnitiesWithCity("Mumbai")
 	//regionService.FooTable()
+	employeeService.GetCountSumAverageSalaryofEmployees()
 }
