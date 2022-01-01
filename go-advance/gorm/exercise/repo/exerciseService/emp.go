@@ -60,9 +60,9 @@ func (e *EmployeeService) GetCountSumAverageSalaryofEmployees() {
 	uow := r.NewUnitOfWork(e.DB, true)
 	var emp []m.Employee
 	type Result struct {
-		Count   string `gorm:"column:Count"`
-		Sum     string `gorm:"column:Sum"`
-		Average string `gorm:"column:Average"`
+		Count   uint    `gorm:"column:Count"`
+		Sum     uint    `gorm:"column:Sum"`
+		Average float64 `gorm:"column:Average"`
 	}
 	var res Result
 	selectStatement := r.Select("count(*) as Count , sum(sal) as Sum, avg(sal) as Average")
