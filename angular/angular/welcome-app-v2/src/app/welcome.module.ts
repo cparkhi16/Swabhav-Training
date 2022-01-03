@@ -3,12 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { WelcomeComponent,FileSizePipe } from './welcome.component';
 import { CustomComponent } from './customcomponent/customcomponent.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     WelcomeComponent,
     FileSizePipe,
-    CustomComponent
+    CustomComponent,
+    FooterComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule
