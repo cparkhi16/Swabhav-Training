@@ -5,6 +5,7 @@ import { WelcomeComponent,FileSizePipe } from './welcome.component';
 import { CustomComponent } from './customcomponent/customcomponent.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { HeaderComponent } from './header/header.component';
     FileSizePipe,
     CustomComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule

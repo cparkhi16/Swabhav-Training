@@ -6,6 +6,9 @@ import { Component,OnInit,Pipe, PipeTransform } from '@angular/core';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit{
+  randomNumber:number=0
+  imgURL:string="../assets/scenery.jfif"
+  imageList=["../assets/scenery.jfif","../assets/peacock.jfif","../assets/tiger.jfif"]
   title = 'welcome-app-v2';
   welcome!:string
   name:string="chInmay"
@@ -24,6 +27,16 @@ export class WelcomeComponent implements OnInit{
    setInterval(() => {
     this.displayDateTime(); 
   }, 1000);
+  setInterval(() => {
+    this.displayImage(); 
+  }, 1000);
+  }
+  displayImage():void{
+    this.imgURL=this.imageList[this.randomNumber]
+    this.randomNumber=this.randomNumber+1
+    if (this.randomNumber==this.imageList.length){
+      this.randomNumber=0
+    }
   }
   displayDateTime() :void{
     if (this.show==true)
