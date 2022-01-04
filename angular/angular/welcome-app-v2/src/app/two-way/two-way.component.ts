@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TwoWayComponent implements OnInit {
   name:string
-  myName!:string
+  myName:string=""
   font!:string
   SelectedColor!:string
   TextColor!:string
@@ -26,7 +26,8 @@ export class TwoWayComponent implements OnInit {
     console.log("Selected Text color ",this.TextColor)
     if (this.SelectedColor==this.TextColor){
       alert("Please enter different font and background colors")
-      location.reload()
+      this.TextColor=""
+      //location.reload()
     }
     }
 
