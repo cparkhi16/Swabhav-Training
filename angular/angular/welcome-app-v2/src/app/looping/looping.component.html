@@ -1,0 +1,16 @@
+<ul *ngFor="let user of users; index as i">
+<li [style.color]="i%2==0 ? 'blue':'red'">
+     {{user.firstName}}-{{user.age}} <span *ngIf="user.age>18">Can Vote</span>
+  </li>
+  <hr>
+</ul>
+<input (keyup)="onkey($event)">
+<p>Hello {{greet}}  {{Name}}</p>
+<div>
+    <span>Direct child of div</span>
+</div>
+<div>
+    <p>
+        <span>Not a direct child of div</span>
+    </p>
+</div>

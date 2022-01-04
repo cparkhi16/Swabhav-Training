@@ -1,0 +1,39 @@
+<div>
+    One Way binding from component to view {{name}}
+    <br />
+    Property Binding
+    <input type="text" [value]="name" />
+    <br />
+    Two Way binding
+    <input type="text" [(ngModel)]="name" />
+    <p>Please select your favorite Web language:</p>
+    <input type="radio" id="html" name="fav_language" value="HTML" [(ngModel)]="language">
+    <label for="html">HTML</label><br>
+    <input type="radio" id="css" name="fav_language" value="CSS" [(ngModel)]="language">
+    <label for="css">CSS</label><br>
+    <input type="radio" id="javascript" name="fav_language" value="JavaScript" [(ngModel)]="language">
+    <label for="javascript">JavaScript</label>
+
+    <br>
+    Your favourite language is <input type="text" [(ngModel)]="language" />
+    <br />
+    <input type="text" [(ngModel)]="myName" />
+    <input type="number" [(ngModel)]="font" />
+    <label>Select a Background color: </label>
+    <select (change)="onChange()" [(ngModel)]="SelectedColor">
+        <option *ngFor="let color of colors" value={{color}}>
+            {{color}}
+        </option>
+    </select>
+    <label>Select a Text color: </label>
+    <select (change)="onChange()" [(ngModel)]="TextColor">
+        <option *ngFor="let color of colors" value={{color}}>
+            {{color}}
+        </option>
+    </select>
+</div>
+
+<div >Your output div:
+    <input [value]="myName" [style.font-size]="font+'px'" [style.background-color]="SelectedColor" [style.color]="TextColor" />
+   
+</div>

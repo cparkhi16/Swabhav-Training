@@ -6,6 +6,9 @@ import { CustomComponent } from './customcomponent/customcomponent.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { LoopingComponent } from './looping/looping.component';
+import { TwoWayComponent } from './two-way/two-way.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,10 +17,12 @@ import { SpinnerComponent } from './spinner/spinner.component';
     CustomComponent,
     FooterComponent,
     HeaderComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    LoopingComponent,
+    TwoWayComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,FormsModule
   ],
   providers: [],
   bootstrap: [WelcomeComponent]
