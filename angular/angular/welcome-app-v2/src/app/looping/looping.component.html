@@ -14,3 +14,24 @@
         <span>Not a direct child of div</span>
     </p>
 </div>
+<h2 *ngIf="show;else elseBlock">No data to display</h2>
+<ng-template #elseBlock>
+<table>
+    <thead>
+        <th>SrNo</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Cgpa</th>
+        <th>DOB</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of students" [style.background-color]="getBackgroundColor(data.cgpa)" >
+            <th>{{data.srno}}</th>
+            <th>{{data.id}}</th>
+            <th>{{data.firstName}}</th>
+            <th>{{data.cgpa}}</th>
+            <th>{{data.dob}}</th>
+        </tr>
+    </tbody>
+</table>
+</ng-template>

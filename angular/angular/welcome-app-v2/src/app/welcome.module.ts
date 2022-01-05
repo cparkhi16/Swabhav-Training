@@ -9,6 +9,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { LoopingComponent } from './looping/looping.component';
 import { TwoWayComponent } from './two-way/two-way.component';
 import { FormsModule } from '@angular/forms';
+import { CustomDirective } from './directive/custom.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     SpinnerComponent,
     LoopingComponent,
-    TwoWayComponent
+    TwoWayComponent,
+    CustomDirective
   ],
   imports: [
     BrowserModule,FormsModule
