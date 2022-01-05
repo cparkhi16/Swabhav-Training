@@ -1,0 +1,27 @@
+<p>operate-products works!</p>
+<button (click)="getProducts()">DisplayAllProducts</button>
+<table *ngIf="show">
+    <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of products" >
+            <th>{{data.id}}</th>
+            <th>{{data.name}}</th>
+            <th>{{data.desc}}</th>
+        </tr>
+    </tbody>
+</table>
+<br />
+<input type="number"  placeholder="Enter id " [(ngModel)]="id"/>
+
+<input type="text"  placeholder="Enter name of product" [(ngModel)]="name"/>
+
+<input type="text"  placeholder="Enter desc of product" [(ngModel)]="desc"/>
+
+<button (click)="addProduct()">Add product</button>
+<br/>
+<input type="text"  placeholder="Enter ID of product to be deleted" [(ngModel)]="productID"/>
+<button (click)="deleteProduct()">Delete Product</button>
