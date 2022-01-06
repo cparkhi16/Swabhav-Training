@@ -1,0 +1,6 @@
+<p>parent works!</p>
+<app-child [itemOfChild]="itemOfParent" (clickChild)="parentHandler($event)">
+    <div #parentTemplate>Parent Template</div>
+    <p>New test</p>
+</app-child>
+<input type="text" [(ngModel)]="itemOfParent"/>

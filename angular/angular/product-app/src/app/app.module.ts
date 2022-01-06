@@ -7,6 +7,8 @@ import { DisplayProductComponent } from './display-product/display-product.compo
 import { OperateProductsComponent } from './operate-products/operate-products.component';
 import { IfDirective } from 'src/structural-directive/my.directive';
 import { NullDefaultValueDirective } from './attribute-directive/my-directive.directive';
+import { ChildComponent } from './child/child.component';
+import { ParentComponent } from './parent/parent.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { NullDefaultValueDirective } from './attribute-directive/my-directive.di
     DisplayProductComponent,
     OperateProductsComponent,
     IfDirective,
-    NullDefaultValueDirective
+    NullDefaultValueDirective,
+    ChildComponent,
+    ParentComponent
   ],
   imports: [
     BrowserModule,FormsModule
