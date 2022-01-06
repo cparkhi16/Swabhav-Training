@@ -2,10 +2,10 @@ import { Directive, Input,TemplateRef,ViewContainerRef } from '@angular/core';
 
 
 @Directive({
-    selector: '[delayRendering]'
+    selector: '[if]'
   })
-  export class DelayRenderingDirective {
-    variable!:string
+  export class IfDirective {
+    variable!:boolean
     constructor(
       private template: TemplateRef<any>,
       private container: ViewContainerRef
@@ -15,12 +15,12 @@ import { Directive, Input,TemplateRef,ViewContainerRef } from '@angular/core';
     set delayRendering(delayTime: number) { }*/
 
     @Input()
-    set delayRendering(variable: string) {this.variable=variable }
+    set if(variable: boolean) {this.variable=variable }
     ngOnInit() {
        /* setTimeout(() => {
           this.container.createEmbeddedView(this.template);
         }, this.delayRendering);*/
-        if (this.variable=="false"){
+        if (this.variable==false){
             this.container.createEmbeddedView(this.template);
         }
       }
