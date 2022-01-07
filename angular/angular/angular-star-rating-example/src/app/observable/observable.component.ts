@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { from } from 'rxjs';
+import { ObsService } from '../myservice/obs.service';
 
 @Component({
   selector: 'app-observable',
@@ -9,9 +10,10 @@ import { from } from 'rxjs';
   styleUrls: ['./observable.component.css']
 })
 export class ObservableComponent implements OnInit {
-
-  constructor() { }
-
+  myobs!:Observable<any>
+  constructor(private obs:ObsService) { }
+  courses:any[]=[]
+  courseName:any[]=[]
   ngOnInit(): void {
     // this.getAsync3().subscribe((data)=>{
     //   console.log("Data from observable ",data)
@@ -21,8 +23,16 @@ export class ObservableComponent implements OnInit {
     //   console.log("Observable complete")
     // })
     //this.getAsync2()
-    this.getAsync4()
-    
+    //this.getAsync4()
+    this.myobs=this.obs.getDataFromApi()
+    this.myobs.subscribe((data)=>{
+      console.log(" Data ",JSON.parse(data))
+      this.courses=JSON.parse(data)
+      for(let c of this.courses){
+        this.courseName.push(c.Name)
+      }
+      console.log("Course names ",this.courseName)
+    })
   }
   getAsync1():Observable<any>{
     const obs= new Observable<any>((observer)=>{
@@ -52,4 +62,5 @@ export class ObservableComponent implements OnInit {
    }))
    .subscribe(data => console.log(data))
 }
+
 }
