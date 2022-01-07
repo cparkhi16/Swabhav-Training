@@ -1,0 +1,4 @@
+<label>Child to Parent :</label><input type="text" [(ngModel)]="rating" placeholder="Child to Parent"/>
+<app-child (childRating)="parentHandler($event)"></app-child> 
+<!-- <label>Parent To Child :</label><input type="text" [(ngModel)]="rating" placeholder="Parent to Child"/>
+<app-child [rating]="rating"></app-child>  -->
