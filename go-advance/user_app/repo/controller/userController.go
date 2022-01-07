@@ -143,16 +143,17 @@ func (uc *UserController) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	if page != "" && limit != "" {
 		pageInt, _ := strconv.Atoi(page)
 		limitInt, _ := strconv.Atoi(limit)
-
+		if limitInt < 0 && pageInt >= 2 {
+			return
+		}
 		//http://localhost:9000/users?limit=2&page=1&hobby=Cycling
 		//http://localhost:9000/users?limit=2&page=1
 		users = uc.us.GetAllUsersWithPagination(pageInt, limitInt, hob, &users)
-
 		w.Header().Set("User-Count", strconv.Itoa(len(users)))
 		fmt.Println("Users slice len ", len(users))
 		json.NewEncoder(w).Encode(users)
 	} else {
-		p := []string{"Hobbies", "Courses"}
+		p := []string{"Hobbies", "Courses", "Passport"}
 		uc.us.GetUsers(&users, p)
 		fmt.Println("Users slice len ", len(users))
 		w.Header().Set("User-Count", strconv.Itoa(len(users)))
@@ -192,13 +193,15 @@ func (uc *UserController) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	var deleteUser m.User
 	params := mux.Vars(r)
 	id, erID := uuid.FromString(params["id"])
+	hardDelete := r.FormValue("hardDelete")
 	if erID == nil {
 		if id != uuid.Nil {
 			deleteUser.ID = id
-			deleteErr := uc.us.DeleteUser(&deleteUser)
+			deleteErr := uc.us.DeleteUser(&deleteUser, hardDelete)
 			if deleteErr != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				uc.us.Logger.Error().Msg("Error deleting user ")
+				fmt.Fprintf(w, deleteErr.Error())
 			}
 		} else {
 			w.WriteHeader(http.StatusBadRequest)

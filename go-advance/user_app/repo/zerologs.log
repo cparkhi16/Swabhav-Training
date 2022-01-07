@@ -514,3 +514,78 @@
 {"level":"error","time":"2021-12-27T19:40:42+05:30","message":"Error deleting course"}
 {"level":"error","time":"2021-12-27T19:41:14+05:30","message":"Course with same name already exists in db"}
 {"level":"error","time":"2021-12-27T19:41:14+05:30","message":"Error updating course detail course with same name already exists in db"}
+{"level":"error","time":"2021-12-27T19:42:08+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-27T19:42:08+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-27T19:42:33+05:30","message":"No passport found for user"}
+{"level":"error","time":"2021-12-27T19:43:14+05:30","message":"No passport found for user"}
+{"level":"error","time":"2021-12-27T19:43:36+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2021-12-28T09:00:57+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T09:00:57+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T10:26:38+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T10:26:38+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T10:27:40+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2021-12-28T13:18:52+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T13:18:52+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T13:19:12+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2021-12-28T13:19:25+05:30","message":"No passport found for user"}
+{"level":"error","time":"2021-12-28T13:20:08+05:30","message":"No passport found for user"}
+{"level":"error","time":"2021-12-28T13:21:13+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T13:21:13+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T13:21:26+05:30","message":"No passport found for user"}
+{"level":"error","time":"2021-12-28T13:44:30+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T13:44:30+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T13:50:41+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T13:50:41+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T20:43:14+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T20:43:14+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T20:43:50+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2021-12-28T20:44:59+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2021-12-28T20:44:59+05:30","message":"Starting server"}
+{"level":"error","time":"2021-12-28T20:45:02+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2021-12-28T20:45:26+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-02T13:56:37+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T13:56:37+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T14:00:58+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-02T14:00:58+05:30","message":"Could not find course"}
+{"level":"error","time":"2022-01-02T14:00:58+05:30","message":"Error deleting course"}
+{"level":"error","time":"2022-01-02T14:04:11+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-02T14:04:11+05:30","message":"Could not find course"}
+{"level":"error","time":"2022-01-02T14:04:11+05:30","message":"Error deleting course"}
+{"level":"error","time":"2022-01-02T14:04:22+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-02T14:04:22+05:30","message":"Could not find course"}
+{"level":"error","time":"2022-01-02T14:04:22+05:30","message":"Error deleting course"}
+{"level":"error","time":"2022-01-02T14:09:00+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T14:09:00+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T14:09:06+05:30","message":"Could not find the user "}
+{"level":"error","time":"2022-01-02T14:09:06+05:30","message":"Error deleting user "}
+{"level":"error","time":"2022-01-02T14:10:32+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T14:10:32+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T14:10:37+05:30","message":"Could not find the user "}
+{"level":"error","time":"2022-01-02T14:10:37+05:30","message":"Error deleting user "}
+{"level":"error","time":"2022-01-02T14:11:18+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T14:11:18+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T14:12:19+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2022-01-02T14:14:18+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-02T14:15:19+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2022-01-02T14:19:51+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T14:19:51+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T14:24:36+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T14:24:36+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:17:11+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:17:11+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:19:57+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:19:57+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:30:02+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:30:02+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:34:21+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:34:21+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:35:27+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:35:27+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:36:03+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:36:03+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-02T19:40:24+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-02T19:40:24+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-07T12:07:21+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-07T12:07:21+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-07T12:13:30+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-07T12:13:30+05:30","message":"Starting server"}

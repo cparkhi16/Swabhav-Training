@@ -16,6 +16,7 @@ type Repository interface {
 	Add(uow *UnitOfWork, out interface{}) error
 	Update(uow *UnitOfWork, out interface{}) error
 	Delete(uow *UnitOfWork, out interface{}) error
+	HardDelete(uow *UnitOfWork, entity interface{}) error
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error
 	GetCount(uow *UnitOfWork, model interface{}, out interface{}, condition string, value interface{}) error
@@ -159,7 +160,7 @@ func (repository *GormRepository) GetAllForTenant(uow *UnitOfWork, out interface
 	for _, association := range preloadAssociations {
 		db = db.Preload(association)
 	}
-	return db.Where("id = ?", tenantID).Find(out).Error
+	return db.Debug().Where("id = ?", tenantID).Find(out).Error
 }
 
 // Add specified Entity
@@ -177,4 +178,8 @@ func (repository *GormRepository) Update(uow *UnitOfWork, entity interface{}) er
 // Delete specified Entity
 func (repository *GormRepository) Delete(uow *UnitOfWork, entity interface{}) error {
 	return uow.DB.Debug().Delete(entity).Error
+}
+
+func (repository *GormRepository) HardDelete(uow *UnitOfWork, entity interface{}) error {
+	return uow.DB.Debug().Unscoped().Delete(entity).Error
 }

@@ -48,6 +48,9 @@ func (cc *CourseController) GetAllCourses(w http.ResponseWriter, r *http.Request
 	} else {
 		pageInt, _ = strconv.Atoi(page)
 		limitInt, _ = strconv.Atoi(limit)
+		if limitInt < 0 && pageInt >= 2 {
+			return
+		}
 	}
 	//http://localhost:9000/courses?limit=2&page=1
 	courses = cc.cs.GetAllCoursesWithPagination(pageInt, limitInt, &courses)
@@ -92,11 +95,12 @@ func (cc *CourseController) DeleteCourse(w http.ResponseWriter, r *http.Request)
 		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
 	}
 	params := mux.Vars(r)
+	hardDelete := r.FormValue("hardDelete")
 	id, erID := uuid.FromString(params["id"])
 	if erID == nil {
 		if id != uuid.Nil {
 			deleteCourse.ID = id
-			e := cc.cs.DeleteCourse(&deleteCourse)
+			e := cc.cs.DeleteCourse(&deleteCourse, hardDelete)
 			if e != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				cc.cs.Logger.Error().Msg("Error deleting course")

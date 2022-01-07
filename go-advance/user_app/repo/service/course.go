@@ -71,27 +71,47 @@ func (cs *CourseService) UpdateCourse(course *model.Course) error {
 	return nil
 }
 
-func (cs *CourseService) DeleteCourse(course *model.Course) error {
+func (cs *CourseService) DeleteCourse(course *model.Course, hardDelete string) error {
 	uow := repository.NewUnitOfWork(cs.DB, false)
 	count := cs.GetCourseCount("id = ?", course.ID)
+	fmt.Println("count of course ", count)
 	if count == 0 {
 		cs.Logger.Error().Msg("Could not find course")
 		err := fmt.Errorf("could not find course")
 		return err
 	}
-	err := cs.Repo.Delete(uow, course)
-	if err != nil {
-		uow.Complete()
-		cs.Logger.Error().Msgf("Error deleting course %v", err)
-		return err
+	if hardDelete == "false" {
+		fmt.Println("Soft delete course -=-")
+		err := cs.Repo.Delete(uow, course)
+		if err != nil {
+			uow.Complete()
+			cs.Logger.Error().Msgf("Error deleting course %v", err)
+			return err
+		}
+		we := cs.Repo.ClearAssociation(uow, course, "users")
+		if we != nil {
+			uow.Complete()
+			cs.Logger.Error().Msgf("Error while deleting associated users %v ", we)
+			return we
+		}
+		uow.Commit()
+	} else if hardDelete == "true" {
+		fmt.Println("Hard delete course -=-")
+		hardDeleteErr := cs.Repo.HardDelete(uow, course)
+		if hardDeleteErr != nil {
+			uow.Complete()
+			fmt.Println("Error -> ", hardDeleteErr)
+			cs.Logger.Error().Msg(hardDeleteErr.Error())
+			return hardDeleteErr
+		}
+		we := cs.Repo.ClearAssociation(uow, course, "users")
+		if we != nil {
+			uow.Complete()
+			cs.Logger.Error().Msgf("Error while deleting associated users %v ", we)
+			return we
+		}
+		uow.Commit()
 	}
-	we := cs.Repo.ClearAssociation(uow, course, "users")
-	if we != nil {
-		uow.Complete()
-		cs.Logger.Error().Msgf("Error while deleting associated users %v ", we)
-		return we
-	}
-	uow.Commit()
 	return nil
 }
 

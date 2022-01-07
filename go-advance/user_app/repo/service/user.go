@@ -122,7 +122,7 @@ func (us *UserService) UpdateUser(user *model.User) error {
 	return nil
 }
 
-func (us *UserService) DeleteUser(user *model.User) error {
+func (us *UserService) DeleteUser(user *model.User, hardDelete string) error {
 	uow := repository.NewUnitOfWork(us.DB, false)
 	count := us.GetUsersCount("id = ?", user.ID)
 	if count == 0 {
@@ -130,33 +130,53 @@ func (us *UserService) DeleteUser(user *model.User) error {
 		err := fmt.Errorf("could not find the user")
 		return err
 	}
-	er := us.Repo.Delete(uow, user)
-	if er != nil {
-		uow.Complete()
-		//fmt.Println("Error deleting user")
-		us.Logger.Error().Msgf("Error deleting user %v", er)
-	} else {
-		var h []model.Hobby
-		e := uow.DB.Debug().Where("user_id = ?", user.ID).Find(&h).Error
-		if len(h) != 0 {
-			if e != nil {
-				us.Logger.Error().Msg("Error finding associated hobbies for user")
-			} else {
-				for _, val := range h {
-					ef := us.Repo.Delete(uow, &val)
-					if ef != nil {
-						uow.Complete()
-						us.Logger.Error().Msgf("Error deleting hobby for this user %v", ef)
+	if hardDelete == "false" {
+		fmt.Println("Soft delete -=-")
+		er := us.Repo.Delete(uow, user)
+		if er != nil {
+			uow.Complete()
+			us.Logger.Error().Msgf("Error deleting user %v", er)
+		} else {
+			var h []model.Hobby
+			e := uow.DB.Debug().Where("user_id = ?", user.ID).Find(&h).Error
+			if len(h) != 0 {
+				if e != nil {
+					us.Logger.Error().Msg("Error finding associated hobbies for user")
+				} else {
+					for _, val := range h {
+						ef := us.Repo.Delete(uow, &val)
+						if ef != nil {
+							uow.Complete()
+							us.Logger.Error().Msgf("Error deleting hobby for this user %v", ef)
+							return ef
+						}
 					}
 				}
 			}
+			we := us.Repo.ClearAssociation(uow, user, "courses")
+			if we != nil {
+				uow.Complete()
+				us.Logger.Error().Msgf("Error while deleting associated courses %v ", we)
+				return we
+			}
+			us.FindAndDeletePassport(user)
+			uow.Commit()
+		}
+	} else if hardDelete == "true" {
+		fmt.Println("Hard delete =-=")
+		hardDeleteErr := us.Repo.HardDelete(uow, user)
+		if hardDeleteErr != nil {
+			uow.Complete()
+			fmt.Println("Error -> ", hardDeleteErr)
+			us.Logger.Error().Msg(hardDeleteErr.Error())
+			return hardDeleteErr
 		}
 		we := us.Repo.ClearAssociation(uow, user, "courses")
 		if we != nil {
 			uow.Complete()
 			us.Logger.Error().Msgf("Error while deleting associated courses %v ", we)
+			return we
 		}
-		us.FindAndDeletePassport(user)
 		uow.Commit()
 	}
 	return nil
@@ -167,7 +187,7 @@ func (us *UserService) GetAllUsersWithPagination(page, limit int, hobby []string
 	offset := (page - 1) * limit
 	queryLimit := repository.Limit(limit)
 	queryOffset := repository.Offset(offset)
-	preload := []string{"Hobbies", "Passport"}
+	preload := []string{"Hobbies", "Courses", "Passport"}
 	pre := repository.PreloadAssociations(preload)
 	qps := []repository.QueryProcessor{queryLimit, queryOffset, pre}
 	result := us.Repo.GetAllWithQueryProcessor(uow, users, qps)
