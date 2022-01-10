@@ -1,11 +1,22 @@
-<div *ngIf="show;else elseBlock">BLUE-BALL-GAME<div></div>
-<mat-slider min="1" max="50" step="5"  [(ngModel)]="val"></mat-slider>
+<div *ngIf="show;else elseBlock">BLUE-BALL-GAME
+    <h2>Rules </h2>
+    <ul>
+        <li>If You select ball with correct number, you will win the game and ball will be shown ib blue colour</li>
+        <li>If you select ball with number less than winning number then the ball will be shown in green colour</li>
+        <li>If you select ball with number greater than winning number then the ball will be shown in red color</li>
+        <!-- <li>If you choose total balls less than 10 then you will get 2 attempts or else attempts will be equal to your selected total balls value sum + 2</li> -->
+    </ul>
+<mat-slider min="10" max="50" step="1"  [(ngModel)]="val"></mat-slider>
 {{val}}
 <button (click)="getVal()">Start Game</button>
 </div>
 <ng-template #elseBlock>
+    <div *ngIf="gameResult">{{msg}} 
+        <button type="button" (click)="exit()">Exit</button>
+        <button type="button" (click)="restart()">Restart</button>
+    </div>
     <div>Remaining Attempts {{remainingAttempts}}</div>
-    <div *ngFor="let data of balls" [style.background-color]="'yellow'">
+    <div *ngFor="let data of balls">
         <div class="circle float-left" (click)="ballHit(data)" [style.background-color]="getBallColor(data)">{{data.id}}</div>
     </div>
 </ng-template>

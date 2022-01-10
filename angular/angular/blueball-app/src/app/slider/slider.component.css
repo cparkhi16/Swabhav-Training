@@ -2,6 +2,7 @@ mat-slider {
   width: 300px;
 }
 .circle {
+  cursor: pointer;
   background: lightblue;
   border-radius: 50%;
   width: 100px;
