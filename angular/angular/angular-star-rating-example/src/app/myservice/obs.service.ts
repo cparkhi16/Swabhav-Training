@@ -34,4 +34,14 @@ export class ObsService {
   //   }))
   // }
   }
+
+  getRandomDataFromApi():Observable<any>{
+    return interval(5000).pipe(map(n=>{return this.http.get("http://localhost:9000/getRandomNumber", {responseType: 'text'})}))
+  }
+  validateUser(email:string,password:string):Observable<any>{
+    return this.http.post<any>("http://localhost:9000/login",{"Email":email,"Password":password})
+  }
+  validateToken(token:any){
+    return this.http.post<any>("http://localhost:9000/validateToken",{"Token":token})
+  }
 }

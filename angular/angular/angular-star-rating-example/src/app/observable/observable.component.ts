@@ -11,9 +11,11 @@ import { ObsService } from '../myservice/obs.service';
 })
 export class ObservableComponent implements OnInit {
   myobs!:Observable<any>
+  newObs!:Observable<any>
   constructor(private obs:ObsService) { }
   courses:any[]=[]
   courseName:any[]=[]
+  randomData:any
   ngOnInit(): void {
     // this.getAsync3().subscribe((data)=>{
     //   console.log("Data from observable ",data)
@@ -22,7 +24,7 @@ export class ObservableComponent implements OnInit {
     // },()=>{
     //   console.log("Observable complete")
     // })
-    //this.getAsync2()
+    //this.getAsync3()
     //this.getAsync4()
     this.myobs=this.obs.getDataFromApi()
     this.myobs.subscribe((data)=>{
@@ -33,6 +35,20 @@ export class ObservableComponent implements OnInit {
       }
       console.log("Course names ",this.courseName)
     })
+    this.newObs=this.obs.getRandomDataFromApi()
+    this.newObs.subscribe({
+  
+      next:data=>{
+        console.log("Data random ---",data.subscribe((dt:any)=>{
+          console.log(dt)
+          this.randomData=JSON.parse(dt)
+        }))
+        //console.log(JSON.parse(data))
+      },
+      error:err=>{console.log(err)},
+      complete:()=>{console.log("Completed")}
+    })
+    console.log("Final data ",this.randomData)
   }
   getAsync1():Observable<any>{
     const obs= new Observable<any>((observer)=>{
@@ -40,6 +56,7 @@ export class ObservableComponent implements OnInit {
       observer.next(80)
       //throw new Error("a error occured ")
       observer.complete()
+      observer.next(100)
     })
     return obs
   }
@@ -50,6 +67,7 @@ export class ObservableComponent implements OnInit {
     })
   }
   getAsync3():Observable<any>{
+    console.log("ASYNC 3")
     return interval(2000).pipe(map((n,i)=>{
       return {"Data":n,"Time":new Date(),"Index":i}
     }))

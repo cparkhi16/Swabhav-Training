@@ -1,0 +1,47 @@
+<div class="container" *ngIf="!isValidToken;else elseBlock">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+            <!-- <div class ="alert alert-danger"  *ngIf="myForm.get('email')?.invalid && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+        Please provide a valid email address.
+      </div> -->
+      <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('maxlength') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+        Please provide email address upto length of max 50 characters.
+    </div>
+      <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('email') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+        Please provide a valid email address.
+    </div>
+            <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('required') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+                Please provide a email address.
+            </div>
+            <!-- <div class ="alert alert-danger"  *ngIf="myForm.get('email').hasError('email') && myForm.get('email')?.touched)">
+        Please provide a valid email address.
+      </div> -->
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" formControlName="password" class="form-control" id="exampleInputPassword1">
+            <div class="alert alert-danger"
+                *ngIf="myForm.get('password')?.invalid && (myForm.get('password')?.dirty || myForm.get('password')?.touched)">
+                Please provide a valid password.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Passport</label>
+            <input type="text" formControlName="passport" class="form-control" id="exampleInputPassport">
+            <!-- Is passport valid {{myForm.get('passport')?.hasError('passportValidity')}} -->
+            <div class="alert alert-danger"
+                *ngIf="myForm.get('passport')?.hasError('inValidPassport')">
+                Please provide a valid passport.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid">Submit</button>
+        <div>Is Form valid ? {{myForm.valid}}</div>
+    </form>
+</div>
+<ng-template #elseBlock>
+    <div>Content Page</div>
+</ng-template>
