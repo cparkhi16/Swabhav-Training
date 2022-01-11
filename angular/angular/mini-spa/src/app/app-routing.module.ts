@@ -7,8 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [{path:'',component:HomeComponent},
-{path:'home',component:HomeComponent,
-children:[{path:'feedback',component:FeedbackComponent}]},
+{path:'home',
+children:[{path:'',component:HomeComponent,pathMatch:'full'},{path:'feedback',component:FeedbackComponent}]},
 {path:'contact',component:ContactComponent},
 {path:'about',component:AboutComponent},
 {path:'**',component:NotFoundComponent}];
