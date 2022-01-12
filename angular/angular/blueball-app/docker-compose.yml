@@ -1,0 +1,6 @@
+version: '3'
+services:
+  blueballapp:
+    image: cparkhi16/blueball-app
+    ports:
+      - 8081:80
