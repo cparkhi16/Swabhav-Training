@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!isValidToken;else elseBlock">
+<div class="container" *ngIf="!isValidToken;">
     <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -43,6 +43,6 @@
         <div>Is Form valid ? {{myForm.valid}}</div>
     </form>
 </div>
-<ng-template #elseBlock>
+<!-- <ng-template #elseBlock>
     <app-user-detail [userID]="userid"></app-user-detail>
-</ng-template>
+</ng-template> -->

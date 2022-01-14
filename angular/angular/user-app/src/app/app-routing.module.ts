@@ -8,10 +8,10 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 const routes: Routes = [
     {
         path:'register',children:[
-    {path:'',component:RegisterComponent,pathMatch:"full"},{path:'userDetail',component:UserDetailComponent}
+    {path:'',component:RegisterComponent,pathMatch:"full"},{path:'userDetail/:userId',component:UserDetailComponent}
 ]},{
     path:'login',children:[
-        {path:'',component:LoginComponent,pathMatch:"full"},{path:'userDetail',component:UserDetailComponent}]}];
+        {path:'',component:LoginComponent,pathMatch:"full"},{path:'userDetail/:userId',component:UserDetailComponent}]}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

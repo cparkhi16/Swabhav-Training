@@ -2,7 +2,7 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators,ValidationErrors,AbstractControl } from '@angular/forms';
 import { ObsService } from '../myservice/obs.service';
 import { ValidatorFn } from '@angular/forms';
-
+import { ActivatedRoute, Router} from '@angular/router'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit,DoCheck {
   userid:any
   myForm: FormGroup;
   isValidToken:any
-  constructor(private obs:ObsService) { 
+  constructor(private obs:ObsService,private router:Router,private route: ActivatedRoute) { 
     //localStorage.setItem('Token',"ABC")
     this.myForm = new FormGroup({
       email: new FormControl('',[Validators.email,Validators.required,Validators.maxLength(50)]),
@@ -68,9 +68,10 @@ export class LoginComponent implements OnInit,DoCheck {
       console.log("User ID in parent ",this.userid)
       localStorage.setItem('Token', data.Token);
       this.isValidToken=true
+      this.router.navigate(['userDetail/',this.userid], {relativeTo:this.route});
     },
       error:(err)=>{console.log("Error ",err)}
-    })
+    })  
   }
 
   

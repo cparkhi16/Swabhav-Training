@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,Validators,FormControl } from '@angular/forms';
 import { ObsService } from '../myservice/obs.service';
+import { ActivatedRoute, Router} from '@angular/router'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -10,7 +11,7 @@ export class RegisterComponent implements OnInit {
   isValidToken:any
   userid:any
   myForm:any
-  constructor(private obs:ObsService) {
+  constructor(private obs:ObsService,private router:Router,private route: ActivatedRoute) {
     this.isValidToken=false
    }
 
@@ -30,6 +31,7 @@ export class RegisterComponent implements OnInit {
       console.log("User ID in register ",this.userid)
       localStorage.setItem('Token', data.Token);
       this.isValidToken=true
+      this.router.navigate(['userDetail/',this.userid], {relativeTo:this.route});
     },
       error:(err)=>{console.log("Error ",err)}
     })

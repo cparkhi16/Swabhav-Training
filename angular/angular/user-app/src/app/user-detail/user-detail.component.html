@@ -1,4 +1,5 @@
 <p>user-detail works! {{userID}}</p>
+<div class="container">
 <table *ngIf="isHobbyData;else h">
     <h3>Your Hobbies</h3>
     <tr>
@@ -14,8 +15,29 @@
 <ng-template #h>
     <h3>You haven't registered your hobbies</h3>
 </ng-template>
+<button type="button" class="btn btn-info btn-lg" (click)="openModal()">Register New Hobby</button>
+    <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+         <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                     <div class="modal-header">
+                           <h4 class="modal-title">Model Title</h4>
+                           <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+                         </div>
+                <div class="modal-body">
+                    <label for="exampleInputEmail1" class="form-label">Enter your hobby name</label>
+                    <input type="email"  class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" [(ngModel)]="hobbyName">
+                         </div>
+                     <div class="modal-footer">
+                           <button type="button" class="btn btn-default" (click)="onCloseHandled()" >Add Hobby</button>
+                         </div>
+            </div>
+             </div>
+ </div>
+  <!-- <p>ADD HOBBY</p> -->
+</div>
 <!-- <button class=".example1">Add Hobby</button> -->
-
+<div class="container">
 <table *ngIf="isCourseData;else e">
     <h3>Your Enrolled Courses</h3>
     <tr>
@@ -31,8 +53,67 @@
 <ng-template #e>
     <h5>You haven't enrolled in any courses </h5>
 </ng-template>
-<h3 *ngIf="isPassportData;else t">Passport details 
+<label for="exampleInputEmail1" class="form-label">Add Course: </label>
+    <select (change)="onCourseChange()" [(ngModel)]="SelectedCourse">
+        <option *ngFor="let course of userCourses">
+            <!-- {{course}} -->
+            <!-- <a class="dropdown-item" href="#">{{course}}</a> -->
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{course}}
+                </a>
+            </div>              
+        </option>
+    </select>
+</div>
+<div class="container">
+<div *ngIf="isPassportData;else t">
+<!-- <h3 *ngIf="isPassportData;else t">Passport details 
     <h5>{{passport.PassportID}}</h5>
-    <h5>{{passport.ExpiryData}}</h5>
-</h3>
-<ng-template #t>You haven't issued for passport</ng-template>
+    <h5>{{passport.ExpiryDate}}</h5>
+</h3> -->
+<button type="button" class="btn btn-info btn-lg" (click)="openModalForPassport()">View Passport Details</button>
+    <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayPassport}">
+         <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                     <div class="modal-header">
+                           <h4 class="modal-title">Model Title</h4>
+                           <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button>
+                         </div>
+                <div class="modal-body">
+                    <label for="exampleInputEmail1" class="form-label">Passport ID :</label>{{passport?.PassportID}}<br>
+                    <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>{{passport?.ExpiryDate}}
+                         </div>
+                     <div class="modal-footer">
+                           <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Close</button>
+                         </div>
+            </div>
+             </div>
+ </div>
+</div>
+<ng-template #t>
+    <!-- You haven't issued for passport -->
+    <button type="button" class="btn btn-info btn-lg" (click)="openModalForPassport()">Add Passport Details</button>
+    <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayPassport}">
+         <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                     <div class="modal-header">
+                           <h4 class="modal-title">Passport Details</h4>
+                           <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button>
+                         </div>
+                <div class="modal-body">
+                    <label for="exampleInputEmail1" class="form-label">Passport ID :</label>
+                    <input type="email"  class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" [(ngModel)]="newPassportID">
+                    <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>
+                    <input type="email"  class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" [(ngModel)]="newExpiryDateForPassport">
+                         </div>
+                     <div class="modal-footer">
+                           <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Add Details</button>
+                         </div>
+            </div>
+             </div>
+ </div>
+</ng-template>
+</div>
