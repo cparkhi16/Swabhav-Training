@@ -44,7 +44,18 @@ func (us *UserService) GetUsersCount(condition string, value interface{}) int {
 	}
 	return c
 }
-
+func (us *UserService) UnEnrollCourse(user *model.User, courseid uuid.UUID) error {
+	uow := repository.NewUnitOfWork(us.DB, false)
+	var c model.Course
+	c.ID = courseid
+	err := us.Repo.DeleteAssociation(uow, user, "Courses", c)
+	if err != nil {
+		uow.Complete()
+		return err
+	}
+	uow.Commit()
+	return nil
+}
 func (us *UserService) GetUsers(users *[]model.User, preloadAssociations []string) []model.User {
 	uow := repository.NewUnitOfWork(us.DB, true)
 	pre := repository.PreloadAssociations(preloadAssociations)
@@ -90,7 +101,7 @@ func (us *UserService) GetUserHobbies(user *model.User) []model.Hobby {
 func (us *UserService) UpdateUser(user *model.User) error {
 	uow := repository.NewUnitOfWork(us.DB, false)
 	count := us.GetUsersCount("id = ?", user.ID)
-	if count == 0 || user.Password == "" {
+	if count == 0 {
 		us.Logger.Error().Msg("Could not find the user or user password is empty")
 		err := fmt.Errorf("could not find the user or user password is empty")
 		return err
@@ -104,8 +115,10 @@ func (us *UserService) UpdateUser(user *model.User) error {
 			return err
 		}
 	}
-	hashedPassword := hash.CreateHashForPassword(user.Password)
-	user.Password = hashedPassword
+	if user.Password != "" {
+		hashedPassword := hash.CreateHashForPassword(user.Password)
+		user.Password = hashedPassword
+	}
 	if !us.CheckIfPassportIDExists(&user.Passport) {
 		er := us.Repo.Update(uow, user)
 		if er != nil {

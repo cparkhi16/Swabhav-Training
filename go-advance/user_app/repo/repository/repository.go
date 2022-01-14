@@ -16,6 +16,7 @@ type Repository interface {
 	Add(uow *UnitOfWork, out interface{}) error
 	Update(uow *UnitOfWork, out interface{}) error
 	Delete(uow *UnitOfWork, out interface{}) error
+	DeleteAssociation(uow *UnitOfWork, entity interface{}, tableName string, associationToBeDeleted interface{}) error
 	HardDelete(uow *UnitOfWork, entity interface{}) error
 	GetFirst(uow *UnitOfWork, out interface{}, queryProcessors ...QueryProcessor) error
 	GetAllWithQueryProcessor(uow *UnitOfWork, out interface{}, queryProcessors []QueryProcessor) error
@@ -86,6 +87,10 @@ func (repository *GormRepository) GetFirst(uow *UnitOfWork, out interface{}, que
 		return err
 	}
 	return nil
+}
+func (repository *GormRepository) DeleteAssociation(uow *UnitOfWork, entity interface{}, tableName string, associationToBeDeleted interface{}) error {
+	db := uow.DB
+	return db.Debug().Model(entity).Association(tableName).Delete(associationToBeDeleted).Error
 }
 func PreloadAssociations(preloadAssociations []string) QueryProcessor {
 	return func(db *gorm.DB, out interface{}) (*gorm.DB, error) {

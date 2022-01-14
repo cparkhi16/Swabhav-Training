@@ -129,3 +129,11 @@ func (cs *CourseService) GetAllCoursesWithPagination(page, limit int, courses *[
 	//o := out.(*[]m.Course)
 	return *courses
 }
+func (cs *CourseService) GetCourses(courses *[]model.Course) []model.Course {
+	uow := repository.NewUnitOfWork(cs.DB, true)
+	err := cs.Repo.GetAllWithQueryProcessor(uow, courses, []repository.QueryProcessor{})
+	if err != nil {
+		cs.Logger.Error().Msgf("Error in get all course %v ", err)
+	}
+	return *courses
+}

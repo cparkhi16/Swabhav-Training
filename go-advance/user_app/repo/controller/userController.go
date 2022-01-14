@@ -2,6 +2,7 @@ package controller
 
 import (
 	h "app/hash"
+	"app/model"
 	m "app/model"
 	s "app/service"
 	"encoding/json"
@@ -10,6 +11,7 @@ import (
 	"net/mail"
 	"strconv"
 	"strings"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	uuid "github.com/satori/go.uuid"
@@ -45,7 +47,7 @@ func (uc *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	id, erID := uuid.FromString(params["id"])
 	if erID == nil {
 		w.Header().Set("Content-Type", "application/json")
-		userDetail,_ := uc.us.GetUserById(&user,id,[]string{"Hobbies","Courses","Passport"})
+		userDetail, _ := uc.us.GetUserById(&user, id, []string{"Hobbies", "Courses", "Passport"})
 		json.NewEncoder(w).Encode(userDetail)
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
@@ -54,10 +56,10 @@ func (uc *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 
 }
 func (uc *UserController) ValidateToken(w http.ResponseWriter, r *http.Request) {
-	type Token struct{
+	type Token struct {
 		Token string
 	}
-	type Response struct{
+	type Response struct {
 		IsValidToken bool
 	}
 	var t Token
@@ -74,10 +76,10 @@ func (uc *UserController) ValidateToken(w http.ResponseWriter, r *http.Request) 
 	var res Response
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
-		res=Response{IsValidToken:false}
+		res = Response{IsValidToken: false}
 		//fmt.Fprintf(w, err.Error())
-	}else{
-		res=Response{IsValidToken:true}
+	} else {
+		res = Response{IsValidToken: true}
 	}
 	json.NewEncoder(w).Encode(res)
 }
@@ -85,9 +87,9 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 	var users []m.User
 	users = uc.us.GetUsers(&users, []string{})
 	var login m.Login
-	type Response struct{
+	type Response struct {
 		Token string
-		ID string
+		ID    string
 	}
 	er := json.NewDecoder(r.Body).Decode(&login)
 	if er != nil {
@@ -98,7 +100,7 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 	for _, val := range users {
 		if val.Email == login.Email {
 			if h.ComparePasswords(val.Password, login.Password) {
-				userID=val.ID
+				userID = val.ID
 				validUser = true
 				break
 			}
@@ -106,7 +108,7 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 	}
 	if validUser {
 		validToken, err := generateJWT()
-		r:=Response{Token:validToken,ID:userID.String()}
+		r := Response{Token: validToken, ID: userID.String()}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(r)
 		if err != nil {
@@ -122,8 +124,8 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser m.User
 	//fmt.Println("Here in create user")
-	type Response struct{
-		Token string
+	type Response struct {
+		Token  string
 		UserID string
 	}
 	er := json.NewDecoder(r.Body).Decode(&newUser)
@@ -135,9 +137,9 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if c == 0 {
 		if isValidMailFormat(newUser.Email) {
 			uc.us.AddUser(&newUser)
-			token,_:=generateJWT()
+			token, _ := generateJWT()
 			w.Header().Set("Content-Type", "application/json")
-			res:=Response{Token:token,UserID:newUser.ID.String()}
+			res := Response{Token: token, UserID: newUser.ID.String()}
 			json.NewEncoder(w).Encode(res)
 		} else {
 			uc.us.Logger.Error().Msg("Invalid email format")
@@ -169,6 +171,23 @@ func (uc *UserController) UpdateUserPassportDetail(w http.ResponseWriter, r *htt
 		fmt.Fprintf(w, "Incorrect UUID ")
 	}
 
+}
+func (uc *UserController) DeleteCourseForUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id, erID := uuid.FromString(params["id"])
+	courseid, cerID := uuid.FromString(params["courseid"])
+	if erID != nil || cerID != nil {
+		uc.us.Logger.Error().Msg("Error in converting id ")
+		return
+	}
+	var user model.User
+	user.ID = id
+	err := uc.us.UnEnrollCourse(&user, courseid)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		uc.us.Logger.Error().Msgf("Error deleting asscoiated course %v ", err)
+		return
+	}
 }
 func (uc *UserController) AddPassportForUser(w http.ResponseWriter, r *http.Request) {
 	var updateUser m.User
@@ -230,7 +249,7 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, erID := uuid.FromString(params["id"])
 	if erID == nil {
-		if id != uuid.Nil && updateUser.Password != "" {
+		if id != uuid.Nil {
 			updateUser.ID = id
 			e := uc.us.UpdateUser(&updateUser)
 			if e != nil {

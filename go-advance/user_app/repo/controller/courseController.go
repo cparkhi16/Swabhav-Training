@@ -43,17 +43,16 @@ func (cc *CourseController) GetAllCourses(w http.ResponseWriter, r *http.Request
 	var pageInt int
 	var limitInt int
 	if page == "" || limit == "" {
-		pageInt = 1
-		limitInt = 2
+		courses = cc.cs.GetCourses(&courses)
 	} else {
 		pageInt, _ = strconv.Atoi(page)
 		limitInt, _ = strconv.Atoi(limit)
 		if limitInt < 0 && pageInt >= 2 {
 			return
 		}
+		courses = cc.cs.GetAllCoursesWithPagination(pageInt, limitInt, &courses)
 	}
 	//http://localhost:9000/courses?limit=2&page=1
-	courses = cc.cs.GetAllCoursesWithPagination(pageInt, limitInt, &courses)
 	w.Header().Set("Course-Count", strconv.Itoa(len(courses)))
 	fmt.Println("Courses slice len ", len(courses))
 	json.NewEncoder(w).Encode(courses)

@@ -17,6 +17,7 @@ func (uc *UserController) RegisterRoutesForUser(authRouter *mux.Router, nonAuthR
 	nonAuthRouter.HandleFunc("/users", uc.CreateUser).Methods("POST")
 	nonAuthRouter.HandleFunc("/users/{id}/hobbies", uc.GetAllUserHobbies).Methods("GET")
 	nonAuthRouter.HandleFunc("/users/{id}", uc.GetUser).Methods("GET")
+	nonAuthRouter.HandleFunc("/users/{id}/courses/{courseid}", uc.DeleteCourseForUser).Methods("DELETE")
 	authRouter.Use(isAuthorized)
 	authRouter.HandleFunc("/users/{id}/passport", uc.GetUserPassport).Methods("GET")
 	authRouter.HandleFunc("/users/{id}/hobbies", uc.AddHobbiesForUser).Methods("PUT")
