@@ -49,6 +49,7 @@ func (us *UserService) UnEnrollCourse(user *model.User, courseid uuid.UUID) erro
 	var c model.Course
 	c.ID = courseid
 	err := us.Repo.DeleteAssociation(uow, user, "Courses", c)
+	fmt.Println("Error ", err)
 	if err != nil {
 		uow.Complete()
 		return err
