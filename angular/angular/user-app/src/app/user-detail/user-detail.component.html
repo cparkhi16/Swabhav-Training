@@ -1,0 +1,38 @@
+<p>user-detail works! {{userID}}</p>
+<table *ngIf="isHobbyData;else h">
+    <h3>Your Hobbies</h3>
+    <tr>
+        <th>Name</th>
+        <th>Delete</th>
+        <th></th>
+    </tr>
+    <tr *ngFor="let hobby of hobbies">
+        <td>{{hobby.HobbyName}}</td>
+        <td><button (click)="deleteHobby(hobby)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+    </tr>
+</table> 
+<ng-template #h>
+    <h3>You haven't registered your hobbies</h3>
+</ng-template>
+<!-- <button class=".example1">Add Hobby</button> -->
+
+<table *ngIf="isCourseData;else e">
+    <h3>Your Enrolled Courses</h3>
+    <tr>
+        <th>Name</th>
+        <th>Delete</th>
+        <th></th>
+    </tr>
+    <tr *ngFor="let c of courses">
+        <td>{{c.Name}}</td>
+        <td><button (click)="deleteEnrolledCourse(c)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+    </tr>
+</table> 
+<ng-template #e>
+    <h5>You haven't enrolled in any courses </h5>
+</ng-template>
+<h3 *ngIf="isPassportData;else t">Passport details 
+    <h5>{{passport.PassportID}}</h5>
+    <h5>{{passport.ExpiryData}}</h5>
+</h3>
+<ng-template #t>You haven't issued for passport</ng-template>

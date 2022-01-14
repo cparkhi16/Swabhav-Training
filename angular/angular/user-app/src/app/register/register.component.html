@@ -1,0 +1,81 @@
+<div class="container" *ngIf="!isValidToken;else elseBlock">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">First Name</label>
+            <input type="email" formControlName="firstname" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+      <div class="alert alert-danger" *ngIf="myForm.get('firstname')?.hasError('maxlength') && (myForm.get('firstname')?.dirty || myForm.get('firstname')?.touched)">
+        Please provide first name upto length of max 30 characters.
+    </div>
+          <div class="alert alert-danger" *ngIf="myForm.get('firstname')?.hasError('required') && (myForm.get('firstname')?.dirty || myForm.get('firstname')?.touched)">
+                Please provide a first name.
+          </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Last Name</label>
+            <input type="email" formControlName="lastname" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+      <div class="alert alert-danger" *ngIf="myForm.get('lastname')?.hasError('maxlength') && (myForm.get('lastname')?.dirty || myForm.get('lastname')?.touched)">
+        Please provide last name upto length of max 30 characters.
+    </div>
+          <div class="alert alert-danger" *ngIf="myForm.get('lastname')?.hasError('required') && (myForm.get('lastname')?.dirty || myForm.get('lastname')?.touched)">
+                Please provide a last name.
+          </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Address</label>
+            <input type="email" formControlName="address" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+      <div class="alert alert-danger" *ngIf="myForm.get('address')?.hasError('maxlength') && (myForm.get('address')?.dirty || myForm.get('address')?.touched)">
+        Please provide address upto length of max 60 characters.
+    </div>
+          <div class="alert alert-danger" *ngIf="myForm.get('address')?.hasError('required') && (myForm.get('address')?.dirty || myForm.get('address')?.touched)">
+                Please provide a address.
+          </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+      <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('maxlength') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+        Please provide email address upto length of max 50 characters.
+    </div>
+      <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('email') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+        Please provide a valid email address.
+    </div>
+            <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('required') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+                Please provide a email address.
+            </div>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" formControlName="password" class="form-control" id="exampleInputPassword1">
+            <div class="alert alert-danger"
+                *ngIf="myForm.get('password')?.invalid && (myForm.get('password')?.dirty || myForm.get('password')?.touched)">
+                Please provide a valid password.
+            </div>
+        </div>
+        <!-- <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Passport</label>
+            <input type="text" formControlName="passport" class="form-control" id="exampleInputPassport">
+            <div class="alert alert-danger"
+                *ngIf="myForm.get('passport')?.hasError('inValidPassport')">
+                Please provide a valid passport.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Number of Hobbies</label>
+            <input type="text" formControlName="numberOfHobbies" class="form-control" id="exampleInputPassport">
+            <div class="alert alert-danger"
+                *ngIf="myForm.get('passport')?.hasError('inValidPassport')">
+                Please provide hobbies number greater than 0.
+            </div>
+        </div> -->
+        <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid">Submit</button>
+        <div>Is Form valid ? {{myForm.valid}}</div>
+    </form>
+</div>
+<ng-template #elseBlock>
+    <app-user-detail [userID]="userid"></app-user-detail>
+</ng-template>
