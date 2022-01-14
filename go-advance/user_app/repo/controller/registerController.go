@@ -12,9 +12,11 @@ import (
 var mySigningKey = []byte("captainjacksparrowsayshi")
 
 func (uc *UserController) RegisterRoutesForUser(authRouter *mux.Router, nonAuthRouter *mux.Router) {
-	nonAuthRouter.HandleFunc("/login", uc.GetUserToken).Methods("GET")
+	nonAuthRouter.HandleFunc("/login", uc.GetUserToken).Methods("POST")
+	nonAuthRouter.HandleFunc("/validateToken", uc.ValidateToken).Methods("POST")
 	nonAuthRouter.HandleFunc("/users", uc.CreateUser).Methods("POST")
 	nonAuthRouter.HandleFunc("/users/{id}/hobbies", uc.GetAllUserHobbies).Methods("GET")
+	nonAuthRouter.HandleFunc("/users/{id}", uc.GetUser).Methods("GET")
 	authRouter.Use(isAuthorized)
 	authRouter.HandleFunc("/users/{id}/passport", uc.GetUserPassport).Methods("GET")
 	authRouter.HandleFunc("/users/{id}/hobbies", uc.AddHobbiesForUser).Methods("PUT")

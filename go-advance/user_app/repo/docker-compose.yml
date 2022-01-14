@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    #image: cparkhi16/userapp
+    container_name: myapp
+    build: .
+    ports:
+      - '9000:9000'
+    restart: on-failure
+    depends_on:
+      - userdb
+    links:
+      - userdb
+  userdb:
+    image: mysql:8.0.13
+    container_name: users_db
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_ROOT_PASSWORD: "hello"
+      MYSQL_DATABASE: "userdb"
+    volumes: 
+      - db_mysql:/var/lib/mysql
+
+volumes: 
+  db_mysql:

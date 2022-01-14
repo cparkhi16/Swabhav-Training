@@ -8,7 +8,7 @@ import (
 	"app/service"
 	"log"
 	"net/http"
-
+	//"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -16,10 +16,13 @@ import (
 )
 
 func main() {
+	/* depends_on vs links , scratch*/
 	dbConn := "root:hello@tcp(127.0.0.1:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
+	//dbConn:="root:hello@tcp(userdb)/userdb?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dbConn)
 	if err != nil {
-		log.Fatal("Cannot connect to DB")
+		//fmt.Println("Err is ",err)
+		log.Fatal(err)
 	}
 	logger := zerologger.GetLogger()
 	db.AutoMigrate(&model.User{})
@@ -55,6 +58,6 @@ func main() {
 	userController.RegisterRoutesForUser(authRoute, nonAuthRoute)
 	courseController.RegisterRoutesForCourse(authRoute, nonAuthRoute)
 	logger.Info().Msgf("Starting server")
-	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}), handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
+	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE","OPTIONS"}), handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
 
 }

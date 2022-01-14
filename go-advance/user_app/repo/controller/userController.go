@@ -10,7 +10,7 @@ import (
 	"net/mail"
 	"strconv"
 	"strings"
-
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	uuid "github.com/satori/go.uuid"
 )
@@ -39,18 +39,66 @@ func (uc *UserController) GetUserPassport(w http.ResponseWriter, r *http.Request
 	}
 
 }
+func (uc *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
+	var user m.User
+	params := mux.Vars(r)
+	id, erID := uuid.FromString(params["id"])
+	if erID == nil {
+		w.Header().Set("Content-Type", "application/json")
+		userDetail,_ := uc.us.GetUserById(&user,id,[]string{"Hobbies","Courses","Passport"})
+		json.NewEncoder(w).Encode(userDetail)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Incorrect UUID ")
+	}
+
+}
+func (uc *UserController) ValidateToken(w http.ResponseWriter, r *http.Request) {
+	type Token struct{
+		Token string
+	}
+	type Response struct{
+		IsValidToken bool
+	}
+	var t Token
+	er := json.NewDecoder(r.Body).Decode(&t)
+	if er != nil {
+		uc.us.Logger.Error().Msg("Error in Token JSON decoding")
+	}
+	_, err := jwt.Parse(t.Token, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there was an error")
+		}
+		return mySigningKey, nil
+	})
+	var res Response
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		res=Response{IsValidToken:false}
+		//fmt.Fprintf(w, err.Error())
+	}else{
+		res=Response{IsValidToken:true}
+	}
+	json.NewEncoder(w).Encode(res)
+}
 func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 	var users []m.User
 	users = uc.us.GetUsers(&users, []string{})
 	var login m.Login
+	type Response struct{
+		Token string
+		ID string
+	}
 	er := json.NewDecoder(r.Body).Decode(&login)
 	if er != nil {
 		uc.us.Logger.Error().Msg("Error in login JSON decoding")
 	}
 	validUser := false
+	var userID uuid.UUID
 	for _, val := range users {
 		if val.Email == login.Email {
 			if h.ComparePasswords(val.Password, login.Password) {
+				userID=val.ID
 				validUser = true
 				break
 			}
@@ -58,10 +106,13 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 	}
 	if validUser {
 		validToken, err := generateJWT()
+		r:=Response{Token:validToken,ID:userID.String()}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(r)
 		if err != nil {
 			fmt.Println("Failed to generate token")
 		}
-		fmt.Fprint(w, validToken)
+		//fmt.Fprint(w, validToken)
 	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		fmt.Fprintf(w, "Invalid credentials")
@@ -71,6 +122,10 @@ func (uc *UserController) GetUserToken(w http.ResponseWriter, r *http.Request) {
 func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser m.User
 	//fmt.Println("Here in create user")
+	type Response struct{
+		Token string
+		UserID string
+	}
 	er := json.NewDecoder(r.Body).Decode(&newUser)
 	if er != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -80,6 +135,10 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if c == 0 {
 		if isValidMailFormat(newUser.Email) {
 			uc.us.AddUser(&newUser)
+			token,_:=generateJWT()
+			w.Header().Set("Content-Type", "application/json")
+			res:=Response{Token:token,UserID:newUser.ID.String()}
+			json.NewEncoder(w).Encode(res)
 		} else {
 			uc.us.Logger.Error().Msg("Invalid email format")
 		}
