@@ -42,10 +42,11 @@ export class ObsService {
     return this.http.get("http://localhost:9000/users/"+id) 
    }
   deleteHobbyForUser(id:string){ 
-    let currentToken=localStorage.getItem('Token')
-    let headers:any ={}
-    headers['Token']=currentToken
-    console.log("Header data ",headers['Token'])
+    let currentToken:any=localStorage.getItem('Token')
+    // let headers:any ={}
+    // headers['Token']=currentToken
+    // console.log("Header data ",headers['Token'])
+    let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.delete("http://localhost:9000/hobbies/"+id,{headers:headers}) 
   }
   createUser(email:string,password:string,firstName:string,lastName:string,address:string){
@@ -62,10 +63,8 @@ export class ObsService {
     return this.http.put<any>("http://localhost:9000/users/"+id,{"Courses":[{"ID":courseID}]},{headers:headers})
   }
   addUserHobby(id:any,hobbyName:string){
-    let currentToken=localStorage.getItem('Token')
-    let headers:any ={}
-    headers['Token']=currentToken
-    console.log("Header data ",headers['Token'])
+    let currentToken:any=localStorage.getItem('Token')
+     let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.put<any>("http://localhost:9000/users/"+id,{"Hobbies":[{"HobbyName":hobbyName}]},{headers:headers})
   }
   addPassportDetailsForUser(id:any,passportID:number,expiryDate:any){
@@ -74,5 +73,12 @@ export class ObsService {
     headers['Token']=currentToken
     console.log("Header data ",headers['Token'])
     return this.http.post<any>("http://localhost:9000/users/"+id+"/passport",{"Passport":{"PassportID":passportID,"ExpiryDate":expiryDate}},{headers:headers})
+  }
+  deleteCourseForUser(id:any,courseid:any){
+    let currentToken=localStorage.getItem('Token')
+    let headers:any ={}
+    headers['Token']=currentToken
+    console.log("Header data ",headers['Token'])
+    return this.http.delete("http://localhost:9000/users/"+id+"/courses/"+courseid,{headers:headers}) 
   }
 }

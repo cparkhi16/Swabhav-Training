@@ -10,10 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class UserDetailComponent implements OnInit {
   // userForm:any
+  date:any
   newPassportID!:number
   newExpiryDateForPassport!:any
   userID:any
-  hobbyName!:string
+  hobbyName:string=""
   coursesInDB:any[]=[]
   userCourses:any=[]
   hobbies:any[]=[]
@@ -32,7 +33,64 @@ export class UserDetailComponent implements OnInit {
       })
     }
  // @Input() userID:any
-  
+  updateView(){
+    this.obs.getHobbiesForUser(this.userID).subscribe({
+      next:(data:any)=>{
+      this.hobbies=data
+      if(this.hobbies.length!=0){
+      this.isHobbyData=true
+      }
+      console.log("Hobbies data -",data)}
+    })
+    this.obs.getCourseAndPassportForUser(this.userID).subscribe({
+      next:(data:any)=>{
+        this.courses=data.Courses //user enrolled courses
+        this.passport=data.Passport
+        if (this.courses.length!=0)
+        {
+        this.isCourseData=true
+        // this.obs.getAllCourses().subscribe({
+        //   next:(data:any)=>{
+            for(let i=0;i<this.coursesInDB.length;i++){
+              console.log("Courses ",this.coursesInDB[i].Name)
+              for(let j=0;j<this.courses.length;j++){
+                if(this.coursesInDB[i].Name!=this.courses[j].Name){
+                  this.userCourses.push(this.coursesInDB[i].Name)
+                  //this.coursesInDB.push(data[i])
+                }
+        //       }
+        //     }
+        //   }
+        // })
+        }
+      }
+    }
+      else{
+          // this.obs.getAllCourses().subscribe({
+          //   next:(data:any)=>{
+          //     console.log(" DATA COURSE FROM API ",data)
+              for(let i=0;i<this.coursesInDB.length;i++){
+                console.log("Courses ",this.coursesInDB[i].Name)
+                this.userCourses.push(this.coursesInDB[i].Name) //all the courses in db in which user can enroll
+                //this.coursesInDB.push(data[i])
+              }
+              
+          //   }
+          // })
+        }
+        if(this.passport.PassportID!=0){
+        this.isPassportData=true
+        }
+        console.log("Is passport data ",this.isPassportData)
+        console.log("Is courses data ",this.isCourseData)
+        console.log("Course data -",data.Courses)
+        console.log("Passport data",data.Passport)
+      },
+      error:(err)=>{
+        console.log("Error in getting course or passport data ",err)
+      }
+    })
+  }
   ngOnInit(): void {
     // this.userForm = new FormGroup({
     //   hobbyName: new FormControl('',[Validators.required,Validators.maxLength(30)])
@@ -111,10 +169,16 @@ export class UserDetailComponent implements OnInit {
     //this.hobbies.splice()
     this.obs.deleteHobbyForUser(hobby.ID).subscribe((data)=>{
       console.log("Data ",data)
+      this.updateView()
     })
   }
   deleteEnrolledCourse(course:any){
     console.log("Delete course for user ",course)
+    this.obs.deleteCourseForUser(this.userID,course.ID).subscribe({
+      error:(err)=>{
+        console.log("Error unenrolling course for user ",err)
+      }
+    })
   }
   deleteEnrolledPassport(passport:any){
     console.log("Delete passport for user ",passport)
@@ -127,8 +191,10 @@ export class UserDetailComponent implements OnInit {
   }
   onCloseHandledForPassport(){
     this.displayPassport="none";
-    if(this.isCourseData==false){
-      console.log("Need to call api ",this.newPassportID,this.newExpiryDateForPassport)
+    if(this.isPassportData==false){
+      console.log("Need to call api ",this.newPassportID,this.newExpiryDateForPassport.day+"-"+this.newExpiryDateForPassport.year)
+      this.newExpiryDateForPassport=this.newExpiryDateForPassport.year+"-"+this.newExpiryDateForPassport.month+"-"+this.newExpiryDateForPassport.day
+      console.log("Need to call api  -- ",this.newPassportID,this.newExpiryDateForPassport)
       this.obs.addPassportDetailsForUser(this.userID,this.newPassportID,this.newExpiryDateForPassport).subscribe({
         error:(err)=>{
           console.log("Error in add passport detail ",err)
@@ -138,11 +204,16 @@ export class UserDetailComponent implements OnInit {
   }
   onCloseHandled() {
     console.log("New hobby name ",this.hobbyName)
+    if(this.hobbyName!=""){
     this.obs.addUserHobby(this.userID,this.hobbyName).subscribe({
+      next:(data)=>{
+        this.updateView()
+      },
       error:(err)=>{
         console.log("Error in new add hobby ",err)
       }
     })
+  }
     this.display = "none";
   }
   onCourseChange(){

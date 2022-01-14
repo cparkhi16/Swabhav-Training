@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
       console.log("User ID in register ",this.userid)
       localStorage.setItem('Token', data.Token);
       this.isValidToken=true
-      this.router.navigate(['userDetail/',this.userid], {relativeTo:this.route});
+      this.router.navigate(['userDetail/',this.userid]);
     },
       error:(err)=>{console.log("Error ",err)}
     })

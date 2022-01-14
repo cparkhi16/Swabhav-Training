@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit,DoCheck {
       console.log("User ID in parent ",this.userid)
       localStorage.setItem('Token', data.Token);
       this.isValidToken=true
-      this.router.navigate(['userDetail/',this.userid], {relativeTo:this.route});
+      this.router.navigate(['userDetail/',this.userid]);
     },
       error:(err)=>{console.log("Error ",err)}
     })  

@@ -105,9 +105,10 @@
                     <label for="exampleInputEmail1" class="form-label">Passport ID :</label>
                     <input type="email"  class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp" [(ngModel)]="newPassportID">
-                    <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>
+                    <!-- <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>
                     <input type="email"  class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" [(ngModel)]="newExpiryDateForPassport">
+                    aria-describedby="emailHelp" [(ngModel)]="newExpiryDateForPassport"> -->
+                    <ngb-datepicker #dp [(ngModel)]="newExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
                          </div>
                      <div class="modal-footer">
                            <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Add Details</button>
