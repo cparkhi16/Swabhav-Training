@@ -12,7 +12,8 @@ const routes: Routes = [
 ]},{
     path:'login',children:[
         {path:'',component:LoginComponent,pathMatch:"full"}]},
-        {path:'userDetail/:userId',component:UserDetailComponent}];
+        {path:'userDetail/:userId',component:UserDetailComponent},
+    { path: 'courses', loadChildren: () => import('./course/course.module').then(m => m.CourseModule) }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

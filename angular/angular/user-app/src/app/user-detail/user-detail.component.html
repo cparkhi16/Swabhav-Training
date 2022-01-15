@@ -54,13 +54,15 @@
     <h5>You haven't enrolled in any courses </h5>
 </ng-template>
 <label for="exampleInputEmail1" class="form-label">Add Course: </label>
-    <select (change)="onCourseChange()" [(ngModel)]="SelectedCourse">
-        <option *ngFor="let course of userCourses">
+    <select (change)="onCourseChange($event)" [(ngModel)]="SelectedCourse">
+        <option value="default"></option>  
+        <!-- <option>Choose Course</option>   -->
+        <option *ngFor="let course of userCourses" [selected] ="false">
             <!-- {{course}} -->
             <!-- <a class="dropdown-item" href="#">{{course}}</a> -->
             <div class="dropdown">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                  {{course}}
+                  {{course.Name}}
                 </a>
             </div>              
         </option>
@@ -99,7 +101,7 @@
                <div class="modal-content">
                      <div class="modal-header">
                            <h4 class="modal-title">Passport Details</h4>
-                           <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button>
+                           <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button> -->
                          </div>
                 <div class="modal-body">
                     <label for="exampleInputEmail1" class="form-label">Passport ID :</label>

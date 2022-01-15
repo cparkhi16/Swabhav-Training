@@ -43,9 +43,6 @@ export class ObsService {
    }
   deleteHobbyForUser(id:string){ 
     let currentToken:any=localStorage.getItem('Token')
-    // let headers:any ={}
-    // headers['Token']=currentToken
-    // console.log("Header data ",headers['Token'])
     let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.delete("http://localhost:9000/hobbies/"+id,{headers:headers}) 
   }
@@ -56,10 +53,9 @@ export class ObsService {
     return this.http.get("http://localhost:9000/courses")
   }
   enrollUserCourse(id:any,courseID:any){
-    let currentToken=localStorage.getItem('Token')
-    let headers:any ={}
-    headers['Token']=currentToken
-    console.log("Header data ",headers['Token'])
+    let currentToken:any=localStorage.getItem('Token')
+     let headers= new HttpHeaders().set('Token',currentToken);
+     console.log("Enroll course called ")
     return this.http.put<any>("http://localhost:9000/users/"+id,{"Courses":[{"ID":courseID}]},{headers:headers})
   }
   addUserHobby(id:any,hobbyName:string){
@@ -67,18 +63,15 @@ export class ObsService {
      let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.put<any>("http://localhost:9000/users/"+id,{"Hobbies":[{"HobbyName":hobbyName}]},{headers:headers})
   }
-  addPassportDetailsForUser(id:any,passportID:number,expiryDate:any){
-    let currentToken=localStorage.getItem('Token')
-    let headers:any ={}
-    headers['Token']=currentToken
-    console.log("Header data ",headers['Token'])
-    return this.http.post<any>("http://localhost:9000/users/"+id+"/passport",{"Passport":{"PassportID":passportID,"ExpiryDate":expiryDate}},{headers:headers})
+  addPassportDetailsForUser(id:any,passportID:any,expiryDate:any){
+     let currentToken:any=localStorage.getItem('Token')
+     let headers= new HttpHeaders().set('Token',currentToken);
+     console.log("Passport id ",Number(passportID))
+    return this.http.post<any>("http://localhost:9000/users/"+id+"/passport",{"Passport":{"PassportID":Number(passportID),"ExpiryDate":expiryDate}},{headers:headers})
   }
   deleteCourseForUser(id:any,courseid:any){
-    let currentToken=localStorage.getItem('Token')
-    let headers:any ={}
-    headers['Token']=currentToken
-    console.log("Header data ",headers['Token'])
+     let currentToken:any=localStorage.getItem('Token')
+     let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.delete("http://localhost:9000/users/"+id+"/courses/"+courseid,{headers:headers}) 
   }
 }
