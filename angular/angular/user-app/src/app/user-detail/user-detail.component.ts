@@ -33,6 +33,9 @@ export class UserDetailComponent implements OnInit {
       })
     }
  // @Input() userID:any
+ goToCourse(){
+   this.router.navigate(["courses"])
+ }
   updateView(){
     this.obs.getHobbiesForUser(this.userID).subscribe({
       next:(data:any)=>{

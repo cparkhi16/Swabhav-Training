@@ -1,1 +1,37 @@
 <p>course works!</p>
+<div class="container">
+    <table *ngIf="isCourseData;else h">
+        <h3>Courses Data</h3>
+        <tr>
+            <th>Name</th>
+            <th>Delete</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let c of courses">
+            <td>{{c.Name}}</td>
+            <td><button (click)="deleteCourse(c)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+        </tr>
+    </table>
+    <ng-template #h>No data to display</ng-template> 
+</div>
+<div class="container">
+<button type="button" class="btn btn-info btn-lg" (click)="openModal()">Add New Course</button>
+    <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+         <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                     <div class="modal-header">
+                           <h4 class="modal-title">Course</h4>
+                           <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+                         </div>
+                <div class="modal-body">
+                    <label for="exampleInputEmail1" class="form-label">Enter Course Name</label>
+                    <input type="email"  class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" [(ngModel)]="courseName">
+                         </div>
+                     <div class="modal-footer">
+                           <button type="button" class="btn btn-default" (click)="addCourse()" >Add Course</button>
+                         </div>
+            </div>
+             </div>
+ </div>
+ </div>

@@ -74,4 +74,9 @@ export class ObsService {
      let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.delete("http://localhost:9000/users/"+id+"/courses/"+courseid,{headers:headers}) 
   }
+  addCourse(courseName:string){
+    let currentToken:any=localStorage.getItem('Token')
+    let headers= new HttpHeaders().set('Token',currentToken);
+    return this.http.post<any>("http://localhost:9000/courses",{"Name":courseName},{headers:headers}) 
+  }
 }
