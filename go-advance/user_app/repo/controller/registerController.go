@@ -43,6 +43,9 @@ func (hc *HobbyController) RegisterRoutesForHobby(authRouter *mux.Router, nonAut
 	authRouter.HandleFunc("/hobbies/{id}", hc.DeleteHobby).Methods("DELETE")
 	authRouter.HandleFunc("/hobbies/{id}", hc.UpdateHobby).Methods("PUT")
 }
+func (pc *PassportController) RegisterRoutesForPassport(authRouter *mux.Router, nonAuthRouter *mux.Router) {
+	nonAuthRouter.HandleFunc("/passport/{id}", pc.UpdatePassportDetails).Methods("PUT")
+}
 
 //client id
 //237013399860-4rjcn57jg6md4f35r86919linl8pt2eq.apps.googleusercontent.com

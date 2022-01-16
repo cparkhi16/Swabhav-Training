@@ -42,7 +42,21 @@ func (us *UserService) UpdatePassportDetailForUser(u *model.User) error {
 	}
 	return nil
 }
-
+func (us *UserService) UpdatePassport(passport *model.Passport) error {
+	uow := repository.NewUnitOfWork(us.DB, false)
+	fmt.Println("Count of passport ", us.GetPassportCount(passport.ID))
+	if us.GetPassportCount(passport.ID) == 0 {
+		uow.Complete()
+		err := fmt.Errorf("no passport id found ")
+		return err
+	}
+	e := us.Repo.Update(uow, passport)
+	if e != nil {
+		return e
+	}
+	uow.Commit()
+	return nil
+}
 func (us *UserService) FindAndDeletePassport(user *model.User) error {
 	uow := repository.NewUnitOfWork(us.DB, false)
 	p := us.GetPassportIDForUser(user.ID)
@@ -59,7 +73,15 @@ func (us *UserService) FindAndDeletePassport(user *model.User) error {
 
 	return nil
 }
-
+func (us *UserService) GetPassportCount(ID uuid.UUID) int {
+	uow := repository.NewUnitOfWork(us.DB, true)
+	var c int = 0
+	err := us.Repo.GetCount(uow, model.Passport{}, &c, "id = ?", ID)
+	if err != nil {
+		us.Logger.Error().Msgf("error in getting passport count")
+	}
+	return c
+}
 func (us *UserService) CheckIfPassportIDExists(passport *model.Passport) bool {
 	uow := repository.NewUnitOfWork(us.DB, true)
 	p := *passport
