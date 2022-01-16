@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-
+import {AuthGuardService} from './auth/auth-guard.service';
 
 const routes: Routes = [
     {
@@ -12,7 +12,7 @@ const routes: Routes = [
 ]},{
     path:'login',children:[
         {path:'',component:LoginComponent,pathMatch:"full"}]},
-        {path:'userDetail/:userId',component:UserDetailComponent},
+        {path:'userDetail/:userId',component:UserDetailComponent,canActivate:[AuthGuardService]},
     { path: 'courses', loadChildren: () => import('./course/course.module').then(m => m.CourseModule) }];
 
 @NgModule({
