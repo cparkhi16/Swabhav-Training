@@ -79,4 +79,16 @@ export class ObsService {
     let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.post<any>("http://localhost:9000/courses",{"Name":courseName},{headers:headers}) 
   }
+  deleteCourse(id:any){
+  let currentToken:any=localStorage.getItem('Token')
+  let headers= new HttpHeaders().set('Token',currentToken);
+  let params = new HttpParams();
+  params = params.append('hardDelete', "false");
+   return this.http.delete("http://localhost:9000/courses/"+id,{headers:headers,params: params}) 
+  }
+  updateCourse(id:any,courseName:string){
+    let currentToken:any=localStorage.getItem('Token')
+    let headers= new HttpHeaders().set('Token',currentToken);
+    return this.http.put<any>("http://localhost:9000/courses/"+id,{"Name":courseName},{headers:headers})
+  }
 }

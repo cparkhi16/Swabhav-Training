@@ -5,11 +5,37 @@
         <tr>
             <th>Name</th>
             <th>Delete</th>
-            <th></th>
+            <th>Update</th>
         </tr>
         <tr *ngFor="let c of courses">
             <td>{{c.Name}}</td>
             <td><button (click)="deleteCourse(c)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+            <td><button (click)="openUpdateCourseModal(c)"><i class="fa fa-edit"></i></button></td>
+           
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCourseModal}">
+        <form [formGroup]="myGroup"  (ngSubmit)="updateCourse(myGroup)">
+         <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                     <div class="modal-header">
+                           <h4 class="modal-title">Course</h4>
+                           <button type="button" class="close" aria-label="Close" (click)="closeCourseModal()"><span aria-hidden="true">&times;</span></button>
+                         </div>
+                <div class="modal-body">
+                    <label for="exampleInputEmail1" class="form-label">Enter New Course Name</label>
+                    <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="updatedCourseName"
+                        aria-describedby="emailHelp" >
+                        <div class="alert alert-danger" *ngIf="myGroup.get('updatedCourseName')?.hasError('required') && (myGroup.get('updatedCourseName')?.dirty || myGroup.get('updatedCourseName')?.touched)">
+                            Please provide a course name.
+                      </div>
+                         </div>
+                     <div class="modal-footer">
+                           <button type="submit" class="btn btn-default" [disabled]="myGroup.invalid">Update Course</button>
+                         </div>
+            </div>
+             </div>
+            </form>
+ </div>
+
         </tr>
     </table>
     <ng-template #h>No data to display</ng-template> 
