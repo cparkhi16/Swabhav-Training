@@ -630,3 +630,106 @@
 {"level":"info","time":"2022-01-14T21:49:25+05:30","message":"Starting server"}
 {"level":"error","time":"2022-01-14T22:56:59+05:30","message":"Error in add user can't save invalid data"}
 {"level":"info","time":"2022-01-14T22:56:59+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-14T23:58:54+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-14T23:58:54+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-15T00:03:41+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T00:03:50+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T00:04:13+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:07:09+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T00:07:35+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:07:35+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:07:35+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:08:29+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T00:08:51+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:08:51+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:08:51+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:10:08+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:10:08+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:10:08+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:11:19+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:11:19+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:11:38+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:11:38+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:11:38+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:17:09+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-15T00:17:09+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-15T00:17:34+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:17:35+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:17:35+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:22:23+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:22:23+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:22:23+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:22:56+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:22:56+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:22:56+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:25:28+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T00:27:22+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:27:22+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:27:22+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:31:04+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:31:04+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:31:04+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:34:06+05:30","message":"Error in decoding user JSON%!(EXTRA *json.UnmarshalTypeError=json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint)"}
+{"level":"error","time":"2022-01-15T00:34:06+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:34:06+05:30","message":"Error updating user detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:35:20+05:30","message":"Error in decoding passport JSON json: cannot unmarshal string into Go struct field Passport.Passport.PassportID of type uint"}
+{"level":"error","time":"2022-01-15T00:35:21+05:30","message":"Error while updating user Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:35:21+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '0' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T00:41:30+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T20:34:56+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-15T20:34:56+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-15T20:38:07+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T20:38:27+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T20:38:33+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T20:41:00+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T20:41:07+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:39:39+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:42:53+05:30","message":"Error while updating user Error 1062: Duplicate entry '888' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T22:42:53+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '888' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T22:43:03+05:30","message":"Error while updating user Error 1062: Duplicate entry '888' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T22:43:03+05:30","message":"Error updating passport detail Error 1062: Duplicate entry '888' for key 'passport_id'"}
+{"level":"error","time":"2022-01-15T22:49:53+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:50:01+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:50:08+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:50:16+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T22:50:32+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T23:03:13+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T23:03:18+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T23:03:23+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T23:58:40+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-15T23:58:40+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-15T23:59:01+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-15T23:59:06+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:01:12+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:01:19+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:02:00+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:02:15+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:07:04+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:07:30+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:11:12+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:11:23+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:19:28+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:19:35+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:20:32+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:34:38+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:38:37+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:39:04+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:39:12+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:39:19+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:44:02+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:44:29+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:45:13+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:45:17+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:45:22+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:46:53+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:47:08+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:47:26+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T00:51:22+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T00:51:22+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-16T01:16:36+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-16T16:57:48+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T16:57:48+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-16T18:11:49+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-16T18:21:52+05:30","message":"Error in decoding course JSON%!(EXTRA *errors.errorString=EOF)"}
+{"level":"error","time":"2022-01-16T18:24:46+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T18:24:46+05:30","message":"Starting server"}

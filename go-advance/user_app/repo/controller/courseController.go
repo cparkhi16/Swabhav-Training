@@ -88,11 +88,6 @@ func (cc *CourseController) UpdateCourse(w http.ResponseWriter, r *http.Request)
 
 func (cc *CourseController) DeleteCourse(w http.ResponseWriter, r *http.Request) {
 	var deleteCourse m.Course
-	er := json.NewDecoder(r.Body).Decode(&deleteCourse)
-	if er != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		cc.cs.Logger.Error().Msgf("Error in decoding course JSON", er)
-	}
 	params := mux.Vars(r)
 	hardDelete := r.FormValue("hardDelete")
 	id, erID := uuid.FromString(params["id"])

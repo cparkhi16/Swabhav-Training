@@ -192,6 +192,7 @@ func (uc *UserController) DeleteCourseForUser(w http.ResponseWriter, r *http.Req
 func (uc *UserController) AddPassportForUser(w http.ResponseWriter, r *http.Request) {
 	var updateUser m.User
 	er := json.NewDecoder(r.Body).Decode(&updateUser)
+	fmt.Println("Passport ID ", updateUser.Passport.PassportID)
 	if er != nil {
 		uc.us.Logger.Error().Msgf("Error in decoding passport JSON %v", er)
 	}
