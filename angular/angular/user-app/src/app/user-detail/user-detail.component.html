@@ -85,6 +85,31 @@
                 <div class="modal-body">
                     <label for="exampleInputEmail1" class="form-label">Passport ID :</label>{{passport?.PassportID}}<br>
                     <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>{{passport?.ExpiryDate}}
+                    <button type="button" class="btn btn-info btn-lg" (click)="openUpdatePassportModel(passport)">Update Passport</button>
+                    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayUpdatePassportModel}">
+                        <form [formGroup]="myGroup"  (ngSubmit)="updatePassport(myGroup)">
+                         <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                     <div class="modal-header">
+                                           <h4 class="modal-title">Passport</h4>
+                                           <button type="button" class="close" aria-label="Close" (click)="closeUpdatePassportModal()"><span aria-hidden="true">&times;</span></button>
+                                         </div>
+                                <div class="modal-body">
+                                    <label for="exampleInputEmail1" class="form-label">Enter New Passport Details</label>
+                                    <input type="email"  class="form-control" id="exampleInput" formControlName="updatedPassportID"
+                                        aria-describedby="emailHelp" >
+                                        <div class="alert alert-danger" *ngIf="myGroup.get('updatedPassportID')?.hasError('required') && (myGroup.get('updatedPassportID')?.dirty || myGroup.get('updatedPassportID')?.touched)">
+                                            Please provide a passport ID.
+                                      </div>
+                                      <ngb-datepicker #dp formControlName="updateExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
+                                         </div>
+                                     <div class="modal-footer">
+                                           <button type="submit" class="btn btn-default" [disabled]="myGroup.invalid">Update Passport</button>
+                                         </div>
+                            </div>
+                             </div>
+                            </form>
+                 </div>
                          </div>
                      <div class="modal-footer">
                            <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Close</button>

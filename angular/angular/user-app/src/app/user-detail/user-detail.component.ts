@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
-  // userForm:any
+  myGroup:any
   date:any
   newPassportID!:any
   newExpiryDateForPassport!:any
@@ -26,6 +26,8 @@ export class UserDetailComponent implements OnInit {
   isHobbyData:boolean=false
   display = "none";
   displayPassport="none";
+  displayUpdatePassportModel="none";
+  updateExpiryDateForPassport:any
   constructor(private obs:ObsService,private router:Router,
     private activatedRoute:ActivatedRoute) { 
       this.activatedRoute.paramMap.subscribe(params=>{
@@ -35,6 +37,30 @@ export class UserDetailComponent implements OnInit {
  // @Input() userID:any
  goToCourse(){
    this.router.navigate(["courses"])
+ }
+ openUpdatePassportModel(passport:any){
+   console.log("Modal opened to update passport ",passport.ID)
+   this.displayUpdatePassportModel="block"
+ }
+ updatePassport(myGroup:any){
+  let updatedExpiryDate=""
+  this.displayUpdatePassportModel="none"
+  if(myGroup.value.updateExpiryDateForPassport!=""){
+  updatedExpiryDate=myGroup.value.updateExpiryDateForPassport.year+"-"+myGroup.value.updateExpiryDateForPassport.month+"-"+myGroup.value.updateExpiryDateForPassport.day
+  }
+   console.log("Passport ID to be updated ",myGroup.value.updatedPassportID,updatedExpiryDate,this.passport.ID)
+   this.obs.updatePassport(this.passport.ID,myGroup.value.updatedPassportID,updatedExpiryDate).subscribe({
+     next:(data)=>{
+       this.updateView()
+       this.displayPassport="none"
+     },
+     error:(err)=>{
+      console.log("Error updating passport ",err)
+     }
+   })
+ }
+ closeUpdatePassportModal(){
+    this.displayUpdatePassportModel="none"
  }
   updateView(){
     this.obs.getHobbiesForUser(this.userID).subscribe({
@@ -101,6 +127,10 @@ export class UserDetailComponent implements OnInit {
     //   }
     //   console.log("Hobbies data -",data)}
     // })
+    this.myGroup=new FormGroup({
+      updatedPassportID:new FormControl('',[Validators.required,Validators.min(1)]),
+      updateExpiryDateForPassport:new FormControl('')
+    })
     this.getAllDBCourses()
     this.updateView()
     // this.obs.getCourseAndPassportForUser(this.userID).subscribe({

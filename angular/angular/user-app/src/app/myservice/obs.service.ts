@@ -91,4 +91,7 @@ export class ObsService {
     let headers= new HttpHeaders().set('Token',currentToken);
     return this.http.put<any>("http://localhost:9000/courses/"+id,{"Name":courseName},{headers:headers})
   }
+  updatePassport(id:any,passportID:any,expiryDate:any){
+    return this.http.put<any>("http://localhost:9000/passport/"+id,{"PassportID":Number(passportID),"ExpiryDate":expiryDate})
+  }
 }
