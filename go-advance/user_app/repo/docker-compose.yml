@@ -3,7 +3,7 @@ services:
   app:
     #image: cparkhi16/userapp
     container_name: myapp
-    build: .
+    build: ./
     ports:
       - '9000:9000'
     restart: on-failure

@@ -61,6 +61,6 @@ func main() {
 	courseController.RegisterRoutesForCourse(authRoute, nonAuthRoute)
 	passportController.RegisterRoutesForPassport(authRoute, nonAuthRoute)
 	logger.Info().Msgf("Starting server")
-	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Token"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}), handlers.AllowedOrigins([]string{"http://localhost:4200"}))(router)))
+	log.Fatal(http.ListenAndServe(":9000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Token"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(router)))
 
 }

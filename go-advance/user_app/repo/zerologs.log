@@ -749,3 +749,22 @@
 {"level":"error","time":"2022-01-16T19:08:07+05:30","message":"Error updating course detail no passport id found "}
 {"level":"error","time":"2022-01-16T19:08:52+05:30","message":"Error in add user can't save invalid data"}
 {"level":"info","time":"2022-01-16T19:08:52+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-16T19:10:35+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T19:10:35+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-16T20:07:52+05:30","message":"Error in decoding passport JSON%!(EXTRA *json.UnmarshalTypeError=json: cannot unmarshal string into Go struct field Passport.PassportID of type uint)"}
+{"level":"error","time":"2022-01-16T22:28:40+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T22:28:40+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-16T23:50:41+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-16T23:50:41+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-17T13:18:52+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-17T13:18:52+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-17T17:20:04+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-17T17:30:27+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-17T18:01:55+05:30","message":"Error in add user Error 1062: Duplicate entry 'amk@fp.com' for key 'email'"}
+{"level":"error","time":"2022-01-17T18:01:55+05:30","message":"Error in add user Error 1062: Duplicate entry 'amk@fp.com' for key 'email'"}
+{"level":"error","time":"2022-01-17T18:01:56+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-17T18:01:56+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-17T18:02:45+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-17T18:02:45+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-17T18:03:12+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-17T18:03:12+05:30","message":"Error in get user by ID "}

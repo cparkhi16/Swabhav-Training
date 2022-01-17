@@ -14,10 +14,10 @@ WORKDIR /app
 COPY go.mod ./
 COPY go.sum ./
 
-# Download all dependencies.
+
 RUN go mod download
 
-# Now, copy the source code
+
 COPY . .
 
 # Build the application.
