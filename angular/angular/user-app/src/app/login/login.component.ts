@@ -8,12 +8,11 @@ import { ActivatedRoute, Router} from '@angular/router'
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit,DoCheck {
+export class LoginComponent implements OnInit {
   userid:any
   myForm: FormGroup;
   isValidToken:any
   constructor(private obs:ObsService,private router:Router,private route: ActivatedRoute) { 
-    //localStorage.setItem('Token',"ABC")
     this.myForm = new FormGroup({
       email: new FormControl('',[Validators.email,Validators.required,Validators.maxLength(50)]),
       password: new FormControl('',[Validators.required,Validators.maxLength(10),Validators.min(5)]),
@@ -22,38 +21,6 @@ export class LoginComponent implements OnInit,DoCheck {
   }
 
   ngOnInit(): void {
-    // let currentToken =localStorage.getItem('Token')
-    // this.obs.validateToken(currentToken).subscribe({
-    //   next:(data)=>
-    //   {
-    //     //let d =JSON.parse(data)
-    //     console.log("Valid token data ",data)
-    //     //this.isValidToken=data.IsValidToken
-    //     //this.isValidToken=d.IsValidToken}
-    //   },
-
-    //   error:(err)=>{
-    //     console.log("Error validating token ",err)
-    //   }
-    // })
-  }
-  ngDoCheck(): void {
-    //   let currentToken =localStorage.getItem('Token')
-    // this.obs.validateToken(currentToken).subscribe({
-    //   next:(data)=>
-    //   {
-    //     //let d =JSON.parse(data)
-    //     console.log("Valid token data ",data)
-    //     this.isValidToken=data.IsValidToken
-    //     //this.isValidToken=d.IsValidToken}
-    //   },
-    //   error:(err)=>{
-    //     console.log("Error validating token ",err)
-    //   }
-    // })
-  }
-  regsiter():void{
-    this.isValidToken=true
   }
   onSubmit(form:FormGroup){
     console.log("Is form valid ",form.valid)

@@ -43,7 +43,7 @@ export class ObsService {
    return this.http.get("http://localhost:9000/users/"+id+"/hobbies") 
    //return this.http.get("http://app:9000/users/"+id+"/hobbies") 
   }
-  getCourseAndPassportForUser(id:string){
+  getUserDetails(id:string){
     return this.http.get("http://localhost:9000/users/"+id) 
     //return this.http.get("http://app:9000/users/"+id) 
    }
@@ -110,5 +110,10 @@ export class ObsService {
   updatePassport(id:any,passportID:any,expiryDate:any){
     return this.http.put<any>("http://localhost:9000/passport/"+id,{"PassportID":Number(passportID),"ExpiryDate":expiryDate})
     //return this.http.put<any>("http://app:9000/passport/"+id,{"PassportID":Number(passportID),"ExpiryDate":expiryDate})
+  }
+  updateUserProfile(id:any,address:string,password:string,firstName:string,lastName:string,email:string){
+    let currentToken:any=localStorage.getItem('Token')
+     let headers= new HttpHeaders().set('Token',currentToken);
+     return this.http.put<any>("http://localhost:9000/users/"+id,{"FirstName":firstName,"LastName":lastName,"Email":email,"Password":password,"Address":address},{headers:headers})
   }
 }

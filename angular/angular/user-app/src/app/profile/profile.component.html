@@ -1,0 +1,97 @@
+<!-- <p>profile works!</p>
+<div class="container">
+<label class="form-label"><h3>First Name </h3></label><h4>{{user?.FirstName}}</h4>
+<label class="form-label"><h3>Last Name </h3></label><h4>{{user?.LastName}}</h4>
+<label class="form-label"><h3>Address</h3> </label><h4>{{user?.Address}}</h4>
+
+</div> -->
+<div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        <button style="font-size:15px;float: right;" (click)="logout()">Logout<i class="fa fa-sign-out"></i></button>
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Full Name</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{user?.FirstName+" "+user?.LastName}}</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Email</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{user?.Email}}</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Address</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{user?.Address}}</p>
+          </div>
+        </div>
+        <hr>
+        <button (click)="openUpdateProfileModal()" class="btn btn-info btn-lg">Update Profile</button>
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayUpdateProfileModal}">
+            <form [formGroup]="updateForm"  (ngSubmit)="updateUser(updateForm)">
+             <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                         <div class="modal-header">
+                               <h4 class="modal-title">Profile</h4>
+                               <button type="button" class="close" aria-label="Close" (click)="closeUpdateModal()"><span aria-hidden="true">&times;</span></button>
+                             </div>
+                    <div class="modal-body">
+                        <label for="exampleInputEmail1" class="form-label">First Name</label>
+                        <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="updatedFirstName"
+                            aria-describedby="emailHelp" >
+                            <div class="alert alert-danger" *ngIf="updateForm.get('updatedFirstName')?.hasError('maxlength')">
+                                Please provide a first name upto length of max 30 characters.
+                          </div>
+                             </div>
+                             <div class="modal-body">
+                                <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                                <input type="email"  class="form-control" id="exampleputEmail1" formControlName="updatedLastName"
+                                    aria-describedby="emailHelp" >
+                                    <div class="alert alert-danger" *ngIf="updateForm.get('updatedLastName')?.hasError('maxlength')">
+                                        Please provide a last name upto length of max 30 characters.
+                                  </div>
+                                     </div>
+                                     <div class="modal-body">
+                                        <label for="exampleInputEmail1" class="form-label">Address</label>
+                                        <input type="email"  class="form-control" id="exeInputEmail1" formControlName="updatedAddress"
+                                            aria-describedby="emailHelp" >
+                                            <div class="alert alert-danger" *ngIf="updateForm.get('updatedAddress')?.hasError('maxlength')">
+                                                Please provide address upto length of max 50 characters.
+                                          </div>
+                                             </div>
+                                             <div class="modal-body">
+                                                <label for="exampleInputEmail1" class="form-label">Password</label>
+                                                <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="updatedPassword"
+                                                    aria-describedby="emailHelp" >
+                                                    <div class="alert alert-danger" *ngIf="updateForm.get('updatedPassword')?.hasError('maxlength')">
+                                                        Please provide a password upto length of max 30 characters.
+                                                  </div>
+                                                     </div>
+                                                     <div class="modal-body">
+                                                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                                                        <input type="email"  class="form-control" id="exampleInputEma1" formControlName="updatedEmail"
+                                                            aria-describedby="emailHelp" >
+                                                            <div class="alert alert-danger" *ngIf="updateForm.get('updatedEmail')?.hasError('email')">
+                                                                Please provide a valid mail address
+                                                          </div>
+                                                             </div>
+                         <div class="modal-footer">
+                               <button type="submit" class="btn btn-default" [disabled]="updateForm.invalid">Update</button>
+                             </div>
+                </div>
+                 </div>
+                </form>
+     </div>
+     <div class="container">
+        <button  class="btn btn-default" style="float: right;" (click)="goToUserDetail()">View Other Details</button>
+     </div>
