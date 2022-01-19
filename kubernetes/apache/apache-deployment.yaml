@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: apache2dep  #anything
+  namespace: test
   labels:
     app: apache2dep  #anything
 spec:
