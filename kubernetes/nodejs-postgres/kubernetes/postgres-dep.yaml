@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgredep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgredep
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgredep
+    spec:
+      containers:
+      - image: postgres:14.1-alpine
+        name: postgre
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+              secretKeyRef:
+                name: postsec
+                key:  password
+        - name: POSTGRES_USER
+          valueFrom:
+              secretKeyRef:
+                name: postsec
+                key: username
+        - name: POSTGRES_DB
+          valueFrom:
+              secretKeyRef:
+                name: postsec
+                key: dbname
+        ports:
+        - containerPort: 5432
+          name: postgre
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgreserv
+spec:
+  selector:
+    app: postgredep
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432

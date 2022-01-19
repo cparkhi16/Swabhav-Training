@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodedepl
+  labels:
+    app: nodedepl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodedepl
+  template:
+    metadata:
+      labels:
+        app: nodedepl
+    spec:
+      containers:
+      - name: nodesapp
+        image: cparkhi16/nodepoostapp 
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: npservice
+spec:
+  selector:
+    app: nodedepl
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30009 #host port no range 30000 to 32767
+
+
