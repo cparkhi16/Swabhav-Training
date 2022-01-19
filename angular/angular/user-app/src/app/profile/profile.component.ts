@@ -2,6 +2,7 @@ import { ObsService } from './../myservice/obs.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators,ValidationErrors,AbstractControl } from '@angular/forms';
+import { User } from '../models/user';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -9,7 +10,7 @@ import { FormControl, FormGroup, Validators,ValidationErrors,AbstractControl } f
 })
 export class ProfileComponent implements OnInit {
   updateForm!:FormGroup
-  user:any
+  user!:User
   userID:any
   displayUpdateProfileModal="none"
   constructor(private obs:ObsService,private router:Router,
@@ -46,7 +47,14 @@ export class ProfileComponent implements OnInit {
   }
   updateUser(form:any){
     console.log("Updated details ",form.value)
-    this.obs.updateUserProfile(this.userID,form.value.updatedAddress,form.value.updatedPassword,form.value.updatedFirstName,form.value.updatedLastName,form.value.updatedEmail).subscribe({
+    let updatedUserDetails= new User()
+    updatedUserDetails.ID=this.userID
+    updatedUserDetails.Address=form.value.updatedAddress
+    updatedUserDetails.Password=form.value.updatedPassword
+    updatedUserDetails.FirstName=form.value.updatedFirstName
+    updatedUserDetails.LastName=form.value.updatedLastName
+    updatedUserDetails.Email=form.value.updatedEmail
+    this.obs.updateUserProfile(updatedUserDetails).subscribe({
       next:(data)=>{
         this.getUserDetails()
       },error:(err)=>{

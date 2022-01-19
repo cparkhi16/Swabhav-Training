@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup,Validators,FormControl } from '@angular/forms';
 import { ObsService } from '../myservice/obs.service';
 import { ActivatedRoute, Router} from '@angular/router'
+import { User } from '../models/user';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  isValidToken:any
-  userid:any
-  myForm:any
+  isValidToken!:boolean
+  userid!:string
+  myForm!:FormGroup
   constructor(private obs:ObsService,private router:Router,private route: ActivatedRoute) {
     this.isValidToken=false
    }
@@ -24,8 +25,14 @@ export class RegisterComponent implements OnInit {
       address:new FormControl('',[Validators.required,Validators.maxLength(60)])
     });
   }
-  onSubmit(form:any){
-    this.obs.createUser(form.value.email,form.value.password,form.value.firstname,form.value.lastname,form.value.address).subscribe({
+  onSubmit(form:FormGroup){
+    let newUser= new User()
+    newUser.Email=form.value.email
+    newUser.FirstName=form.value.firstname
+    newUser.LastName=form.value.lastname
+    newUser.Password=form.value.password
+    newUser.Address=form.value.address
+    this.obs.createUser(newUser).subscribe({
       next:(data)=>{console.log("Data from login ",data)
       this.userid=data.UserID
       console.log("User ID in register ",this.userid)

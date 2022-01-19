@@ -2,7 +2,8 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators,ValidationErrors,AbstractControl } from '@angular/forms';
 import { ObsService } from '../myservice/obs.service';
 import { ValidatorFn } from '@angular/forms';
-import { ActivatedRoute, Router} from '@angular/router'
+import { ActivatedRoute, Router} from '@angular/router';
+import { User } from '../models/user';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,7 +30,10 @@ export class LoginComponent implements OnInit {
       Password:form.value.password
     }
    console.log("Mydata ",JSON.stringify(myData))
-    this.obs.validateUser(form.value.email,form.value.password).subscribe({
+   let user = new User()
+   user.Email=form.value.email
+   user.Password=form.value.password
+    this.obs.validateUser(user).subscribe({
       next:(data)=>{console.log("Data from login ",data)
       this.userid=data.ID
       console.log("User ID in parent ",this.userid)

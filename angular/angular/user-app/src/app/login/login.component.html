@@ -29,18 +29,18 @@
                 Please provide a valid password.
             </div>
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Passport</label>
             <input type="text" formControlName="passport" class="form-control" id="exampleInputPassport">
-            <!-- Is passport valid {{myForm.get('passport')?.hasError('passportValidity')}} -->
+             Is passport valid {{myForm.get('passport')?.hasError('passportValidity')}} 
             <div class="alert alert-danger"
                 *ngIf="myForm.get('passport')?.hasError('inValidPassport')">
                 Please provide a valid passport.
             </div>
-        </div>
+        </div> -->
         <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid">Submit</button>
         <div id="emailHelp" class="form-text"><a routerLink="/register">Register</a></div>
-        <div>Is Form valid ? {{myForm.valid}}</div>
+        <!-- <div>Is Form valid ? {{myForm.valid}}</div> -->
     </form>
 </div>
 <!-- <ng-template #elseBlock>

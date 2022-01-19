@@ -1,19 +1,20 @@
 import { ObsService } from './../myservice/obs.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,Validators,FormControl } from '@angular/forms';
+import { Course } from '../models/course';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
-  myGroup:any
-  courses:any[]=[]
+  myGroup!:FormGroup
+  courses:Course[]=[]
   isCourseData:boolean=false
-  courseName!:any
+  courseName!:string
   display="none"
   displayCourseModal="none"
-  courseToBeUpdated:any
+  courseToBeUpdated!:Course
   constructor(private obs:ObsService) { 
     console.log("Course component constructor called !!")
   }
@@ -24,7 +25,7 @@ export class CourseComponent implements OnInit {
       updatedCourseName : new FormControl('',[Validators.required,Validators.maxLength(50)]),
     })
   }
-  openUpdateCourseModal(course:any){
+  openUpdateCourseModal(course:Course){
     this.displayCourseModal="block"
     this.courseToBeUpdated=course
     console.log("Course updated id ",course.ID)
@@ -41,9 +42,11 @@ export class CourseComponent implements OnInit {
     }
     )
   }
-  deleteCourse(course:any){
+  deleteCourse(course:Course){
     console.log("Course delete ",course.ID)
-    this.obs.deleteCourse(course.ID).subscribe({
+    let courseToBeDeleted = new Course()
+    courseToBeDeleted.ID=course.ID
+    this.obs.deleteCourse(courseToBeDeleted).subscribe({
       next:(data)=>{
         this.updateCourseView()
       },
@@ -56,7 +59,10 @@ export class CourseComponent implements OnInit {
     this.displayCourseModal="none"
     console.log("Updating course ",this.courseToBeUpdated.ID)
     console.log("New course name ",myGroup.value.updatedCourseName)
-    this.obs.updateCourse(this.courseToBeUpdated.ID,myGroup.value.updatedCourseName).subscribe({
+    let updateCourse = new Course()
+    updateCourse.ID=this.courseToBeUpdated.ID
+    updateCourse.Name=myGroup.value.updatedCourseName
+    this.obs.updateCourse(updateCourse).subscribe({
       next:(data)=>{
         this.updateCourseView()
       },
@@ -70,7 +76,9 @@ export class CourseComponent implements OnInit {
   }
   addCourse(){
     console.log("New course name ",this.courseName)
-    this.obs.addCourse(this.courseName).subscribe({
+    let newCourse = new Course()
+    newCourse.Name=this.courseName
+    this.obs.addCourse(newCourse).subscribe({
       next:(data)=>{
         this.updateCourseView()
       },
