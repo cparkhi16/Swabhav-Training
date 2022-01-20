@@ -40,7 +40,9 @@ export class RegisterComponent implements OnInit {
       this.isValidToken=true
       this.router.navigate(['userDetail/',this.userid]);
     },
-      error:(err)=>{console.log("Error ",err)}
+      error:(err)=>{
+        alert(err.error)
+        console.log("Error ",err)}
     })
   }
 }

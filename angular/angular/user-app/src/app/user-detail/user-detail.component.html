@@ -80,7 +80,7 @@
          <div class="modal-dialog" role="document">
                <div class="modal-content">
                      <div class="modal-header">
-                           <h4 class="modal-title">Model Title</h4>
+                           <h4 class="modal-title">Your Passport Details</h4>
                            <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button>
                          </div>
                 <div class="modal-body">
@@ -102,6 +102,9 @@
                                         <div class="alert alert-danger" *ngIf="myGroup.get('updatedPassportID')?.hasError('required') && (myGroup.get('updatedPassportID')?.dirty || myGroup.get('updatedPassportID')?.touched)">
                                             Please provide a passport ID.
                                       </div>
+                                      <div class="alert alert-danger" *ngIf="myGroup.get('updatedPassportID')?.hasError('min') && (myGroup.get('updatedPassportID')?.dirty || myGroup.get('updatedPassportID')?.touched)">
+                                        Please provide a passport ID greater than 100.
+                                        </div>
                                       <ngb-datepicker #dp formControlName="updateExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
                                          </div>
                                      <div class="modal-footer">
@@ -123,6 +126,7 @@
     <!-- You haven't issued for passport -->
     <button type="button" class="btn btn-info btn-lg" (click)="openModalForPassport()">Add Passport Details</button>
     <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayPassport}">
+        <form [formGroup]="addPassportForm"  (ngSubmit)="addPassport(addPassportForm)">
          <div class="modal-dialog" role="document">
                <div class="modal-content">
                      <div class="modal-header">
@@ -131,18 +135,22 @@
                          </div>
                 <div class="modal-body">
                     <label for="exampleInputEmail1" class="form-label">Passport ID :</label>
-                    <input type="email"  class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" [(ngModel)]="newPassportID">
-                    <!-- <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>
-                    <input type="email"  class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" [(ngModel)]="newExpiryDateForPassport"> -->
-                    <ngb-datepicker #dp [(ngModel)]="newExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
+                    <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="addPassportID"
+                    aria-describedby="emailHelp" >
+                    <div class="alert alert-danger" *ngIf="addPassportForm.get('addPassportID')?.hasError('required') && (addPassportForm.get('addPassportID')?.dirty || addPassportForm.get('addPassportID')?.touched)">
+                        Please provide a passport ID.
+                  </div>
+                  <div class="alert alert-danger" *ngIf="addPassportForm.get('addPassportID')?.hasError('min') && (addPassportForm.get('addPassportID')?.dirty || addPassportForm.get('addPassportID')?.touched)">
+                    Please provide a passport ID greater than 100.
+                    </div>
+                    <ngb-datepicker #dp  (navigate)="date = $event.next" formControlName="addExpiryDateForPassport"></ngb-datepicker>
                          </div>
                      <div class="modal-footer">
-                           <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Add Details</button>
+                           <button type="submit" class="btn btn-default" [disabled]="addPassportForm.invalid" >Add Details</button>
                          </div>
             </div>
              </div>
+            </form>
  </div>
 </ng-template>
 </div>

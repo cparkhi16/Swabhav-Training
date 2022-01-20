@@ -58,6 +58,7 @@ export class ProfileComponent implements OnInit {
       next:(data)=>{
         this.getUserDetails()
       },error:(err)=>{
+        alert(err.error)
         console.log(err)
       }
     })

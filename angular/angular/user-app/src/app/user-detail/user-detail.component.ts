@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ObsService } from '../myservice/obs.service';
-import { FormControl, FormGroup, Validators, ValidationErrors, AbstractControl, Form } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ValidationErrors, AbstractControl, Form, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Passport } from '../models/passport';
 import { Course } from '../models/course';
@@ -12,10 +12,10 @@ import { User } from '../models/user';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
+  addPassportForm!:FormGroup
   userName!: string
   myGroup!: FormGroup
   date: any
-  newPassportID!: any
   newExpiryDateForPassport!: any
   userID: any
   hobbyName: string = ""
@@ -65,8 +65,10 @@ export class UserDetailComponent implements OnInit {
         this.displayPassport = "none"
       },
       error: (err) => {
+        this.displayPassport = "none"
+        alert("A user with same passport ID already exists")
         console.log("Error updating passport ", err)
-      }
+      },
     })
   }
   closeUpdatePassportModal() {
@@ -105,10 +107,6 @@ export class UserDetailComponent implements OnInit {
         else {
           this.isCourseData=false
           console.log("Within else of course enroll",this.coursesInDB.length)
-          // for (let i = 0; i < this.coursesInDB.length; i++) {
-          //  console.log("Courses ", this.coursesInDB[i].Name)
-          //   this.userCourses.push(this.coursesInDB[i]) //all the courses in db in which user can enroll
-          // }
           this.userCourses=this.coursesInDB
         }
         console.log("User ca enroll in ",this.userCourses)
@@ -129,8 +127,12 @@ export class UserDetailComponent implements OnInit {
   }
   ngOnInit(): void {
     this.myGroup = new FormGroup({
-      updatedPassportID: new FormControl('', [Validators.required, Validators.min(1)]),
+      updatedPassportID: new FormControl('', [Validators.required, Validators.min(100)]),
       updateExpiryDateForPassport: new FormControl('')
+    })
+    this.addPassportForm= new FormGroup({
+      addPassportID: new FormControl('', [Validators.required, Validators.min(100)]),
+      addExpiryDateForPassport: new FormControl('',[Validators.required])
     })
     this.getAllDBCourses()
     this.updateView()
@@ -178,18 +180,22 @@ export class UserDetailComponent implements OnInit {
   }
   onCloseHandledForPassport() {
     this.displayPassport = "none";
+  }
+  addPassport(form:FormGroup){
     if (this.isPassportData == false) {
       // console.log("Need to call api ",this.newPassportID,this.newExpiryDateForPassport.day+"-"+this.newExpiryDateForPassport.year)
-      this.newExpiryDateForPassport = this.newExpiryDateForPassport.year + "-" + this.newExpiryDateForPassport.month + "-" + this.newExpiryDateForPassport.day
-      console.log("Need to call api  -- ", this.newPassportID, this.newExpiryDateForPassport)
+      this.newExpiryDateForPassport = form.value.addExpiryDateForPassport.year + "-" + form.value.addExpiryDateForPassport.month + "-" + form.value.addExpiryDateForPassport.day
+      console.log("Need to call api  -- ",form.value.addPassportID , this.newExpiryDateForPassport)
       let newPassport = new Passport()
-      newPassport.PassportID=this.newPassportID
+      newPassport.PassportID=form.value.addPassportID
       newPassport.ExpiryDate=this.newExpiryDateForPassport
       this.obs.addPassportDetailsForUser(this.userID,newPassport).subscribe({
         next: (data) => {
+          console.log("Passport details added ",data)
           this.updateView()
         },
         error: (err) => {
+          alert(err.error)
           console.log("Error in add passport detail ", err)
         }
       })
