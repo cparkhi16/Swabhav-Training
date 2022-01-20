@@ -18,8 +18,8 @@ import (
 
 func main() {
 	/* depends_on vs links , scratch*/
-	//dbConn := "root:hello@tcp(127.0.0.1:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
-	dbConn := "root:hello@tcp(mysqlserv)/userdb?charset=utf8mb4&parseTime=True&loc=Local"
+	dbConn := "root:hello@tcp(127.0.0.1:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
+	//dbConn := "root:hello@tcp(mysqlserv)/userdb?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dbConn)
 	if err != nil {
 		//fmt.Println("Err is ",err)
