@@ -5,12 +5,37 @@
     <h3>Your Hobbies</h3>
     <tr>
         <th>Name</th>
-        <th>Delete</th>
-        <th></th>
+        <!-- <th>Delete</th>
+        <th>Update</th> -->
     </tr>
     <tr *ngFor="let hobby of hobbies">
         <td>{{hobby.HobbyName}}</td>
         <td><button (click)="deleteHobby(hobby)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+        <td><button (click)="openUpdateHobbyModal(hobby)"><i class="fa fa-edit"></i></button></td>
+
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayUpdateHobbyModal}">
+            <form [formGroup]="updateHobby"  (ngSubmit)="updateHobbyName(updateHobby)">
+             <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                         <div class="modal-header">
+                               <h4 class="modal-title">Hobby</h4>
+                               <button type="button" class="close" aria-label="Close" (click)="closeUpdateHobbyModal()"><span aria-hidden="true">&times;</span></button>
+                             </div>
+                    <div class="modal-body">
+                        <label for="exampleInputEmail1" class="form-label">Enter Hobby Name to be updated</label>
+                        <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="updatedHobbyName"
+                            aria-describedby="emailHelp" >
+                            <div class="alert alert-danger" *ngIf="updateHobby.get('updatedHobbyName')?.hasError('required') && (updateHobby.get('updatedHobbyName')?.dirty || updateHobby.get('updatedHobbyName')?.touched)">
+                                Please provide a hobby name.
+                          </div>
+                             </div>
+                         <div class="modal-footer">
+                               <button type="submit" class="btn btn-default" [disabled]="updateHobby.invalid">Update Hobby</button>
+                             </div>
+                </div>
+                 </div>
+                </form>
+     </div>
     </tr>
 </table> 
 <ng-template #h>

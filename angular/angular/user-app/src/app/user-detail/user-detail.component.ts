@@ -12,6 +12,8 @@ import { User } from '../models/user';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
+  displayUpdateHobbyModal="none"
+  updateHobby!:FormGroup
   addPassportForm!:FormGroup
   userName!: string
   myGroup!: FormGroup
@@ -32,6 +34,7 @@ export class UserDetailComponent implements OnInit {
   displayPassport = "none";
   displayUpdatePassportModel = "none";
   updateExpiryDateForPassport: any
+  hobbyToBeUpdated!:Hobby
   constructor(private obs: ObsService, private router: Router,
     private activatedRoute: ActivatedRoute) {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -134,6 +137,9 @@ export class UserDetailComponent implements OnInit {
       addPassportID: new FormControl('', [Validators.required, Validators.min(100)]),
       addExpiryDateForPassport: new FormControl('',[Validators.required])
     })
+    this.updateHobby=new FormGroup({
+      updatedHobbyName:new FormControl('',[Validators.required])
+    })
     this.getAllDBCourses()
     this.updateView()
   }
@@ -147,6 +153,27 @@ export class UserDetailComponent implements OnInit {
       }
     }
     )
+  }
+  updateHobbyName(updateHobby:FormGroup){
+    console.log("hobby to be updated ",updateHobby.value.updatedHobbyName)
+   this.hobbyToBeUpdated.HobbyName=updateHobby.value.updatedHobbyName
+   console.log("New hobby name ",this.hobbyToBeUpdated.HobbyName)
+    this.obs.updateHobby(this.hobbyToBeUpdated).subscribe({
+      next:(data)=>{
+        this.closeUpdateHobbyModal()
+        this.updateView()
+      },
+      error:(err)=>{
+        this.closeUpdateHobbyModal()
+        alert("Error updating hobby ")
+        console.log("Error updating hobby ",err)
+      }
+    })
+  }
+  openUpdateHobbyModal(hobby:Hobby){
+    this.hobbyToBeUpdated=hobby
+    this.displayUpdateHobbyModal="block";
+    console.log("Clicked to updated hobby ",hobby.HobbyName)
   }
   deleteHobby(hobby: Hobby) {
     console.log("HobbyID ", hobby)
@@ -171,6 +198,9 @@ export class UserDetailComponent implements OnInit {
         console.log("Error unenrolling course for user ", err)
       }
     })
+  }
+  closeUpdateHobbyModal(){
+    this.displayUpdateHobbyModal="none";
   }
   openModal() {
     this.display = "block";

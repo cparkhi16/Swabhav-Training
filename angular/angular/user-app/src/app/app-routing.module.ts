@@ -5,7 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import {AuthGuardService} from './auth/auth-guard.service';
-
+import { NotfoundComponent } from './notfound/notfound.component';
 const routes: Routes = [
     {path:'',component:LoginComponent,pathMatch:"full"},
     {
@@ -17,7 +17,10 @@ const routes: Routes = [
         {path:'profile/:userId',component:ProfileComponent,canActivate:[AuthGuardService]},
         {path:'userDetail/:userId',canActivate:[AuthGuardService],
     children:[ {path:'',component:UserDetailComponent,pathMatch:"full"}]},
-    { path: 'courses', loadChildren: () => import('./course/course.module').then(m => m.CourseModule) }];
+    { path: 'courses', loadChildren: () => import('./course/course.module').then(m => m.CourseModule) },
+    {path:'**',component:NotfoundComponent}
+];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

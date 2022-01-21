@@ -71,4 +71,15 @@ export class ProfileComponent implements OnInit {
   goToUserDetail(){
     this.router.navigate(["userDetail/",this.userID])
   }
+  deleteAccount(){
+    this.obs.deleteUser(this.user).subscribe({
+      next:(data)=>{
+        this.logout()
+      },
+      error:(err)=>{
+        alert("Error deleting user")
+        console.log("Error deleting user ",err)      
+      }
+    })
+  }
 }
