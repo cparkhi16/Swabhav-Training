@@ -50,9 +50,19 @@ func (us *UserService) UpdatePassport(passport *model.Passport) error {
 		err := fmt.Errorf("no passport id found ")
 		return err
 	}
-	e := us.Repo.Update(uow, passport)
-	if e != nil {
-		return e
+	var a = us.isUniquePassportID(passport.PassportID)
+	fmt.Println(" Val of check ", a)
+	if us.isUniquePassportID(passport.PassportID) {
+		er := us.Repo.Update(uow, passport)
+		if er != nil {
+			uow.Complete()
+			us.Logger.Error().Msgf("Error while updating passport %v", er)
+		}
+	} else {
+		fmt.Println("Same passport ID found returning ")
+		uow.Complete()
+		errMsg := fmt.Errorf("A user already exists with same passport ID")
+		return errMsg
 	}
 	uow.Commit()
 	return nil
@@ -81,6 +91,18 @@ func (us *UserService) GetPassportCount(ID uuid.UUID) int {
 		us.Logger.Error().Msgf("error in getting passport count")
 	}
 	return c
+}
+func (us *UserService) isUniquePassportID(ID uint) bool {
+	uow := repository.NewUnitOfWork(us.DB, true)
+	var c int = 0
+	err := us.Repo.GetCount(uow, model.Passport{}, &c, "passport_id = ?", ID)
+	if err != nil {
+		us.Logger.Error().Msgf("error in getting passport count")
+	}
+	if c == 0 {
+		return true
+	}
+	return false
 }
 func (us *UserService) CheckIfPassportIDExists(passport *model.Passport) bool {
 	uow := repository.NewUnitOfWork(us.DB, true)

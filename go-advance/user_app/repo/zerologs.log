@@ -768,3 +768,78 @@
 {"level":"error","time":"2022-01-17T18:02:45+05:30","message":"Error in get user by ID "}
 {"level":"error","time":"2022-01-17T18:03:12+05:30","message":"Error in get user by ID "}
 {"level":"error","time":"2022-01-17T18:03:12+05:30","message":"Error in get user by ID "}
+{"level":"error","time":"2022-01-20T16:04:32+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T16:04:32+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T16:10:44+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:10:57+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:15:44+05:30","message":"Course with same name already exists in db"}
+{"level":"error","time":"2022-01-20T16:15:44+05:30","message":"Error updating course detail course with same name already exists in db"}
+{"level":"error","time":"2022-01-20T16:16:41+05:30","message":"Course with same name already exists in db"}
+{"level":"error","time":"2022-01-20T16:16:41+05:30","message":"Error updating course detail course with same name already exists in db"}
+{"level":"error","time":"2022-01-20T16:17:21+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:17:57+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2022-01-20T16:18:40+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2022-01-20T16:19:00+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:19:26+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:19:34+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:19:44+05:30","message":"Error updating user detail user exists with same email id"}
+{"level":"error","time":"2022-01-20T16:27:03+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T16:27:03+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T16:29:28+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:29:49+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:32:01+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T16:33:04+05:30","message":"Error updating course detail Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T16:34:57+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T16:34:57+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T16:34:57+05:30","message":"Error updating course detail Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T16:35:48+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:36:11+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:36:26+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:36:35+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:37:30+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:53:36+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:55:23+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:56:10+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T16:59:27+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T17:00:01+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:00:01+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:00:43+05:30","message":"Error updating course detail Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:09:20+05:30","message":"Error updating course detail Error 1205: Lock wait timeout exceeded; try restarting transaction"}
+{"level":"error","time":"2022-01-20T17:17:19+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:17:19+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:17:57+05:30","message":"Error while updating passport Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:24:16+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:24:16+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:24:30+05:30","message":"Error while updating passport Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:24:49+05:30","message":"Error while updating passport Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:27:21+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:27:21+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:27:34+05:30","message":"Error while updating passport Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:31:08+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:31:08+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:31:21+05:30","message":"Error while updating passport Error 1062: Duplicate entry '100' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T17:40:41+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T17:40:41+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T17:41:12+05:30","message":"Error updating course detail A user already exists with same passport ID"}
+{"level":"error","time":"2022-01-20T17:43:09+05:30","message":"Error updating course detail A user already exists with same passport ID"}
+{"level":"error","time":"2022-01-20T18:52:50+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T18:57:06+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T18:57:25+05:30","message":"Error updating course detail A user already exists with same passport ID"}
+{"level":"error","time":"2022-01-20T18:57:37+05:30","message":"Error updating course detail A user already exists with same passport ID"}
+{"level":"error","time":"2022-01-20T18:58:18+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T19:01:22+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T19:01:22+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T19:01:55+05:30","message":"Error updating passport detail same passport ID exists for a user"}
+{"level":"error","time":"2022-01-20T19:02:25+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T19:02:46+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T19:08:16+05:30","message":"No passport found for user"}
+{"level":"error","time":"2022-01-20T19:08:26+05:30","message":"Error updating passport detail same passport ID exists for a user"}
+{"level":"error","time":"2022-01-20T19:10:44+05:30","message":"Error while updating user Error 1062: Duplicate entry '1005' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T19:10:51+05:30","message":"Error while updating user Error 1062: Duplicate entry '1005' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T19:11:02+05:30","message":"Error while updating user Error 1062: Duplicate entry '1005' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T19:11:18+05:30","message":"Error while updating user Error 1062: Duplicate entry '1005' for key 'passport_id'"}
+{"level":"error","time":"2022-01-20T19:13:40+05:30","message":"Error in add user can't save invalid data"}
+{"level":"info","time":"2022-01-20T19:13:40+05:30","message":"Starting server"}
+{"level":"error","time":"2022-01-20T19:15:42+05:30","message":"Error updating course detail A user already exists with same passport ID"}
+{"level":"error","time":"2022-01-20T19:34:23+05:30","message":"Error updating passport detail same passport ID exists for a user"}
+{"level":"error","time":"2022-01-20T19:51:21+05:30","message":"Error updating passport detail same passport ID exists for a user"}

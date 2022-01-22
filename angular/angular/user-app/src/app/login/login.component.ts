@@ -41,7 +41,8 @@ export class LoginComponent implements OnInit {
       this.isValidToken=true
       this.router.navigate(['userDetail/',this.userid]);
     },
-      error:(err)=>{console.log("Error ",err)}
+      error:(err)=>{console.log("Error ",err)
+    alert(err.error)}
     })  
   }
 

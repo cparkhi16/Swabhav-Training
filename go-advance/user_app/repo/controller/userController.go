@@ -204,6 +204,7 @@ func (uc *UserController) AddPassportForUser(w http.ResponseWriter, r *http.Requ
 		if e != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			uc.us.Logger.Error().Msgf("Error updating passport detail %v", e)
+			fmt.Fprintf(w, e.Error())
 		}
 	} else {
 		w.WriteHeader(http.StatusBadRequest)

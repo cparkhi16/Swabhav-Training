@@ -67,6 +67,7 @@ export class CourseComponent implements OnInit {
         this.updateCourseView()
       },
       error:(err)=>{
+        alert(err.error)
         console.log("Error updating course name ",err)
       }
     })
@@ -83,6 +84,7 @@ export class CourseComponent implements OnInit {
         this.updateCourseView()
       },
       error:(err)=>{
+        alert(err.error)
         console.log("Error adding new course ",err)
       }
     })

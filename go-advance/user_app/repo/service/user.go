@@ -103,8 +103,8 @@ func (us *UserService) UpdateUser(user *model.User) error {
 	uow := repository.NewUnitOfWork(us.DB, false)
 	count := us.GetUsersCount("id = ?", user.ID)
 	if count == 0 {
-		us.Logger.Error().Msg("Could not find the user or user password is empty")
-		err := fmt.Errorf("could not find the user or user password is empty")
+		us.Logger.Error().Msg("Could not find the user")
+		err := fmt.Errorf("could not find the user")
 		return err
 	}
 	currUser := *user
@@ -120,19 +120,21 @@ func (us *UserService) UpdateUser(user *model.User) error {
 		hashedPassword := hash.CreateHashForPassword(user.Password)
 		user.Password = hashedPassword
 	}
-	if !us.CheckIfPassportIDExists(&user.Passport) {
+	if us.isUniquePassportID(user.Passport.PassportID) {
 		er := us.Repo.Update(uow, user)
 		if er != nil {
 			uow.Complete()
 			us.Logger.Error().Msgf("Error while updating user %v", er)
-			return er
 		}
 		uow.Commit()
+	} else {
+		errMsg := fmt.Errorf("same passport ID exists for a user")
+		return errMsg
 	}
-	fmt.Println("Passport ID ", user.Passport.ID)
-	if user.Passport.ID == uuid.Nil {
-		us.FindAndDeletePassport(user)
-	}
+	// fmt.Println("Passport ID ", user.Passport.ID)
+	// if user.Passport.ID == uuid.Nil {
+	// 	us.FindAndDeletePassport(user)
+	// }
 	return nil
 }
 

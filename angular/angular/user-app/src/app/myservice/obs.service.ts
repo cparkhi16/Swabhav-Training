@@ -105,10 +105,24 @@ export class ObsService {
    return this.http.delete("http://localhost:9000/courses/"+course.ID,{headers:headers,params: params})
    //return this.http.delete("http://app:9000/courses/"+id,{headers:headers,params: params}) 
   }
+  deleteUser(user:User){
+    let currentToken:any=localStorage.getItem('Token')
+    let headers= new HttpHeaders().set('Token',currentToken);
+    let params = new HttpParams();
+    params = params.append('hardDelete', "false");
+     return this.http.delete("http://localhost:9000/users/"+user.ID,{headers:headers,params: params})
+     //return this.http.delete("http://app:9000/courses/"+id,{headers:headers,params: params}) 
+    }
   updateCourse(course:Course){
     let currentToken:any=localStorage.getItem('Token')
     let headers= new HttpHeaders().set('Token',currentToken);
    return this.http.put<any>("http://localhost:9000/courses/"+course.ID,{"Name":course.Name},{headers:headers})
+   // return this.http.put<any>("http://app:9000/courses/"+id,{"Name":courseName},{headers:headers})
+  }
+  updateHobby(hobby:Hobby){
+    let currentToken:any=localStorage.getItem('Token')
+    let headers= new HttpHeaders().set('Token',currentToken);
+   return this.http.put<any>("http://localhost:9000/hobbies/"+hobby.ID,{"HobbyName":hobby.HobbyName},{headers:headers})
    // return this.http.put<any>("http://app:9000/courses/"+id,{"Name":courseName},{headers:headers})
   }
   updatePassport(passport:Passport){

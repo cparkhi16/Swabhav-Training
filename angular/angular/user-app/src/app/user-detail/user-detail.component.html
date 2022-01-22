@@ -5,12 +5,37 @@
     <h3>Your Hobbies</h3>
     <tr>
         <th>Name</th>
-        <th>Delete</th>
-        <th></th>
+        <!-- <th>Delete</th>
+        <th>Update</th> -->
     </tr>
     <tr *ngFor="let hobby of hobbies">
         <td>{{hobby.HobbyName}}</td>
         <td><button (click)="deleteHobby(hobby)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+        <td><button (click)="openUpdateHobbyModal(hobby)"><i class="fa fa-edit"></i></button></td>
+
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayUpdateHobbyModal}">
+            <form [formGroup]="updateHobby"  (ngSubmit)="updateHobbyName(updateHobby)">
+             <div class="modal-dialog" role="document">
+                   <div class="modal-content">
+                         <div class="modal-header">
+                               <h4 class="modal-title">Hobby</h4>
+                               <button type="button" class="close" aria-label="Close" (click)="closeUpdateHobbyModal()"><span aria-hidden="true">&times;</span></button>
+                             </div>
+                    <div class="modal-body">
+                        <label for="exampleInputEmail1" class="form-label">Enter Hobby Name to be updated</label>
+                        <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="updatedHobbyName"
+                            aria-describedby="emailHelp" >
+                            <div class="alert alert-danger" *ngIf="updateHobby.get('updatedHobbyName')?.hasError('required') && (updateHobby.get('updatedHobbyName')?.dirty || updateHobby.get('updatedHobbyName')?.touched)">
+                                Please provide a hobby name.
+                          </div>
+                             </div>
+                         <div class="modal-footer">
+                               <button type="submit" class="btn btn-default" [disabled]="updateHobby.invalid">Update Hobby</button>
+                             </div>
+                </div>
+                 </div>
+                </form>
+     </div>
     </tr>
 </table> 
 <ng-template #h>
@@ -80,7 +105,7 @@
          <div class="modal-dialog" role="document">
                <div class="modal-content">
                      <div class="modal-header">
-                           <h4 class="modal-title">Model Title</h4>
+                           <h4 class="modal-title">Your Passport Details</h4>
                            <button type="button" class="close" aria-label="Close" (click)="onCloseHandledForPassport()"><span aria-hidden="true">&times;</span></button>
                          </div>
                 <div class="modal-body">
@@ -102,6 +127,9 @@
                                         <div class="alert alert-danger" *ngIf="myGroup.get('updatedPassportID')?.hasError('required') && (myGroup.get('updatedPassportID')?.dirty || myGroup.get('updatedPassportID')?.touched)">
                                             Please provide a passport ID.
                                       </div>
+                                      <div class="alert alert-danger" *ngIf="myGroup.get('updatedPassportID')?.hasError('min') && (myGroup.get('updatedPassportID')?.dirty || myGroup.get('updatedPassportID')?.touched)">
+                                        Please provide a passport ID greater than 100.
+                                        </div>
                                       <ngb-datepicker #dp formControlName="updateExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
                                          </div>
                                      <div class="modal-footer">
@@ -123,6 +151,7 @@
     <!-- You haven't issued for passport -->
     <button type="button" class="btn btn-info btn-lg" (click)="openModalForPassport()">Add Passport Details</button>
     <div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':displayPassport}">
+        <form [formGroup]="addPassportForm"  (ngSubmit)="addPassport(addPassportForm)">
          <div class="modal-dialog" role="document">
                <div class="modal-content">
                      <div class="modal-header">
@@ -131,18 +160,22 @@
                          </div>
                 <div class="modal-body">
                     <label for="exampleInputEmail1" class="form-label">Passport ID :</label>
-                    <input type="email"  class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" [(ngModel)]="newPassportID">
-                    <!-- <label for="exampleInputEmail1" class="form-label">Expiry Date :</label>
-                    <input type="email"  class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" [(ngModel)]="newExpiryDateForPassport"> -->
-                    <ngb-datepicker #dp [(ngModel)]="newExpiryDateForPassport" (navigate)="date = $event.next"></ngb-datepicker>
+                    <input type="email"  class="form-control" id="exampleInputEmail1" formControlName="addPassportID"
+                    aria-describedby="emailHelp" >
+                    <div class="alert alert-danger" *ngIf="addPassportForm.get('addPassportID')?.hasError('required') && (addPassportForm.get('addPassportID')?.dirty || addPassportForm.get('addPassportID')?.touched)">
+                        Please provide a passport ID.
+                  </div>
+                  <div class="alert alert-danger" *ngIf="addPassportForm.get('addPassportID')?.hasError('min') && (addPassportForm.get('addPassportID')?.dirty || addPassportForm.get('addPassportID')?.touched)">
+                    Please provide a passport ID greater than 100.
+                    </div>
+                    <ngb-datepicker #dp  (navigate)="date = $event.next" formControlName="addExpiryDateForPassport"></ngb-datepicker>
                          </div>
                      <div class="modal-footer">
-                           <button type="button" class="btn btn-default" (click)="onCloseHandledForPassport()" >Add Details</button>
+                           <button type="submit" class="btn btn-default" [disabled]="addPassportForm.invalid" >Add Details</button>
                          </div>
             </div>
              </div>
+            </form>
  </div>
 </ng-template>
 </div>

@@ -12,13 +12,15 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NotfoundComponent } from './notfound/notfound.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserDetailComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,
