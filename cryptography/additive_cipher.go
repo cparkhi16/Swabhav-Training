@@ -25,7 +25,9 @@ func decrypt(r rune, shift int) rune {
 	return rune(plainText)
 }
 func main() {
-	value := "chinmay"
+	value := "chinmay parkhi"
+	value = strings.ReplaceAll(value, " ", "")
+	fmt.Println(value)
 	result := strings.Map(func(r rune) rune {
 		return caesar(r, 1)
 	}, value)
