@@ -38,9 +38,14 @@ export class ProfileComponent implements OnInit {
             updatedPassword:new FormControl('',[Validators.maxLength(30)]),
             updatedEmail:new FormControl('',[Validators.email])
           })
+      //this.updateForm.setValue
   }
   openUpdateProfileModal(){
     this.displayUpdateProfileModal="block"
+    this.updateForm.get('updatedFirstName')?.setValue(this.user.FirstName)
+    this.updateForm.get('updatedLastName')?.setValue(this.user.LastName)
+    this.updateForm.get('updatedAddress')?.setValue(this.user.Address)
+    this.updateForm.get('updatedEmail')?.setValue(this.user.Email)
   }
   closeUpdateModal(){
     this.displayUpdateProfileModal="none"

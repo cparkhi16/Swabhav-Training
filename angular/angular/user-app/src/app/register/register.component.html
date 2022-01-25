@@ -2,7 +2,7 @@
     <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">First Name</label>
-            <input type="email" formControlName="firstname" class="form-control" id="exampleInputEmail1"
+            <input type="email" formControlName="firstname" class="form-control" id="examleInputEmail1"
                 aria-describedby="emailHelp">
       <div class="alert alert-danger" *ngIf="myForm.get('firstname')?.hasError('maxlength') && (myForm.get('firstname')?.dirty || myForm.get('firstname')?.touched)">
         Please provide first name upto length of max 30 characters.
@@ -13,7 +13,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Last Name</label>
-            <input type="email" formControlName="lastname" class="form-control" id="exampleInputEmail1"
+            <input type="email" formControlName="lastname" class="form-control" id="examplInputEmail1"
                 aria-describedby="emailHelp">
       <div class="alert alert-danger" *ngIf="myForm.get('lastname')?.hasError('maxlength') && (myForm.get('lastname')?.dirty || myForm.get('lastname')?.touched)">
         Please provide last name upto length of max 30 characters.
@@ -24,7 +24,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Address</label>
-            <input type="email" formControlName="address" class="form-control" id="exampleInputEmail1"
+            <input type="email" formControlName="address" class="form-control" id="exmpleInputEmail1"
                 aria-describedby="emailHelp">
       <div class="alert alert-danger" *ngIf="myForm.get('address')?.hasError('maxlength') && (myForm.get('address')?.dirty || myForm.get('address')?.touched)">
         Please provide address upto length of max 60 characters.
@@ -35,7 +35,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1"
+            <input type="email" formControlName="email" class="form-control" id="exampleIutEmail1"
                 aria-describedby="emailHelp">
       <div class="alert alert-danger" *ngIf="myForm.get('email')?.hasError('maxlength') && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
         Please provide email address upto length of max 50 characters.
@@ -50,7 +50,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" formControlName="password" class="form-control" id="exampleInputPassword1">
+            <input type="password" formControlName="password" class="form-control" id="expleInputPassword1">
             <div class="alert alert-danger"
                 *ngIf="myForm.get('password')?.invalid && (myForm.get('password')?.dirty || myForm.get('password')?.touched)">
                 Please provide a valid password.
