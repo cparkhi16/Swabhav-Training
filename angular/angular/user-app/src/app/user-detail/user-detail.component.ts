@@ -73,6 +73,8 @@ export class UserDetailComponent implements OnInit {
         console.log("Error updating passport ", err)
       },
     })
+    myGroup.value.updateExpiryDateForPassport=""
+    myGroup.value.updatedPassportID=""
   }
   closeUpdatePassportModal() {
     this.displayUpdatePassportModel = "none"

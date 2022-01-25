@@ -1,3 +1,4 @@
+<div class="my-container">
 <div class="container" *ngIf="!isValidToken;">
     <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
         <div class="mb-3">
@@ -42,6 +43,7 @@
         <div id="emailHelp" class="form-text"><a routerLink="/register">Register</a></div>
         <!-- <div>Is Form valid ? {{myForm.valid}}</div> -->
     </form>
+</div>
 </div>
 <!-- <ng-template #elseBlock>
     <app-user-detail [userID]="userid"></app-user-detail>
