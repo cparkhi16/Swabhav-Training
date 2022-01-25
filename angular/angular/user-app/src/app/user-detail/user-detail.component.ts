@@ -169,6 +169,7 @@ export class UserDetailComponent implements OnInit {
         console.log("Error updating hobby ",err)
       }
     })
+    updateHobby.value.updatedHobbyName="";
   }
   openUpdateHobbyModal(hobby:Hobby){
     this.hobbyToBeUpdated=hobby
@@ -246,6 +247,7 @@ export class UserDetailComponent implements OnInit {
       })
     }
     this.display = "none";
+    this.hobbyName="";
   }
   onCourseChange(event: any) {
     this.SelectedCourse = event.target.value

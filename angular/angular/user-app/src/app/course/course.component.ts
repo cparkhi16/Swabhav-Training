@@ -71,6 +71,7 @@ export class CourseComponent implements OnInit {
         console.log("Error updating course name ",err)
       }
     })
+    myGroup.value.updatedCourseName="";
   }
   closeCourseModal(){
     this.displayCourseModal="none"
@@ -89,6 +90,7 @@ export class CourseComponent implements OnInit {
       }
     })
     this.display="none"
+    this.courseName=""
   }
   onCloseHandled(){
     this.display="none"

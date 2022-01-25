@@ -5,22 +5,14 @@
     background-size: 100% 100%;
     background-color: pink;
 }
-@keyframes spinner {
-    to {transform: rotate(360deg);}
+table, tr , td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
   }
-   
-  .spinner:before {
-    content: '';
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    margin-top: -10px;
-    margin-left: -10px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    border-top-color: #000000;
-    animation: spinner .8s linear infinite;
+  table tr:nth-child(odd) {
+  background-color: #d6f1f8;
+  }
+  table tr:nth-child(even) {
+  background-color: #ffffff;
   }
