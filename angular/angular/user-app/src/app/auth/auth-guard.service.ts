@@ -23,7 +23,8 @@ export class AuthGuardService implements CanActivate  {
   checkValidity(){
     console.log("Checking validity")
   let token:any=localStorage.getItem('Token');
-  this.obs.validateToken(token).subscribe((data:any)=>{
+  let decryptedToken:any =this.obs.decryptData(token)
+  this.obs.validateToken(decryptedToken).subscribe((data:any)=>{
     console.log("Valid token" , data);
     this.isValid=data.IsValidToken;
     if(this.isValid==false){

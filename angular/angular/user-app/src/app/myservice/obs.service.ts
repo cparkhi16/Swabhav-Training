@@ -6,12 +6,14 @@ import { Course } from '../models/course';
 import { Passport } from '../models/passport';
 import { Hobby } from '../models/hobby';
 import { User } from '../models/user';
+import * as CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
 export class ObsService {
   obs!:Observable<any>
   baseURL: string = "http://localhost:9000/courses";
+  encryptSecretKey="chinmayparkhi";
   //baseURL: string = "http://app:9000/courses";
   constructor(private http: HttpClient) { }
   getRandomInt(max:number) {
@@ -51,8 +53,10 @@ export class ObsService {
     //return this.http.get("http://app:9000/users/"+id) 
    }
   deleteHobbyForUser(hobby:Hobby){ 
-    let currentToken:any=localStorage.getItem('Token')
-    let headers= new HttpHeaders().set('Token',currentToken);
+    //let currentToken:any=localStorage.getItem('Token')
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+    let headers= new HttpHeaders().set('Token',decryptedToken);
     return this.http.delete("http://localhost:9000/hobbies/"+hobby.ID,{headers:headers}) 
     //return this.http.delete("http://app:9000/hobbies/"+id,{headers:headers}) 
   }
@@ -66,62 +70,88 @@ export class ObsService {
     //return this.http.get("http://app:9000/courses")
   }
   enrollUserCourse(id:any,course:Course){
-    let currentToken:any=localStorage.getItem('Token')
-     let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      console.log("Enroll course called ")
      return this.http.put<any>("http://localhost:9000/users/"+id,{"Courses":[{"ID":course.ID}]},{headers:headers})
     //return this.http.put<any>("http://app:9000/users/"+id,{"Courses":[{"ID":courseID}]},{headers:headers})
   }
   addUserHobby(id:any,hobby:Hobby){
-    let currentToken:any=localStorage.getItem('Token')
-     let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    //  let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      return this.http.put<any>("http://localhost:9000/users/"+id,{"Hobbies":[{"HobbyName":hobby.HobbyName}]},{headers:headers})
     //return this.http.put<any>("http://app:9000/users/"+id,{"Hobbies":[{"HobbyName":hobbyName}]},{headers:headers})
   }
   addPassportDetailsForUser(id:any,passport:Passport){
-     let currentToken:any=localStorage.getItem('Token')
-     let headers= new HttpHeaders().set('Token',currentToken);
+    //  let currentToken:any=localStorage.getItem('Token')
+    //  let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      console.log("Passport id ",Number(passport.PassportID))
     return this.http.post<any>("http://localhost:9000/users/"+id+"/passport",{"Passport":{"PassportID":Number(passport.PassportID),"ExpiryDate":passport.ExpiryDate}},{headers:headers})
     //return this.http.post<any>("http://app:9000/users/"+id+"/passport",{"Passport":{"PassportID":Number(passportID),"ExpiryDate":expiryDate}},{headers:headers})
   }
   deleteCourseForUser(id:any,course:Course){
-     let currentToken:any=localStorage.getItem('Token')
-     let headers= new HttpHeaders().set('Token',currentToken);
+    //  let currentToken:any=localStorage.getItem('Token')
+    //  let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      return this.http.delete("http://localhost:9000/users/"+id+"/courses/"+course.ID,{headers:headers}) 
     //return this.http.delete("http://app:9000/users/"+id+"/courses/"+courseid,{headers:headers}) 
   }
   addCourse(course:Course){
-    let currentToken:any=localStorage.getItem('Token')
-    let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    // let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      return this.http.post<any>("http://localhost:9000/courses",{"Name":course.Name},{headers:headers}) 
     //return this.http.post<any>("http://app:9000/courses",{"Name":courseName},{headers:headers}) 
   }
   deleteCourse(course:Course){
-  let currentToken:any=localStorage.getItem('Token')
-  let headers= new HttpHeaders().set('Token',currentToken);
+  // let currentToken:any=localStorage.getItem('Token')
+  // let headers= new HttpHeaders().set('Token',currentToken);
+  let currentToken:any=localStorage.getItem('Token');
+  let decryptedToken:any =this.decryptData(currentToken)
+   let headers= new HttpHeaders().set('Token',decryptedToken);
   let params = new HttpParams();
   params = params.append('hardDelete', "false");
    return this.http.delete("http://localhost:9000/courses/"+course.ID,{headers:headers,params: params})
    //return this.http.delete("http://app:9000/courses/"+id,{headers:headers,params: params}) 
   }
   deleteUser(user:User){
-    let currentToken:any=localStorage.getItem('Token')
-    let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    // let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
     let params = new HttpParams();
     params = params.append('hardDelete', "false");
      return this.http.delete("http://localhost:9000/users/"+user.ID,{headers:headers,params: params})
      //return this.http.delete("http://app:9000/courses/"+id,{headers:headers,params: params}) 
     }
   updateCourse(course:Course){
-    let currentToken:any=localStorage.getItem('Token')
-    let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    // let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
    return this.http.put<any>("http://localhost:9000/courses/"+course.ID,{"Name":course.Name},{headers:headers})
    // return this.http.put<any>("http://app:9000/courses/"+id,{"Name":courseName},{headers:headers})
   }
   updateHobby(hobby:Hobby){
-    let currentToken:any=localStorage.getItem('Token')
-    let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    // let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
    return this.http.put<any>("http://localhost:9000/hobbies/"+hobby.ID,{"HobbyName":hobby.HobbyName},{headers:headers})
    // return this.http.put<any>("http://app:9000/courses/"+id,{"Name":courseName},{headers:headers})
   }
@@ -130,8 +160,30 @@ export class ObsService {
     //return this.http.put<any>("http://app:9000/passport/"+id,{"PassportID":Number(passportID),"ExpiryDate":expiryDate})
   }
   updateUserProfile(user:User){
-    let currentToken:any=localStorage.getItem('Token')
-     let headers= new HttpHeaders().set('Token',currentToken);
+    // let currentToken:any=localStorage.getItem('Token')
+    //  let headers= new HttpHeaders().set('Token',currentToken);
+    let currentToken:any=localStorage.getItem('Token');
+    let decryptedToken:any =this.decryptData(currentToken)
+     let headers= new HttpHeaders().set('Token',decryptedToken);
      return this.http.put<any>("http://localhost:9000/users/"+user.ID,{"FirstName":user.FirstName,"LastName":user.LastName,"Email":user.Email,"Password":user.Password,"Address":user.Address},{headers:headers})
+  }
+  encryptData(data:any) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), this.encryptSecretKey).toString();
+    } catch (e) {
+      console.log(e);
+    }
+    return null;
+  }
+  decryptData(data:any) {
+    try {
+      const bytes = CryptoJS.AES.decrypt(data, this.encryptSecretKey);
+      if (bytes.toString()) {
+        return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      }
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

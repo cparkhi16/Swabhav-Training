@@ -37,7 +37,11 @@ export class LoginComponent implements OnInit {
       next:(data)=>{console.log("Data from login ",data)
       this.userid=data.ID
       console.log("User ID in parent ",this.userid)
-      localStorage.setItem('Token', data.Token);
+      let token:any=this.obs.encryptData(data.Token)
+      console.log("Encrypted token ",token)
+      let decryptedToken =this.obs.decryptData(token)
+      console.log("Decrypted token ",decryptedToken)
+      localStorage.setItem('Token', token);
       this.isValidToken=true
       this.router.navigate(['userDetail/',this.userid]);
     },

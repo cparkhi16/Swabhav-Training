@@ -36,7 +36,8 @@ export class RegisterComponent implements OnInit {
       next:(data)=>{console.log("Data from login ",data)
       this.userid=data.UserID
       console.log("User ID in register ",this.userid)
-      localStorage.setItem('Token', data.Token);
+      let token:any=this.obs.encryptData(data.Token)
+      localStorage.setItem('Token', token);
       this.isValidToken=true
       this.router.navigate(['userDetail/',this.userid]);
     },
