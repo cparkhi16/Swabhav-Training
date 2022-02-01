@@ -144,7 +144,7 @@ func CheckWriteAccessForFiles(user *model.User, mode string) {
 			} else {
 				fmt.Println("Do you want to write to the file ", val.FileName)
 				var response string
-				fmt.Scanln(&response)
+				fmt.Scan(&response)
 				//fmt.Println("My response ", response)
 				if response == "Y" {
 					WriteToCSVFile(val.FileName)
