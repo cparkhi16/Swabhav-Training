@@ -1,13 +1,16 @@
 package main
 
 import (
+	"app/aes"
 	"app/model"
+	"bufio"
 	"encoding/csv"
 	"fmt"
-	"io"
+	"io/fs"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var files []model.File
@@ -81,6 +84,8 @@ func WriteToCSVFile(fileName string) {
 	var data interface{}
 	if fileName == "employee.csv" {
 		Name, City, Skills := GetEmployeeData()
+		//encryptedName := aes.Encryption([]byte(Name), "chinmay")
+		//fmt.Println("Decrypting name ", string(aes.Decryption([]byte(encryptedName), "chinmay")))
 		data = model.NewEmployee(Name, City, Skills)
 	} else if fileName == "items.csv" {
 		name, price := GetItemData()
@@ -154,26 +159,50 @@ func CheckWriteAccessForFiles(user *model.User, mode string) {
 	}
 }
 func ReadCSVFile(fileName string) {
-	f, err := os.Open(fileName)
+	// f, err := os.Open(fileName)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// // remember to close the file at the end of the program
+	// defer f.Close()
+
+	// // read csv values using csv.Reader
+	// csvReader := csv.NewReader(f)
+	// for {
+	// 	rec, err := csvReader.Read()
+	// 	if err == io.EOF {
+	// 		break
+	// 	}
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	// do something with read line
+	// 	fmt.Printf("%+v\n", rec)
+	// }
+	file, err := os.Open(fileName)
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed opening file: %s", err)
 	}
 
-	// remember to close the file at the end of the program
-	defer f.Close()
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	var txtlines []string
 
-	// read csv values using csv.Reader
-	csvReader := csv.NewReader(f)
-	for {
-		rec, err := csvReader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-		// do something with read line
-		fmt.Printf("%+v\n", rec)
+	for scanner.Scan() {
+		txtlines = append(txtlines, scanner.Text())
+	}
+
+	file.Close()
+
+	// for _, eachline := range txtlines {
+	// 	fmt.Println(eachline)
+	// }
+	for _, val := range txtlines {
+		//fmt.Println(val[1])
+		tmp := strings.Split(val, ",")
+		fmt.Println(tmp)
 	}
 }
 func CheckReadAccessForFiles(user *model.User, mode string) {
@@ -203,40 +232,73 @@ func CheckReadAccessForFiles(user *model.User, mode string) {
 		}
 	}
 }
-func main() {
-	file := model.NewFile("employee.csv", "3") // no write // BELL
-	AddFiles(*file)
-	fileTwo := model.NewFile("items.csv", "4") // no read //BELL
-	AddFiles(*fileTwo)
-	fmt.Println("1.Register 2.Login ")
-	var response string
-	fmt.Scanln(&response)
-	if response == "1" {
-		fmt.Println("Enter name password biba and bell levels")
-		var name string
-		var password string
-		var biba string
-		var bell string
-		fmt.Scanf("%s %s %s %s", &name, &password, &biba, &bell)
-		user := model.NewUser(name, password, biba, bell)
-		user.AddUser()
-		mode := "BIBA"
-		CheckWriteAccessForFiles(user, mode)
-		CheckReadAccessForFiles(user, mode)
-	} else {
-		//user := model.NewUser("Chinmay", "test", "3", "3")
-		user := model.Login()
-		if user == nil {
-			fmt.Println("Invalid username or password ")
-		} else {
-			mode := "BELL"
-			CheckWriteAccessForFiles(user, mode)
-			CheckReadAccessForFiles(user, mode)
-		}
+func WriteFile(filename string, fileMode os.FileMode, data string) error {
+	file, err := os.OpenFile(filename, int(fileMode), 0777)
+	if err != nil {
+		return err
 	}
+	defer file.Close()
+	if _, err := file.Write([]byte(aes.Encryption([]byte(data), "hello"))); err != nil {
+		return err
+	}
+	return nil
+}
+
+func ReadFile(filename string) (string, error) {
+	data, err := os.ReadFile(filename)
+	fmt.Println("Data here ", data)
+	//fmt.Println("---", aes.Decryption(data, "hello"))
+	if err != nil {
+		return "", err
+	}
+	return string(aes.Decrypt(data, "hello")), nil
+}
+func main() {
+	// file := model.NewFile("employee.csv", "2") // no write // BELL
+	// AddFiles(*file)
+	// fileTwo := model.NewFile("items.csv", "4") // no read //BELL
+	// AddFiles(*fileTwo)
+	// fmt.Println("1.Register 2.Login ")
+	// var response string
+	// fmt.Scanln(&response)
+	// if response == "1" {
+	// 	fmt.Println("Enter name password biba and bell levels")
+	// 	var name string
+	// 	var password string
+	// 	var biba string
+	// 	var bell string
+	// 	fmt.Scanf("%s %s %s %s", &name, &password, &biba, &bell)
+	// 	user := model.NewUser(name, password, biba, bell)
+	// 	user.AddUser()
+	// 	mode := "BIBA"
+	// 	CheckWriteAccessForFiles(user, mode)
+	// 	CheckReadAccessForFiles(user, mode)
+	// } else {
+	// 	//user := model.NewUser("Chinmay", "test", "3", "3")
+	// 	user := model.Login()
+	// 	if user == nil {
+	// 		fmt.Println("Invalid username or password ")
+	// 	} else {
+	// 		mode := "BELL"
+	// 		CheckWriteAccessForFiles(user, mode)
+	// 		CheckReadAccessForFiles(user, mode)
+	// 	}
+	// }
 	// employeeCSV()
 	//itemsCSV()
 	// user := model.NewUser("Chinmay", "test", "3", "3")
 	// CheckWriteAccessForFiles(user)
 	// CheckReadAccessForFiles(user)
+	var data string
+	fmt.Println("Enter data")
+	fmt.Scan(&data)
+	err := WriteFile("test.txt", fs.FileMode(os.O_APPEND), data)
+	if err != nil {
+		fmt.Println("-= Error while writing to file -=", err)
+	}
+	d, err := ReadFile("test.txt")
+	if err != nil {
+		fmt.Println("-= Error reading file -=", err)
+	}
+	fmt.Println("Contents of  file ", d)
 }
