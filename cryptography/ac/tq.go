@@ -128,7 +128,7 @@ func CheckWriteAccessForFiles(user *model.User) {
 		//fmt.Println(val)
 		fileBellLevel, _ := strconv.Atoi(val.LevelBell)
 		fileBIBALevel, _ := strconv.Atoi(val.LevelBIBA)
-		if userBellLevel > fileBellLevel && userBIBALevel < fileBIBALevel {
+		if userBellLevel > fileBellLevel || userBIBALevel < fileBIBALevel {
 			fmt.Println("You do not have write permissions for  ", val.FileName)
 		} else {
 			fmt.Println("Do you want to write to the file ", val.FileName)
@@ -212,7 +212,7 @@ func CheckReadAccessForFiles(user *model.User) {
 		//fmt.Println(val)
 		fileBellLevel, _ := strconv.Atoi(val.LevelBell)
 		fileBIBALevel, _ := strconv.Atoi(val.LevelBIBA)
-		if userBellLevel < fileBellLevel && userBIBALevel > fileBIBALevel {
+		if userBellLevel < fileBellLevel || userBIBALevel > fileBIBALevel {
 			fmt.Println("You do not have read permissions for  ", val.FileName)
 		} else {
 			fmt.Println("Contents from ", val.FileName, "----")
