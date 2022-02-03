@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"strconv"
@@ -122,6 +123,7 @@ func AddFiles(file model.File) {
 }
 
 func CheckWriteAccessForFiles(user *model.User) {
+	//s := bufio.NewScanner(os.Stdin)
 	userBIBALevel, _ := strconv.Atoi(user.LevelBIBA)
 	userBellLevel, _ := strconv.Atoi(user.LevelBELL)
 	for _, val := range files {
@@ -135,51 +137,19 @@ func CheckWriteAccessForFiles(user *model.User) {
 			var response string
 			fmt.Scan(&response)
 			if response == "Y" {
-				WriteToCSVFile(val.FileName)
+				//WriteToCSVFile(val.FileName)
+				fmt.Println("Enter data ")
+				//data, _ := scanString(s)
+				var data string
+				fmt.Scan(&data)
+				fmt.Println("Entered data ", data)
+				WriteToFile(val.FileName, fs.FileMode(os.O_WRONLY), data)
 			}
 		}
 	}
-	// } else if mode == "BIBA" {
-	// 	userBIBALevel, _ := strconv.Atoi(user.LevelBIBA)
-	// 	for _, val := range files {
-	// 		//fmt.Println(val)
-	// 		fileLevel, _ := strconv.Atoi(val.Level)
-	// 		if userBIBALevel < fileLevel {
-	// 			fmt.Println("You do not have write permissions for  ", val.FileName)
-	// 		} else {
-	// 			fmt.Println("Do you want to write to the file ", val.FileName)
-	// 			var response string
-	// 			fmt.Scan(&response)
-	// 			//fmt.Println("My response ", response)
-	// 			if response == "Y" {
-	// 				WriteToCSVFile(val.FileName)
-	// 			}
-	// 		}
-	// 	}
-	// }
+
 }
 func ReadCSVFile(fileName string) {
-	// f, err := os.Open(fileName)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// // remember to close the file at the end of the program
-	// defer f.Close()
-
-	// // read csv values using csv.Reader
-	// csvReader := csv.NewReader(f)
-	// for {
-	// 	rec, err := csvReader.Read()
-	// 	if err == io.EOF {
-	// 		break
-	// 	}
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	// do something with read line
-	// 	fmt.Printf("%+v\n", rec)
-	// }
 	file, err := os.Open(fileName)
 
 	if err != nil {
@@ -216,48 +186,41 @@ func CheckReadAccessForFiles(user *model.User) {
 			fmt.Println("You do not have read permissions for  ", val.FileName)
 		} else {
 			fmt.Println("Contents from ", val.FileName, "----")
-			ReadCSVFile(val.FileName)
+			//ReadCSVFile(val.FileName)
+			fmt.Println(ReadFromFile(val.FileName))
 		}
 	}
-	// } else if mode == "BIBA" {
-
-	// 	for _, val := range files {
-	// 		//fmt.Println(val)
-	// 		fileLevel, _ := strconv.Atoi(val.Level)
-	// 		if userBIBALevel > fileLevel {
-	// 			fmt.Println("You do not have read permissions for  ", val.FileName)
-	// 		} else {
-	// 			fmt.Println("Contents from ", val.FileName, "----")
-	// 			ReadCSVFile(val.FileName)
-	// 		}
-	// 	}
-	// }
 }
-func WriteFile(filename string, fileMode os.FileMode, data string) error {
+func WriteToFile(filename string, fileMode os.FileMode, data string) error {
 	file, err := os.OpenFile(filename, int(fileMode), 0777)
+	fileContent, _ := ReadFromFile(filename)
 	if err != nil {
+		//fmt.Println(err)
 		return err
 	}
 	defer file.Close()
-	if _, err := file.Write([]byte(aes.Encryption([]byte(data), "hello"))); err != nil {
+	if _, err := file.Write(aes.Encryption([]byte(fileContent+"\n"+data), "hello")); err != nil {
 		return err
 	}
 	return nil
 }
 
-func ReadFile(filename string) (string, error) {
+func ReadFromFile(filename string) (string, error) {
 	data, err := os.ReadFile(filename)
-	fmt.Println("Data here ", data)
-	//fmt.Println("---", aes.Decryption(data, "hello"))
+	//fmt.Println(data)
 	if err != nil {
 		return "", err
 	}
+	if string(data) == "" {
+		return "", nil
+	}
 	return string(aes.Decrypt(data, "hello")), nil
 }
+
 func main() {
-	file := model.NewFile("employee.csv", "2", "3") // no write // BELL
+	file := model.NewFile("test.txt", "2", "3") // no write // BELL
 	AddFiles(*file)
-	fileTwo := model.NewFile("items.csv", "3", "2") // no read //BELL
+	fileTwo := model.NewFile("t.txt", "3", "3") // no read //BELL
 	AddFiles(*fileTwo)
 	fmt.Println("1.Register 2.Login ")
 	var response string
@@ -283,19 +246,20 @@ func main() {
 			CheckReadAccessForFiles(user)
 		}
 	}
+
 	// employeeCSV()
 	//itemsCSV()
-	// user := model.NewUser("Chinmay", "test", "3", "3")
-	// CheckWriteAccessForFiles(user)
-	// CheckReadAccessForFiles(user)
+
 	// var data string
 	// fmt.Println("Enter data")
-	// fmt.Scan(&data)
-	// err := WriteFile("test.txt", fs.FileMode(os.O_APPEND), data)
+	// //fmt.Scanln(&data)
+	// data, _ = scanString(s)
+	// fmt.Println("Entered data ", data)
+	// err := WriteToFile("test.txt", fs.FileMode(os.O_WRONLY), data)
 	// if err != nil {
 	// 	fmt.Println("-= Error while writing to file -=", err)
 	// }
-	// d, err := ReadFile("test.txt")
+	// d, err := ReadFromFile("test.txt")
 	// if err != nil {
 	// 	fmt.Println("-= Error reading file -=", err)
 	// }
