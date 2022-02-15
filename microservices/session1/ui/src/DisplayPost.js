@@ -5,7 +5,7 @@ import axios from 'axios';
 export default()=>{
     const [posts,updatePosts]=useState({})
     const loadPosts= async()=>{
-        const resp = await axios.get('http://localhost:4001/api/v1/blog/post').catch(e=>console.log(e.message))
+        const resp = await axios.get('http://localhost:5001/api/v1/blog/post').catch(e=>console.log(e.message))
         console.log(resp.data)
         updatePosts(resp.data)
     }

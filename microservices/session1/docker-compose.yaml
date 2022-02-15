@@ -1,0 +1,19 @@
+version: '3'
+services:
+ 
+  blogpost_service:
+    #image: cparkhi16/blogpost
+    build: ./blogpost
+    ports:
+    - "5001:4001"
+
+  blogcomment_service:
+    #image: cparkhi16/blogcomment
+    build: ./blogcomment
+    ports:
+    - "5002:4002"
+
+  ui_service:
+    build: ./ui
+    ports:
+    - "3000:3000"
