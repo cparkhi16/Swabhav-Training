@@ -1,0 +1,52 @@
+
+<div>
+    <h2>Rules</h2>
+    <ul>
+        <li>If you guess correct ball in 3 attempts then it will turn blue</li>
+        <li>If ball id is less than correct id then it will turn green else it will turn red</li>
+        <li>After 3 attmpts you can exit or restart the game</li>
+    </ul>
+</div>
+
+<div class="card" style="background-color: cornflowerblue; width:400px;align-content: center;padding:10px;">
+    <label for="customRange" class="form-label" class="card-title" style="color:white">Number Of Balls</label>
+    <div class="card-text">
+      <input type="range" class="form-range" min="10" max="50" step="1" id="customRange" [(ngModel)]="numberOfBalls">
+      {{numberOfBalls}}
+      <hr>
+      <button (click)="startGame()" class="btn btn-success">Start Game</button>
+    </div>
+</div>
+
+<!-- Carousel
+<div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+    
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+  
+    
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="../../assets/la.jpg" alt="Los Angeles" class="d-block w-100">
+      </div>
+      <div class="carousel-item">
+        <img src="../../assets/chicago.jpg" alt="Chicago" class="d-block w-100">
+      </div>
+      <div class="carousel-item">
+        <img src="../../assets/ny.jpg" alt="New York" class="d-block w-100">
+      </div>
+    </div>
+  
+    
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+   -->

@@ -1,0 +1,70 @@
+<div class="p-5 mb-4 bg-light bg-gradient rounded-3 container">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control" id="firstName">
+            <div class="alert alert-danger" *ngIf="registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched">First Name is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('firstName')?.hasError('maxlength') && registerForm.get('firstName')?.touched">First Name max length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control" id="lastName">
+            <div class="alert alert-danger" *ngIf="registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched">Last Name is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('lastName')?.hasError('maxlength') && registerForm.get('lastName')?.touched">Last Name max length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" formControlName="email" class="form-control" id="email">
+            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">Email is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">Email is invalid</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('email')?.hasError('maxlength') && registerForm.get('email')?.touched">Email length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" formControlName="password" class="form-control" id="password">
+            <div class="alert alert-danger" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">Password is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched">Password max length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="levelbiba" class="form-label">BIBA Level</label>
+            <input type="number" formControlName="levelbiba" class="form-control" id="levelbiba">
+            <div class="alert alert-danger" *ngIf="registerForm.get('levelbiba')?.hasError('required') && registerForm.get('levelbiba')?.touched">BIBA level is Required</div>
+        </div>
+        <div class="mb-3">
+            <label for="levelbell" class="form-label">Bell Level</label>
+            <input type="number" formControlName="levelbell" class="form-control" id="levelbell">
+            <div class="alert alert-danger" *ngIf="registerForm.get('levelbell')?.hasError('required') && registerForm.get('levelbell')?.touched">Bell level is Required</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Secret Question:- What is your nickname?</label>
+            <!-- <label for="secretAnswer" class="form-label">Answer</label> -->
+            <input type="text" formControlName="secretAnswer" class="form-control" id="country">
+            <div class="alert alert-danger" *ngIf="registerForm.get('secretAnswer')?.hasError('required') && registerForm.get('secretAnswer')?.touched">Secret Answer is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('secretAnswer')?.hasError('maxlength') && registerForm.get('secretAnswer')?.touched">Secret Answer max length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Passport Country</label>
+            <input type="text" formControlName="country" class="form-control" id="country">
+            <div class="alert alert-danger" *ngIf="registerForm.get('country')?.hasError('required') && registerForm.get('country')?.touched">Passport Country is Required</div>
+            <div class="alert alert-danger" *ngIf="registerForm.get('country')?.hasError('maxlength') && registerForm.get('country')?.touched">Passport Country max length should not exceed 20 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="expiryDate" class="form-label">Passport Expiry Date</label>
+            <!-- <input type="text" formControlName="expiryDate" class="form-control" id="expiryDate"> -->
+            <!-- <label for="date" class="col-1 col-form-label">Date</label> -->
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" formControlName="expiryDate" id="expiryDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                    </div>
+                    <!-- <div class="alert alert-danger" *ngIf="registerForm.get('expiryDate')?.hasError('required') && registerForm.get('expiryDate')?.touched">Passport Expiry Date is Required</div> -->
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-right:20px;" [disabled]="registerForm.invalid"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Register</button>
+    </form>
+    <div class="alert" *ngIf="message.status!=''" [ngClass]="{'alert-success': message.status === 'success', 'alert-danger' : message.status === 'error' }">
+        {{message.text}}<button (click)="cancel()" style="float:right" class="btn" [ngClass]="{'btn-success': message.status === 'success', 'btn-danger' : message.status === 'error' }"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</div>

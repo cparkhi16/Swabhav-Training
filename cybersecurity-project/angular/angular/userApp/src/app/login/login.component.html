@@ -1,0 +1,38 @@
+<div style="margin:20px;">
+<h2>UserApp Login</h2>
+<div class="p-5 mb-4 bg-secondary bg-gradient rounded-3 container" style="color:white;">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address<span style="color:red">*</span></label>
+            <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text" style="color:white;">We'll never share your email with anyone else.</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">Email is Required</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">Email is invalid</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password<span style="color:red">*</span></label>
+            <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">Password is Required</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('maxlength') && loginForm.get('password')?.touched">password max length should not exceed 10 characters</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('passwordStrength') && loginForm.get('password')?.touched">
+                Your password must have only lower case characters.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Secret Question:- What is your nickname?</label>
+            <!-- <label for="secretAnswer" class="form-label">Answer</label> -->
+            <input type="text" formControlName="secretAnswer" class="form-control" id="country">
+            <div class="alert alert-danger" *ngIf="loginForm.get('secretAnswer')?.hasError('required') && loginForm.get('secretAnswer')?.touched">Secret Answer is Required</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('secretAnswer')?.hasError('maxlength') && loginForm.get('secretAnswer')?.touched">Secret Answer max length should not exceed 20 characters</div>
+        </div>
+        <button  type="submit" class="btn btn-success" style="margin-bottom: 10px;" [disabled]="loginForm.invalid">Login</button>
+        <div><a [routerLink]="['../register']" style="color:white">Register</a></div>
+    </form>
+</div>
+
+</div>
+
+<div class="alert alert-danger" *ngIf="wrongCredentials" style="margin:30px">
+    Unable to login. Please check the login credentials and try again.
+</div>
+

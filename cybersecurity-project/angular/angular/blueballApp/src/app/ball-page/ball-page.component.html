@@ -1,0 +1,46 @@
+<div class="card" style="background-color: cornflowerblue; padding:5px; color:white;">
+  <h4>Remaining Attempts- {{numberOfAttemptsLeft}}</h4>
+</div>
+<div>
+    <span *ngFor="let oneball of balls">
+        <button #myDiv type="button" *ngIf="oneball.id===correctAns; else elseBlock" class="btn btn-circle" (click)="checkBall(oneball)" [style.backgroundColor]="oneball.color" data-bs-toggle="modal" data-bs-target="#myModal" data-backdrop='static' data-keyboard='false' [disabled]="oneball.clicked">{{oneball.description}}</button>
+        <ng-template #elseBlock>
+          <button class="btn btn-circle" (click)="checkBall(oneball)" [style.backgroundColor]="oneball.color" [disabled]="oneball.clicked">{{oneball.description}}</button>
+        </ng-template>  
+    </span>
+</div>
+
+<!-- <button type="button" (click)="open()">
+  Open modal
+</button> -->
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">BlueBall Game</h4>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"></button> -->
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div *ngIf="gameStatus==='winner'; else elseBlock">
+          Congratulations you won!
+        </div>
+        <ng-template #elseBlock>
+          Sorry, correct ans was - {{correctAns}}
+        </ng-template>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="restartGame()">Restart</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" routerLink="/home">Exit</button>
+      </div>
+
+    </div>
+  </div>
+</div>

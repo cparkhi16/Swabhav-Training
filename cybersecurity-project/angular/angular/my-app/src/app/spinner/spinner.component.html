@@ -1,0 +1,5 @@
+<div [ngStyle]="{'background-image': getUrl()}">
+    <input type="button" (click)="toggleSpinner()" [value]="buttonName">
+    <hr>
+    <img [src]="spinnerSrc" [hidden]="isSpinnerHidden"/>
+</div>

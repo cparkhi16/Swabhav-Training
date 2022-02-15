@@ -1,0 +1,21 @@
+<ul *ngFor="let user of users; index as i;">
+    <li [style.color]="user.fname=='mina'?'purple':'red'">
+        {{i}}. {{user.fname}}-{{user.lname}}-{{user.age}}
+    </li>
+</ul>
+<button (click)="addSomething()">add something</button>
+<!-- <input [value]="hero"/>
+
+ -->
+ <hr>
+ <ul *ngFor="let h of heroes">
+    <ng-container *ngIf="h.emotion !== 'sad'">
+      <li>{{h.name}} ({{h.emotion}})</li>
+    </ng-container>
+</ul>
+
+<hr>
+<a (click)="changeFromChild()">Change from child</a>
+<br/>
+{{parentData}}
+<br>

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mysqlcon:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Panda@19'
+    ports:
+      - 3305:3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+  my-app:
+    image: yogeshtembe/nodemysqlapp
+    depends_on:
+      - mysqlcon
+    #restart: always
+    ports:
+      - 3000:3000
+volumes:
+  mysqldata:
+    driver: local
+    
+    
+
+  

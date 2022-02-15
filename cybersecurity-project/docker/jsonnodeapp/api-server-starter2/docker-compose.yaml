@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: "3"
+services:
+  app:
+    image: yogeshtembe/jsonnodeapp
+    ports:
+      - "3001:3001"
+    volumes:
+      - jsondata:/home/app/data
+
+volumes:
+  jsondata:
+    driver: local

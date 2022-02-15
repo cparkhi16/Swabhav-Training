@@ -1,0 +1,10 @@
+<div class="bg-dark container" style="height:100vh;overflow-x: hidden;color:white">
+    <ul style="list-style:none;"class="list-group">
+        <li class="nav-item" [routerLink]="['./passport']"><i class="fa fa-address-card" aria-hidden="true"></i>Passport</li>
+        <li class="nav-item"  routerLink="./courses"><i class="fa fa-check-square-o" aria-hidden="true"></i>Courses</li>
+        <li class="nav-item"  [routerLink]="['./allCourses']"><i class="fa fa-check-square-o" aria-hidden="true"></i>All Courses</li>
+        <li class="nav-item"  [routerLink]="['./hobbies']"><i class="fa fa-gamepad" aria-hidden="true"></i>Hobbies</li>
+        <li class="nav-item"  [routerLink]="['./files']"><i class="fa fa-file-text" aria-hidden="true"></i>files</li>
+        <li class="nav-item" (click)="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i><a>Logout</a></li>
+    </ul>
+</div>

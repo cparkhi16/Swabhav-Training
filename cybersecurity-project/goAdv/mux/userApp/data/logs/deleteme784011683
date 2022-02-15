@@ -1,0 +1,7 @@
+{"level":"info","message":"server starting..."}
+{"level":"info","message":"connected to DB"}
+{"level":"info","message":"Registered User Routes"}
+{"level":"info","message":"Registered Hobby Routes"}
+{"level":"info","message":"Registered Course Routes"}
+{"level":"info","message":"Registered Passport Routes"}
+{"level":"info","message":"Registered File Routes"}

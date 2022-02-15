@@ -1,0 +1,22 @@
+<div>
+    <div *ngIf="students.length===0;else elseBlock">No data to display!</div>
+    <ng-template #elseBlock>
+        <table>
+            <tr>
+                <th>SrNo</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>CGPA</th>
+                <th>DOB</th>
+            </tr>
+            <tr *ngFor="let student of students;index as i" [style.background-color]="getBgColor(student.cgpa)">
+                <td>{{i+1}}</td>
+                <td>{{student.id}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.cgpa}}</td>
+                <td>{{student.dob | date}}</td>
+            </tr>
+        </table>
+    </ng-template>
+    
+</div>

@@ -1,0 +1,5 @@
+<p>hooks works!</p>
+<button (click)="flag=!flag">toggle</button>
+<app-child  *ngIf="flag" [itemFromChild]="itemFromParent" (newItemEvent)="getmsg($event)">
+    <div #template1>Hello from parent</div>
+</app-child>

@@ -1,0 +1,16 @@
+<div class="p-5 mb-4 bg-dark rounded-3" style="color:white; height:300px;margin:50px;">
+    Enter Rating:<input type="number" [(ngModel)]="rating"/>
+    <hr>
+    <span *ngIf="validateRating();else elseBlock">Please enter valid rating</span>
+    <ng-template #elseBlock>
+        <app-child [rating]="rating"></app-child>
+    </ng-template>
+</div>
+<div class="p-5 mb-4 bg-dark rounded-3" style="color:white; height:300px;margin:50px;">
+    <app-childnew (ratingDone)="showRating($event)"></app-childnew>
+    <br>
+    <hr>
+    Rating-{{ratingFromChild}}
+</div>
+
+

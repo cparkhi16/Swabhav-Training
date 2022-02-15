@@ -1,0 +1,35 @@
+<div *ngIf="!isUserLoggedIn;else elseBlock" class="container">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address<span style="color:red">*</span></label>
+            <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">Email is Required</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">Email is invalid</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password<span style="color:red">*</span></label>
+            <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">Password is Required</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('maxlength') && loginForm.get('password')?.touched">password max length should not exceed 10 characters</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('password')?.hasError('passwordStrength') && loginForm.get('password')?.touched">
+                Your password must have only lower case characters.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassportNo1" class="form-label">PassportNo<span style="color:red">*</span></label>
+            <input type="text" formControlName="passportNo" class="form-control" id="exampleInputPassportNo1">
+            <div class="alert alert-danger" *ngIf="loginForm.get('passportNo')?.hasError('passportInvalid') && loginForm.get('passportNo')?.touched">Passport number is invalid, it should have 3  capital letters and 7 digits</div>
+            <div class="alert alert-danger" *ngIf="loginForm.get('passportNo')?.hasError('required') && loginForm.get('passportNo')?.touched">Passport number is required</div>
+        </div>
+        <button  type="submit" class="btn btn-success">Login</button>
+        <!-- [disabled]="loginForm.invalid" -->
+    </form>
+    <div>
+        {{isUserLoggedIn}}
+    </div>
+</div>
+<ng-template #elseBlock>
+    <div>User is logged in!</div>
+</ng-template>
+<app-account></app-account>

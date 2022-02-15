@@ -1,0 +1,27 @@
+<div>
+    Text:
+    <input type="text" [(ngModel)]="data"><br/>
+    Font Size:
+    <input type="text" [(ngModel)]="fontSize"><br/>
+    Background-color:
+    <select name="bgcolor" [(ngModel)]="selectedBgColor">
+        <ng-container *ngFor="let color of colors">
+            <option *ngIf="color!==selectedFontColor" [value]="color">
+                {{color}}
+            </option>
+        </ng-container>
+    </select><br/>
+    
+    Font-color:
+    <select name="fontColor" [(ngModel)]="selectedFontColor">
+        <ng-container *ngFor="let color of colors">
+            <option *ngIf="color!== selectedBgColor" [value]="color">
+                    {{color}}
+            </option>
+        </ng-container>
+    </select><br/>
+    
+</div>
+<div>
+    <input [value]="data" [style.font-size]="fontSize+'px'" [style.background-color]="selectedBgColor" [style.color]="selectedFontColor" readonly="readonly"/>
+</div>

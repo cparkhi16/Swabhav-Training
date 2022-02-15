@@ -1,0 +1,6 @@
+<hr>
+<p>clock works!</p>
+<h2 *ngIf="!isHidden;else elseBlock">{{date | date:'medium'}}</h2>
+<ng-template #elseBlock><h2>Clock Hidden</h2></ng-template>
+<br>
+<button (click)="toggleClock()">{{buttonText}}</button>

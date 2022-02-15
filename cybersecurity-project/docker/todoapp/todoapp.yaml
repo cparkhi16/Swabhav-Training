@@ -1,0 +1,13 @@
+version: '3'
+services:
+  todoapp:
+    image: yogeshtembe/todoapp
+    ports:
+      - 82:80
+    command: >
+      bash -c "cd var/www/html
+      && service apache2 start
+      && service apache2 status
+      && tail -F anything"
+    
+  

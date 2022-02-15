@@ -1,0 +1,1 @@
+command to run todoapp.yaml file--> docker-compose -f .\todoapp.yaml up

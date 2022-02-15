@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>HTML 5 Boilerplate</title>
+        <link rel="stylesheet" href="style.css">
+      </head>
+    <body>
+
+        <h1 id="title">test</h1>
+
+        <p id="demo">change</p>
+        <button type="button" onclick="ChangeCss()">Click Me!</button>
+
+        <br>
+        <hr>
+        <h2>JSON Example</h2>
+        <form name="myForm">
+            <label>Name:</label><input type="text" name="firstName">
+            <label>City:</label><input type="text" name="city">
+            <button type="button" onclick="takeData()">Submit</button>
+        </form>
+
+        <hr>
+        <h2>Timeout Example</h2>
+        <h3 id="setTimeoutTest">Change after 3 sec!</h3>
+        <button type="button" onclick="changeNow()">clearTimeout</button>
+
+        
+
+        <hr>
+        <h2>Interval Example</h2>
+        <button type="button" onclick="startCounter()">start</button>
+        <h3 id="sec">seconds</h3>
+        <button type="button" onclick="stopCounter()">stop</button>
+        <script src="test.js"></script>
+    </body>
+</html>

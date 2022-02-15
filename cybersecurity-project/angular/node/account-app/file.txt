@@ -1,0 +1,4 @@
+{"accountNo":45,"amount":1000,"transactionType":"withdraw"}
+{"accountNo":23,"amount":1000,"transactionType":"deposit"}
+{"accountNo":22,"amount":200,"transactionType":"withdraw"}
+{"accountNo":76,"amount":500,"transactionType":"deposit"}

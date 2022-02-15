@@ -1,0 +1,126 @@
+//2
+	var result float64
+	row := db.Debug().Table("emp").Select("sum(SAL)").Row()
+	row.Scan(&result)
+	fmt.Println(result)
+
+	//3
+	var result2 float64
+	row2 := db.Debug().Table("emp").Select("avg(SAL)").Row()
+	row2.Scan(&result2)
+	fmt.Println(result2)
+
+	//4 - SELECT DEPT.DEPTNO,DEPT.DNAME,COUNT(EMP.EMPNO)  AS HEADCOUNT FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO GROUP BY DEPTNO;
+	type Result4 struct {
+		DEPTNO    int64  `gorm:"type:int;column:DEPTNO"`
+		DNAME     string `gorm:"type:varchar(14);column:DNAME"`
+		HEADCOUNT int64  `gorm:"column:HEADCOUNT""`
+	}
+	var resultVar4 []Result4
+	db.Debug().Table("dept").Joins("INNER JOIN emp on emp.DEPTNO=dept.DEPTNO").Group("dept.DEPTNO").Select("DEPT.DEPTNO,DEPT.DNAME,COUNT(emp.EMPNO) AS HEADCOUNT").Find(&resultVar4)
+	//db.Debug().Raw("SELECT DEPT.DNAME,COUNT(EMP.EMPNO)  AS HEADCOUNT FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO GROUP BY DEPTNO").Scan(&resultVar4)
+	fmt.Println(resultVar4)
+
+	//5 - SELECT JOB, COUNT(EMPNO) AS HEADCOUNT FROM EMP GROUP BY JOB;
+	type Result5 struct {
+		JOB   string `gorm:"type:varchar(9);column:JOB"`
+		COUNT int64  `gorm:"column:COUNT""`
+	}
+	var resultVar []Result5
+	//db.Debug().Raw("SELECT JOB,COUNT(EMPNO) AS COUNT FROM EMP GROUP BY JOB").Scan(&resultVar)
+	db.Debug().Table("emp").Select("JOB,COUNT(EMPNO) AS COUNT").Group("emp.JOB").Scan(&resultVar)
+	fmt.Println(resultVar)
+
+	//6 -SELECT DEPT.DEPTNO,DEPT.DNAME,EMP.JOB,COUNT(EMP.EMPNO)  AS HEADCOUNT FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO GROUP BY DEPTNO,EMP.JOB;
+	type Result6 struct {
+		DEPTNO    int64  `gorm:"type:int;column:DEPTNO"`
+		DNAME     string `gorm:"type:varchar(14);column:DNAME"`
+		JOB       string `gorm:"type:varchar(9);column:JOB"`
+		HEADCOUNT int64  `gorm:"column:HEADCOUNT""`
+	}
+	var resultVar6 []Result6
+	db.Debug().Table("dept").Joins("INNER JOIN emp on emp.DEPTNO=dept.DEPTNO").Group("dept.DEPTNO,emp.JOB").Select("DEPT.DEPTNO,DEPT.DNAME,EMP.JOB,COUNT(emp.EMPNO) AS HEADCOUNT").Find(&resultVar6)
+	//db.Debug().Raw("SELECT DEPT.DNAME,COUNT(EMP.EMPNO)  AS HEADCOUNT FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO GROUP BY DEPTNO").Scan(&resultVar4)
+	fmt.Println(resultVar6)
+
+	//7-SELECT DEPT.DEPTNO,DEPT.DNAME,COUNT(EMP.EMPNO)  AS HEADCOUNT FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO GROUP BY DEPTNO HAVING (DEPT.DEPTNO=10 OR DEPT.DEPTNO=20) AND COUNT(EMP.EMPNO)>2 ORDER BY COUNT(EMP.EMPNO) DESC;
+	var resultVar7 []Result6
+	db.Debug().Table("dept").Joins("INNER JOIN emp ON emp.DEPTNO=dept.DEPTNO").Group("dept.DEPTNO").Having("(DEPTNO=? OR DEPTNO=?) AND COUNT(EMP.EMPNO)>?", 10, 20, 2).Order("HEADCOUNT desc").Select("DEPT.DEPTNO,DEPT.DNAME,EMP.JOB,COUNT(emp.EMPNO) AS HEADCOUNT").Find(&resultVar7)
+	fmt.Println(resultVar7)
+
+	//8- SELECT EMP.ENAME,DEPT.DNAME FROM DEPT LEFT OUTER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO;
+	type Result8 struct {
+		ENAME string `gorm:"type:varchar(10);column:ENAME"`
+		DNAME string `gorm:"type:varchar(14);column:DNAME"`
+	}
+	var resultVar8 []Result8
+	db.Debug().Table("dept").Joins("LEFT OUTER JOIN emp ON emp.DEPTNO=dept.DEPTNO").Select("emp.ENAME,dept.DNAME").Find(&resultVar8)
+	fmt.Println(resultVar8)
+
+	//9 - SELECT DNAME FROM DEPT WHERE DNAME NOT IN (SELECT DEPT.DNAME FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO);
+	type Result9 struct {
+		DNAME string `gorm:"type:varchar(14);column:DNAME"`
+	}
+	// var resultVar91 []Result9
+	// var resultVar92 []Result9
+	// db.Debug().Table("dept").Joins("INNER JOIN emp on emp.DEPTNO=dept.DEPTNO").Group("dept.DEPTNO").Select("DEPT.DEPTNO,DEPT.DNAME,COUNT(emp.EMPNO) AS HEADCOUNT").Find(&resultVar91)
+	// db.Debug().Not(resultVar91).Table("dept").Select("DNAME").Find(&resultVar92)
+	// fmt.Println(resultVar92)
+
+	var resultVar93 []Result9
+	db.Debug().Raw("SELECT DNAME FROM DEPT WHERE DNAME NOT IN (SELECT DEPT.DNAME FROM DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO);").Scan(&resultVar93)
+	fmt.Println(resultVar93)
+
+	//10 - display the empname and their bossnames - SELECT A.ENAME AS EMPNAME, B.ENAME AS BOSSNAME FROM EMP A, EMP B WHERE A.MGR=B.EMPNO;
+	type Result10 struct {
+		EMPNAME  string `gorm:"type:varchar(10);column:EMPNAME"`
+		BOSSNAME string `gorm:"type:varchar(10);column:BOSSNAME"`
+	}
+	var resultVar10 []Result10
+	db.Debug().Table("EMP A, EMP B").Select("A.ENAME AS EMPNAME, B.ENAME AS BOSSNAME").Where("A.MGR=B.EMPNO").Scan(&resultVar10)
+	fmt.Println(resultVar10)
+
+	//11- display ename,deptname and bossname- SELECT A.ENAME AS EMPNAME, DEPT.DNAME, B.ENAME AS BOSSNAME FROM EMP A, EMP B, DEPT INNER JOIN EMP ON EMP.DEPTNO=DEPT.DEPTNO WHERE A.MGR=B.EMPNO;
+	type Result11 struct {
+		EMPNAME  string `gorm:"type:varchar(10);column:EMPNAME"`
+		DEPTNAME string `gorm:"type:varchar(10);column:DEPTNAME"`
+		BOSSNAME string `gorm:"type:varchar(10);column:BOSSNAME"`
+	}
+
+	var resultVar11 []Result11
+	db.Debug().Table("EMP A,EMP B").Select("A.ENAME AS EMPNAME, DEPT.DNAME AS DEPTNAME, B.ENAME AS BOSSNAME").Joins("INNER JOIN DEPT ON B.DEPTNO=DEPT.DEPTNO").Where("A.MGR=B.EMPNO").Scan(&resultVar11)
+	fmt.Println(resultVar11)
+
+	//12-display the countries there no states- SELECT COUNTRY_NAME FROM COUNTRIES WHERE COUNTRY_NAME NOT IN (SELECT COUNTRIES.COUNTRY_NAME FROM COUNTRIES RIGHT OUTER JOIN LOCATIONS ON COUNTRIES.COUNTRY_ID=LOCATIONS.COUNTRY_ID);
+	type Result12 struct {
+		NAME string `gorm:"type:varchar(40);column:NAME"`
+	}
+	var resultVar12_1 []Result12
+	db.Debug().Table("COUNTRIES").Select("COUNTRIES.COUNTRY_NAME AS NAME").Joins("RIGHT OUTER JOIN LOCATIONS ON COUNTRIES.COUNTRY_ID=LOCATIONS.COUNTRY_ID").Scan(&resultVar12_1)
+	var resultVar12_2 []Result12
+	var query string = "COUNTRY_NAME NOT IN ("
+	for i, v := range resultVar12_1 {
+		if i == len(resultVar12_1)-1 {
+			query = query + "\"" + v.NAME + "\""
+		} else {
+			query = query + "\"" + v.NAME + "\", "
+		}
+	}
+	query = query + ")"
+	db.Debug().Table("COUNTRIES").Where(query).Select("COUNTRY_NAME AS NAME").Scan(&resultVar12_2)
+	fmt.Println(resultVar12_2)
+
+	//13-display region name,country name and state name
+	//SELECT COUNTRIES.COUNTRY_NAME, LOCATIONS.STATE_PROVINCE, REGIONS.REGION_NAME FROM COUNTRIES INNER JOIN LOCATIONS ON COUNTRIES.COUNTRY_ID=LOCATIONS.COUNTRY_ID INNER JOIN REGIONS ON COUNTRIES.REGION_ID=REGIONS.REGION_ID
+	type Result13 struct {
+		COUNTRY_NAME   string `gorm:"type:varchar(40);column:COUNTRY_NAME"`
+		STATE_PROVINCE string `gorm:"type:varchar(25);column:STATE_PROVINCE"`
+		REGION_NAME    string `gorm:"type:varchar(25);column:REGION_NAME"`
+	}
+
+	var resultVar13 []Result13
+	db.Debug().Table("COUNTRIES").Select("COUNTRIES.COUNTRY_NAME, LOCATIONS.STATE_PROVINCE, REGIONS.REGION_NAME").Joins("INNER JOIN LOCATIONS ON COUNTRIES.COUNTRY_ID=LOCATIONS.COUNTRY_ID").Joins("INNER JOIN REGIONS ON COUNTRIES.REGION_ID=REGIONS.REGION_ID").Scan(&resultVar13)
+	fmt.Println(resultVar13)
+
+	//display the regions there no entry for country-SELECT REGION_NAME FROM REGIONS WHERE REGION_ID NOT IN (SELECT REGIONS.REGION_ID FROM REGIONS INNER JOIN COUNTRIES ON REGIONS.REGION_ID=COUNTRIES.REGION_ID);
+

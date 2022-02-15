@@ -1,0 +1,15 @@
+div span{
+    text-align:center;
+    background-color: blueviolet;
+    width:100%;
+}
+
+div{
+    background-color: blueviolet;
+    text-align:center;
+    width:100%;
+}
+
+.something{
+    background-color: blueviolet;
+}

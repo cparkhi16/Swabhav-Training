@@ -1,0 +1,69 @@
+
+<div class="container" style="margin:10px;">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Passport No</th>
+            <th>Expiry Date</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let passport of passports">
+            <td>{{passport.ID}}</td>
+            <td>{{passport.PassportNo}}</td>
+            <td>{{passport.ExpiryDate | slice:0:10}}</td>
+            <td>{{passport.Country}}</td>
+            <td>
+                <button class="btn btn-warning" (click)="editPassport(passport!)" style="margin-right:10px;"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <span style="width:20px;"></span>
+                <button class="btn btn-danger" (click)="deletePassport(passport.ID!)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+            </td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+
+<div *ngIf="editData.mode!=''">
+    <hr>
+    <form [formGroup]="passportEditForm" (ngSubmit)="updatePassport()">
+        <div class="mb-3">
+          <label for="passportNo" class="form-label">Passport No</label>
+          <input type="text" formControlName="passportNo" class="form-control" id="passportNo">
+          <div class="alert alert-danger" *ngIf="passportEditForm.get('passportNo')?.hasError('required') && passportEditForm.get('passportNo')?.touched">Passport No is Required</div>
+          <div class="alert alert-danger" *ngIf="passportEditForm.get('passportNo')?.hasError('maxlength') && passportEditForm.get('passportNo')?.touched">Passport No max length should not exceed 36 characters</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Expiry Date</label>
+            <!-- <input type="text" formControlName="expiryDate" class="form-control" id="exampleInputEmail1"> -->
+            <!-- <label for="expiryDate" class="form-label">Passport Expiry Date</label> -->
+            <!-- <input type="text" formControlName="expiryDate" class="form-control" id="expiryDate"> -->
+            <!-- <label for="date" class="col-1 col-form-label">Date</label> -->
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" formControlName="expiryDate" id="expiryDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                    </div>
+                    <!-- <div class="alert alert-danger" *ngIf="registerForm.get('expiryDate')?.hasError('required') && registerForm.get('expiryDate')?.touched">Passport Expiry Date is Required</div> -->
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Country</label>
+            <input type="text" formControlName="country" class="form-control" id="exampleInputEmail1">
+            <div class="alert alert-danger" *ngIf="passportEditForm.get('country')?.hasError('required') && passportEditForm.get('country')?.touched">Passport Country is Required</div>
+            <div class="alert alert-danger" *ngIf="passportEditForm.get('country')?.hasError('maxlength') && passportEditForm.get('country')?.touched">Passport Country max length should not exceed 20 characters</div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-right:20px;" [disabled]="passportEditForm.invalid"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Update</button>
+        <button class="btn btn-secondary" (click)="cancelEdit()"><i class="fa fa-times" aria-hidden="true"></i>Cancel</button>
+    </form>
+</div>
+
+<div class="alert" *ngIf="message.status!=''" [ngClass]="{'alert-success': message.status === 'success', 'alert-danger' : message.status === 'error' }">
+    {{message.text}}<button (click)="cancel()" style="float:right" class="btn" [ngClass]="{'btn-success': message.status === 'success', 'btn-danger' : message.status === 'error' }"><i class="fa fa-times" aria-hidden="true"></i></button>
+</div>

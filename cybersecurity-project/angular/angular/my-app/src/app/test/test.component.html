@@ -1,0 +1,11 @@
+<p>test here</p>
+
+<input type="number" [value]="num" (change)="check($event)">
+<!-- <p>number is-{{type}}</p> -->
+
+<p *ngIf="isEven;else elseBlock"></p>
+<ng-template #elseBlock><p>Odd</p></ng-template>
+
+<input [(ngModel)]="text">
+<p>{{text}}</p>
+

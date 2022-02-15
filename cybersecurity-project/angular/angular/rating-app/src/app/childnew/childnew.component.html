@@ -1,0 +1,5 @@
+<span *ngFor="let star of stars">
+    <span [style.color]="star.color" (click)="starClicked(star.id)" (mouseover)="starHovered(star.id)" (mouseout)="starOut(star.id)" class="star"><i  [@rotatedState]="star.state" class="fa fa-star"></i></span>
+</span>
+<br>
+<button class="btn btn-success" (click)="reset()">Reset</button>

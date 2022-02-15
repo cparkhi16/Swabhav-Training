@@ -1,0 +1,22 @@
+<div>
+    One way binding
+    <div>{{age}}</div>
+    <br/>
+    Property binding
+    <input [value]="age"/>
+    <br/>
+    Two way binding
+    <input [(ngModel)]="age"/>
+</div>
+<div>
+    <p>Please select your favorite Web language:</p>
+    <input type="radio" id="html" [(ngModel)]="lang" name="fav_language" value="HTML">
+    <label for="html">HTML</label><br>
+    <input type="radio" id="css" [(ngModel)]="lang" name="fav_language" value="CSS">
+    <label for="css">CSS</label><br>
+    <input type="radio" id="javascript" [(ngModel)]="lang" name="fav_language" value="JavaScript">
+    <label for="javascript">JavaScript</label>
+</div>
+<div>
+    current selection-{{lang}}
+</div>

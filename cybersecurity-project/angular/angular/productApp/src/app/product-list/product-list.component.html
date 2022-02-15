@@ -1,0 +1,22 @@
+<div>
+    <!-- [(ngModel)]="newName" -->
+    Product ID:<input type="number" [(ngModel)]="newID"/><br/>
+    Product Name:<input type="text" [(ngModel)]="newName" appTest/><br/>
+    Product Description:<input type="text"[(ngModel)]="newDesp" appTest/><br/>
+    <button (click)="addProduct()" class="btn btn-success"><i class="fa fa-plus"></i>Add New</button><br/>
+    <hr>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let product of products">
+            <td>{{product.ID}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td><button (click)="deleteProduct(product.ID)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+        </tr>
+    </table>    
+</div>
