@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from "react";
 import axios from 'axios';
+import CreateComment from "./CreateComment";
+import DisplayComment from "./DisplayComment";
 
 
 export default()=>{
     const [posts,updatePosts]=useState({})
     const loadPosts= async()=>{
-        const resp = await axios.get('http://localhost:5001/api/v1/blog/post').catch(e=>console.log(e.message))
+        const resp = await axios.get('http://localhost:4003/api/v1/blog/post').catch(e=>console.log(e.message))
         console.log(resp.data)
         updatePosts(resp.data)
     }
@@ -17,6 +19,10 @@ const cardofpost = Object.values(posts).map(p=>{
         <div className="card" style={{width:"30%",marginBottom:"20%"}}>
             <div className="card-body" key={p.id}>
                 {p.title}
+            </div>
+            <div>
+                <CreateComment postid={p.id} />
+                <DisplayComment comments={p.comments}/>
             </div>
         </div>
     )
