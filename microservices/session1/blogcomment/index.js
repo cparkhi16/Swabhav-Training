@@ -23,7 +23,7 @@ app.post('/api/v1/blog/post/:postId/comment',async (req,resp)=>{
     comment.push({commentid,message})
     postsWithComments[postId]=comment
 
-    await axios.post("http://localhost:4005/eventbus/event",{
+    await axios.post("http://eventbus_service:4005/eventbus/event",{
         type :"Comment Created",
         data:{postId,commentid,message}
     }).catch(e=>console.log(e.message))
