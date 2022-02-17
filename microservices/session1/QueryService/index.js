@@ -9,7 +9,7 @@ app.use(cors())
 
 const posts={}
 
-app.get('/api/v1/blog/post',(req,resp)=>{
+app.get('/api/v1/blog/post/query',(req,resp)=>{
     resp.send(posts);
 })
 const handleMyEvent=(type,data)=>{
@@ -34,7 +34,7 @@ app.post('/eventbus/event/listener',(req,resp)=>{
 })
 
 app.listen(4003,async()=>{
-    const resp=await axios.get("http://eventbus_service:4005/eventbus/event").catch(e=>console.log(e.message))
+    const resp=await axios.get("http://eventbus-service:4005/eventbus/event").catch(e=>console.log(e.message))
     const events=resp.data || [];
     for(let e of events){
         handleMyEvent(e.type,e.data)

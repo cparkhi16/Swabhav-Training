@@ -16,9 +16,9 @@ app.get('/eventbus/event',(req,resp)=>{
 app.post('/eventbus/event',(req,resp)=>{// when a event occurs store it in events list (used by all svcs)
     const event = req.body;
     events.push(event)
-    axios.post("http://blogpost_service:4001/eventbus/event/listener",event).catch(e=>console.log(e.message))//blogpost
-    axios.post("http://blogcomment_service:4002/eventbus/event/listener",event).catch(e=>console.log(e.message))//blogcomment
-    axios.post("http://query_service:4003/eventbus/event/listener",event).catch(e=>console.log(e.message))//query
+    axios.post("http://post-service:4001/eventbus/event/listener",event).catch(e=>console.log(e.message))//blogpost
+    axios.post("http://comments-service:4002/eventbus/event/listener",event).catch(e=>console.log(e.message))//blogcomment
+    axios.post("http://query-service:4003/eventbus/event/listener",event).catch(e=>console.log(e.message))//query
     resp.send({})
 })
 

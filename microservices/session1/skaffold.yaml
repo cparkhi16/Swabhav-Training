@@ -1,0 +1,56 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: cparkhi16/bpost
+      context: blogpost #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: cparkhi16/bcomment
+      context: blogcomment #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: cparkhi16/eventbus
+      context: eventbus #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: cparkhi16/query
+      context: QueryService #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: cparkhi16/ui
+      context: ui #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: 'src/**/*.js' # src denotes host machine files (change detected in src reflect in dest)
+
+
+
+
+
+  
