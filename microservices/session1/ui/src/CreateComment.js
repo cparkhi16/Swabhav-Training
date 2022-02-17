@@ -5,7 +5,7 @@ export default ({postid})=>{
     const [message,updatemessage]=useState("Your comment here")
     const handleMySubmit= async(e)=>{
         e.preventDefault();
-        await axios.post(`http://localhost:4002/api/v1/blog/post/${postid}/comment`,{message}).catch(e=>console.log(e.message))
+        await axios.post(`http://posts.com/api/v1/blog/post/${postid}/comment`,{message}).catch(e=>console.log(e.message))
         updatemessage('')
     }
     return(

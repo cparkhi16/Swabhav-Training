@@ -7,7 +7,7 @@ import DisplayComment from "./DisplayComment";
 export default()=>{
     const [posts,updatePosts]=useState({})
     const loadPosts= async()=>{
-        const resp = await axios.get('http://localhost:4003/api/v1/blog/post/query').catch(e=>console.log(e.message))
+        const resp = await axios.get('http://posts.com/api/v1/blog/post/query').catch(e=>console.log(e.message))
         console.log(resp.data)
         updatePosts(resp.data)
     }

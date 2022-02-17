@@ -3,3 +3,4 @@ import React from 'react'
 import App from './App'
 
 ReactDOM.render(<App></App>,document.getElementById('root'))
+console.log("Index.js from ui ")

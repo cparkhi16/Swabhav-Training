@@ -4,13 +4,16 @@ import DisplayPost from "./DisplayPost";
 
 export default ()=>{
     return (
-        <div className="container">
+        // <div className="container">
+        // <div>
+        //     <Createpost></Createpost>
+        // </div>
+        // <div>
+        //     <DisplayPost></DisplayPost>
+        // </div>
+        // </div>
         <div>
-            <Createpost></Createpost>
-        </div>
-        <div>
-            <DisplayPost></DisplayPost>
-        </div>
+            hello world
         </div>
     )
 }
