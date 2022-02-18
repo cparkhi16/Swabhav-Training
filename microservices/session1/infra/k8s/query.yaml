@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: query
-        image: cparkhi16/query
+        image: us.gcr.io/lucid-splicer-312307/query #cparkhi16/query
         ports:
         - containerPort: 4003
 ---

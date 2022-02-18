@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: eventbus
-        image: cparkhi16/eventbus
+        image: us.gcr.io/lucid-splicer-312307/eventbus #cparkhi16/eventbus
         ports:
         - containerPort: 4005
 ---

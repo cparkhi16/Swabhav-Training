@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: cparkhi16/ui
+        image: us.gcr.io/lucid-splicer-312307/ui #cparkhi16/ui
         ports:
         - containerPort: 3000
 ---

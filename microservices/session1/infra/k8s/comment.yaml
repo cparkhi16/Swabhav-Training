@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: comments
-        image: cparkhi16/bcomment
+        image: us.gcr.io/lucid-splicer-312307/bcomment #cparkhi16/bcomment
         ports:
         - containerPort: 4002
 ---

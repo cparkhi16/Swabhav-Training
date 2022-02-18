@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: posts
-        image: cparkhi16/bpost
+        image: us.gcr.io/lucid-splicer-312307/blogpost #cparkhi16/bpost
         ports:
         - containerPort: 4001
 ---
