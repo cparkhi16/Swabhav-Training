@@ -15,8 +15,8 @@ export default()=>{
     return (
         <form onSubmit={onSubmitHandler}>
             <div className="col-lg-8">
-            <div class="card mb-4">
-            <div class="card-body">
+            <div className="card mb-4">
+            <div className="card-body">
                 <h3 className="text-dark">{Task}</h3>
                 <input type="text" className="form-control" value={task} onChange={(e)=> updatedTask(e.target.value)}/>
             </div>
