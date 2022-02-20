@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todolistdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todolistdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: todolistdb
+    spec:
+      containers:
+      - name: todolistdb
+        image: us.gcr.io/lucid-splicer-312307/todolistdb
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todolistdb-service
+spec:
+  selector:
+    app: todolistdb
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306

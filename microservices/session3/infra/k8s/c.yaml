@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: completedtaskdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: completedtaskdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: completedtaskdb
+    spec:
+      containers:
+      - name: completedtaskdb
+        image: us.gcr.io/lucid-splicer-312307/completedtaskdb
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: completedtaskdb-service
+spec:
+  selector:
+    app: completedtaskdb
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306

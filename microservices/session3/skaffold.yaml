@@ -1,0 +1,82 @@
+apiVersion: skaffold/v2alpha3 # skaffold dev to run it
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: lucid-splicer-312307
+  artifacts:
+    - image: us.gcr.io/lucid-splicer-312307/eventbusdb 
+      context: eventbusdb #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.*' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/todolistdb 
+      context: todolistdb #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.*' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/completedtaskdb 
+      context: completedtaskdb #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.*' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/todotask  #cparkhi16/bpost
+      context: todotask #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/completedtask #cparkhi16/bcomment
+      context: completedtask #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/eventbus #cparkhi16/eventbus
+      context: eventbus #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/query #cparkhi16/query
+      context: QueryService #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: '*.js' # src denotes host machine files (change detected in src reflect in dest)
+    - image: us.gcr.io/lucid-splicer-312307/ui #cparkhi16/ui
+      context: ui #foldername where dockerfile is present
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: . #dest denotes after change in files where to store the changes (on path inside container . means same as foldername given for dockerfile)
+            src: 'src/**/*.js' # src denotes host machine files (change detected in src reflect in dest)
+
+
+
+
+
+  

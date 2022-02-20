@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventbusdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventbusdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: eventbusdb
+    spec:
+      containers:
+      - name: eventbusdb
+        image: us.gcr.io/lucid-splicer-312307/eventbusdb
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventbusdb-service
+spec:
+  selector:
+    app: eventbusdb
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
