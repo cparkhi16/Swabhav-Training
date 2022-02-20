@@ -1,0 +1,30 @@
+version: '3'
+services:
+  eventbus_service:
+    #image: cparkhi16/blogpost
+    build: ./eventbus
+    ports:
+    - "4005:4005"
+  
+  query_service:
+    #image: cparkhi16/blogpost
+    build: ./QueryService
+    ports:
+    - "4003:4003"
+  
+  blogpost_service:
+    #image: cparkhi16/blogpost
+    build: ./blogpost
+    ports:
+    - "4001:4001"
+
+  blogcomment_service:
+    #image: cparkhi16/blogcomment
+    build: ./blogcomment
+    ports:
+    - "4002:4002"
+
+  ui_service:
+    build: ./ui
+    ports:
+    - "3000:3000"
