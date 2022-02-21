@@ -1,7 +1,7 @@
 'user strict';
 
 const mysql = require('mysql');
-//ALTER USER 'root'@'eventbusdb-service' IDENTIFIED BY 'hello';
+//ALTER USER 'root'@'eventbusdb-service' IDENTIFIED BY 'hello'
 //local mysql db connection
 const dbConn = mysql.createConnection({
   host     : 'eventbusdb-service',

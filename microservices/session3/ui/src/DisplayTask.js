@@ -9,7 +9,7 @@ export default()=>{
     const [posts,updatePosts]=useState([])
     let tasks=[];
     const loadTasks= async()=>{
-        const resp = await axios.get('http://chinmay.com:4003/api/v1/tasks').catch(e=>console.log(e.message))
+        const resp = await axios.get('http://chinmay.com/api/v1/tasks').catch(e=>console.log(e.message))
         // tasks.push(resp.data[0])
         // console.log(resp.data[0].id)
         // console.log(resp.data[0].task)
@@ -40,8 +40,8 @@ export default()=>{
         var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(p.task), 'my-secret-key@123').toString();
         console.log("my encrypted completed task ",ciphertext)
         p.task=ciphertext;
-        await axios.post("http://localhost:4002/api/v1/completed/tasks",{p}).catch(e=>console.log(e.message))
-        await axios.delete(`http://localhost:4001/api/v1/tasks/${p.id}`).catch(e=>console.log(e.message))
+        await axios.post("http://chinmay.com/api/v1/completed/tasks",{p}).catch(e=>console.log(e.message))
+        await axios.delete(`http://chinmay.com/api/v1/tasks/${p.id}`).catch(e=>console.log(e.message))
         loadTasks();
         console.log("I am called ",p)
     }

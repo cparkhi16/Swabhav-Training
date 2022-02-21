@@ -9,7 +9,7 @@ export default()=>{
         var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(task), 'my-secret-key@123').toString();
         console.log("my encrypted task ",ciphertext)
         task=ciphertext;
-       await axios.post("http://chinmay.com:4001/api/v1/task",{task}).catch(e=>console.log(e.message))
+       await axios.post("http://chinmay.com/api/v1/task",{task}).catch(e=>console.log("Enrror posting task to api ",e.message))
        updatedTask('')
     }
     return (
