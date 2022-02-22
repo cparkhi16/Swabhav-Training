@@ -5,12 +5,22 @@ const bodyParser=require('body-parser');
 const { default: axios } = require('axios');
 const TodoTaskList = require('./todomodel');
 const app = express();
-
+const jwt = require("jsonwebtoken")
 app.use(cors())
 app.use(bodyParser.json())
 
 const todoTasks =[]
-
+app.post('/api/v1/generateToken',(req,resp)=>{
+    //const {name}=req.body;
+    console.log(req.body)
+    const accessToken = generateAccessToken ({service: req.body.name})
+    console.log("My access token for service ",req.body.name,accessToken)
+    resp.json ({accessToken: accessToken})
+})
+function generateAccessToken(service) {
+    console.log("Service name ",service)
+    return jwt.sign(service, "chinmay", {expiresIn: "15m"}) 
+}
 app.get('/api/v1/tasks',(req,resp)=>{
     TodoTaskList.findAll(function(err, todoTasks) {
         console.log('controller')
@@ -42,7 +52,7 @@ app.delete('/api/v1/tasks/:taskId',async(req,resp)=>{
         resp.json({ error:false, message: 'To do task successfully deleted' });
       });
 })
-app.post('/api/v1/task',async (req,resp)=>{
+app.post('/api/v1/task',validateToken,async (req,resp)=>{
     const {task}=req.body;
 //     const id=uuid.v4();
 //    // posts[id]={id,task}
@@ -76,5 +86,25 @@ app.post('/eventbus/event/listener',(req,resp)=>{
     resp.send({})
 })
 app.listen(4001,()=>{
-    console.log("Blogpost has started on 4001")
+    console.log("Todotask has started on 4001")
 })
+function validateToken(req, res, next) {
+    //get token from request header
+    console.log("Validating token ")
+    const authHeader = req.headers["authorization"]
+    console.log("Auth header ",authHeader)
+    if(authHeader!==undefined){
+    jwt.verify(authHeader, "chinmay", (err, user) => {
+        console.log("Err in token ",err)
+    if (err) { 
+     res.status(403).send("Token invalid")
+     }
+     else {
+     next() //proceed to the next action in the calling function
+     }
+    })
+ } //end of jwt.verify()
+ else{
+    res.status(403).send("Token not present")
+ }
+    }

@@ -2,7 +2,7 @@
 
 const mysql = require('mysql');
 //ALTER USER 'root'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'hello';
-//FLUSH PRIVILEGES;
+//FLUSH PRIVILEGES
 //local mysql db connection
 const dbConn = mysql.createConnection({
   host     : 'todolistdb-service',

@@ -97,5 +97,5 @@ app.post('/eventbus/event/listener',(req,resp)=>{
     resp.send({})
 })
 app.listen(4002,()=>{
-    console.log("Blogcomment has started at 4002")
+    console.log("completedtask has started at 4002")
 });

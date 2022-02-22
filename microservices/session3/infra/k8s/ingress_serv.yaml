@@ -11,6 +11,13 @@ spec:
     http:
       paths:
       - pathType: Prefix
+        path: /api/v1/generateToken
+        backend:
+          service:
+            name: todotask-service
+            port: 
+              number: 4001
+      - pathType: Prefix
         path: /api/v1/task
         backend:
           service:
