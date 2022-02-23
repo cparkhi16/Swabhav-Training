@@ -3,5 +3,6 @@ FLUSH PRIVILEGES;
 CREATE TABLE completedtasks (
     id varchar(36),
     task varchar(255) NOT NULL,
+    userid varchar(36),
     PRIMARY KEY (id)
 );

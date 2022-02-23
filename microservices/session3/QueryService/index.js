@@ -9,14 +9,46 @@ app.use(cors())
 
 const todoTasks=[]
 const completedTasks=[]
-app.get('/api/v1/tasks',(req,resp)=>{
-    console.log("Get called ",todoTasks)
-    resp.send(todoTasks);
-})
-app.get('/api/v1/completed/tasks',(req,resp)=>{
-    console.log("Get called for completed tasks ",completedTasks)
-    resp.send(completedTasks);
-})
+// app.get('/api/v1/gettasks',(req,resp)=>{
+//     console.log("Get called ",todoTasks)
+//     resp.send(todoTasks);
+// })
+// app.get('/api/v1/completed/tasks',(req,resp)=>{
+//     console.log("Get called for completed tasks ",completedTasks)
+//     resp.send(completedTasks);
+// })
+app.get('/api/v1/gettasks/:userID',(req,resp)=>{
+    console.log("Get called for todotasks ")
+    const userID = req.params.userID
+       //const {userID}=req.body;
+       let  todoTasksById=[]
+       console.log("User id for get todotasks ",userID)
+       //console.log("Get called ",todoTasks)
+       for(let t of todoTasks){
+           if(t.userid==userID){
+               let id=t.id
+               let task=t.task
+               todoTasksById.push({id,task})
+           }
+       }
+       console.log("Todo tasks for user ",todoTasksById)
+       resp.send(todoTasksById);
+   })
+   app.get('/api/v1/completed/gettasks/:userID',(req,resp)=>{
+       const userID = req.params.userID
+       let  completedTasksById=[]
+       console.log("User id for get completed tasks ",userID)
+       for(let t of completedTasks){
+           if(t.userid==userID){
+               let id=t.id
+               let task=t.task
+               completedTasksById.push({id,task})
+           }
+       }
+       console.log("Completed tasks for user ",completedTasksById)
+       resp.send(completedTasksById);
+      // console.log("Get called for completed tasks ",completedTasks)
+   })
 const handleMyEvent=(type,data)=>{
     console.log("type ",type,data)
     //console.log("Type of data ",typeof(data))

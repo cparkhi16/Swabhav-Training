@@ -20,12 +20,12 @@ app.get('/api/v1/completed/tasks',(req,resp)=>{
     //resp.send(comments) 
 })
 
-app.post('/api/v1/completed/tasks',async (req,resp)=>{
+app.post('/api/v1/completed/tasks/:userID',async (req,resp)=>{
     
     const {task}=req.body.p;
     console.log("add this to completed task ",task)
     // const {id}=req.body.p;
-
+    const userID=req.params.userID
     // const postId=req.params.postId
     // const comment=postsWithComments[postId]||[]
     // comment.push({commentid,message})
@@ -37,13 +37,14 @@ app.post('/api/v1/completed/tasks',async (req,resp)=>{
     const id=uuid.v4();
     await axios.post("http://eventbus-service:4005/eventbus/event",{
         type :"Completed Task Created",
-        data:{id,task}
+        data:{id,task,userid:userID}
     }).catch(e=>console.log(e.message))
 
     // resp.status(201).send({id,task})
 
     //db
     req.body.p.id=id;
+    req.body.p.userID=userID;
     const new_task = new CompletedTaskList(req.body.p);
     console.log("Create completed task called ")
     //handles null error 

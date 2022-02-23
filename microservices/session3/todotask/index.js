@@ -53,19 +53,20 @@ app.delete('/api/v1/tasks/:taskId',async(req,resp)=>{
       });
 })
 app.post('/api/v1/task',validateToken,async (req,resp)=>{
-    const {task}=req.body;
+    const {task,userID}=req.body;
 //     const id=uuid.v4();
 //    // posts[id]={id,task}
 //    todoTasks.push({id,task})
     const id=uuid.v4();
     await axios.post("http://eventbus-service:4005/eventbus/event",{
         type:"Task Created",
-        data:{id,task}
+        data:{id,task,userid:userID}
     }).catch(e=>console.log(e.message))
 
     // db 
     req.body.id=id;
     const new_task = new TodoTaskList(req.body);
+    console.log("Adding task for userid ",new_task.userid)
     console.log("Create todotask called ")
     //handles null error 
    if(req.body.constructor === Object && Object.keys(req.body).length === 0){

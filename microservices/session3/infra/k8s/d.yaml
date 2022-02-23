@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: userdb
+    spec:
+      containers:
+      - name: userdb
+        image: us.gcr.io/lucid-splicer-312307/userdb
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userdb-service
+spec:
+  selector:
+    app: userdb
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306

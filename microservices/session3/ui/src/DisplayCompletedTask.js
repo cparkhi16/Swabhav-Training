@@ -5,7 +5,8 @@ export default ()=>{
     let tasks=[]
     const [completedTasks,updatecompletedTasks]=useState([])
     const loadCompletedTasks=async()=>{
-        const resp=await axios.get(`http://chinmay.com/api/v1/completed/tasks`)
+        let userID=localStorage.getItem("userID")
+        const resp=await axios.get(`http://chinmay.com/api/v1/completed/gettasks/${userID}`)
         console.log("Completed tasks ",resp.data)
         for(let et of resp.data)
         {   
@@ -42,7 +43,16 @@ export default ()=>{
         var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(p.task), 'my-secret-key@123').toString();
         console.log("my encrypted to do task ",ciphertext)
         task=ciphertext;
-        await axios.post("http://chinmay.com/api/v1/task",{task}).catch(e=>console.log(e.message))
+        let token = localStorage.getItem("token")
+        var bytes = CryptoJS.AES.decrypt(token, 'my-secret-key@123');
+        var decryptedToken = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        let config = {
+            headers: {
+              authorization: decryptedToken,
+            }
+          }
+        let userID= localStorage.getItem("userID")
+        await axios.post(`http://chinmay.com/api/v1/task`,{task,userID},config).catch(e=>console.log(e.message))
         await axios.delete(`http://chinmay.com/api/v1/completed/tasks/${p.id}`).catch(e=>console.log(e.message))
         loadCompletedTasks();
         console.log("To do task ",p)

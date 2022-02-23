@@ -5,6 +5,7 @@ const uuid=require('uuid')
 var CompletedTaskList = function(taskInfo){
     this.id=taskInfo.id;
     this.task= taskInfo.task;
+    this.userid=taskInfo.userID;
    // this.last_name      = employee.last_name;
     // this.email          = employee.email;
     // this.phone          = employee.phone;

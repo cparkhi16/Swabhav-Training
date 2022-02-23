@@ -26,7 +26,8 @@ export default()=>{
               authorization: decryptedToken,
             }
           }
-       await axios.post("http://chinmay.com/api/v1/task",{task},config).catch(e=>console.log("Enrror posting task to api ",e.message))
+        let userID = localStorage.getItem("userID");
+       await axios.post("http://chinmay.com/api/v1/task",{task,userID},config).catch(e=>console.log("Enrror posting task to api ",e.message))
        updatedTask('')
     }
     return (

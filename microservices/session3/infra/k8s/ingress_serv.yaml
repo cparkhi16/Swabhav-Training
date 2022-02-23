@@ -11,6 +11,20 @@ spec:
     http:
       paths:
       - pathType: Prefix
+        path: /api/v1/gettasks/?(.*)
+        backend:
+          service:
+            name: query-service
+            port: 
+              number: 4003
+      - pathType: Prefix
+        path: /api/v1/login
+        backend:
+          service:
+            name: user-service
+            port: 
+              number: 4006
+      - pathType: Prefix
         path: /api/v1/generateToken
         backend:
           service:
@@ -39,21 +53,7 @@ spec:
             port: 
               number: 4002
       - pathType: Prefix
-        path: /api/v1/completed/tasks
-        backend:
-          service:
-            name: completedtask-service
-            port: 
-              number: 4002
-      - pathType: Prefix
-        path: /api/v1/tasks
-        backend:
-          service:
-            name: query-service
-            port: 
-              number: 4003
-      - pathType: Prefix
-        path: /api/v1/completed/tasks
+        path: /api/v1/completed/gettasks/?(.*)
         backend:
           service:
             name: query-service
