@@ -11,6 +11,13 @@ spec:
     http:
       paths:
       - pathType: Prefix
+        path: /api/v1/register
+        backend:
+          service:
+            name: user-service
+            port: 
+              number: 4006
+      - pathType: Prefix
         path: /api/v1/gettasks/?(.*)
         backend:
           service:

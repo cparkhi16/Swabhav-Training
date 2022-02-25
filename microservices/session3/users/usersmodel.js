@@ -2,13 +2,13 @@
 var dbConn = require('./config/db.config');
 const uuid=require('uuid')
 
-var user = function(taskInfo){
+var user = function(user){
     this.id=uuid.v4();
-    this.username=taskInfo.id;
-    this.password= taskInfo.password;
+    this.username=user.username;
+    this.password= user.password;
 };
-user.create = function (newTask, result) {    
-    dbConn.query("INSERT INTO users set ?", newTask, function (err, res) {
+user.create = function (newUser, result) {    
+    dbConn.query("INSERT INTO users set ?", newUser, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);

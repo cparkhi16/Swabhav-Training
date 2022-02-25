@@ -60,10 +60,6 @@ export default ()=>{
     let password=pass.value;
     const resp =  await axios.post("http://chinmay.com/api/v1/login",{username,password}).catch(e=>console.log(e.message))
     console.log(resp.data);
-   // console.log("Database value ",database)
-    // Find user login info
-   //const userData = database.find((user) => user.username === uname.value);
-
     // Compare user info
     if (resp.data.validUser) {
         console.log("User id ",resp.data.userData.id)
@@ -76,16 +72,27 @@ export default ()=>{
     }
   };
 
-  // Generate JSX code for error message
+  // Generate JSX code for error message;
   const renderErrorMessage = (name) =>
     name === errorMessages.name && (
       <div className="error">{errorMessages.message}</div>
     );
-
+  const handleRegister= async ()=>{
+      var username = prompt("Enter username");  
+      var password= prompt("Enter a secure password");
+      if (username!="" && password!=""){
+      const resp =  await axios.post("http://chinmay.com/api/v1/register",{username,password}).catch(e=>console.log(e.message))
+      console.log(resp.data);
+      alert("Registeration done successfully, Please login to continue !!")
+      }else{
+        alert("Please enter valid username and password !!")
+      }
+    }
   // JSX code for login form
   const renderForm = (
     <div className="form">
       <form onSubmit={handleSubmit}>
+        <h3>Login</h3>
         <div className="input-container">
           <label>Username </label>
           <input type="text" name="uname" required />
@@ -100,6 +107,9 @@ export default ()=>{
           <input type="submit" />
         </div>
       </form>
+      <button type="button" className="btn btn-primary" onClick={handleRegister}>
+        Register
+      </button>
     </div>
   );
 const showTasks=()=>{

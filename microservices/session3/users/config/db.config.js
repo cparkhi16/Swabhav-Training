@@ -2,7 +2,7 @@
 
 const mysql = require('mysql');
 
-//local mysql db connection
+//local mysql db connection;
 const dbConn = mysql.createConnection({
   host     : 'userdb-service',
   user     : 'root',
