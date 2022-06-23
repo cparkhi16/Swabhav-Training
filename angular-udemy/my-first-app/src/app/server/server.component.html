@@ -13,6 +13,6 @@
 <button class="btn btn-primary" (click)="show = !show">Toggle me</button>
 <p *ngIf="show">hi good evening</p>
 <button class="btn btn-primary" (click)="addLogs()">Add Logs</button>
-<div *ngFor="let i of logs" [ngStyle]="{backgroundColor: i >=5 ? 'blue':'transparent'}" [ngClass]="{online: i>=5}">{{i}}
+<div *ngFor="let i of logs; let ind=index" [ngStyle]="{backgroundColor: ind >=4 ? 'blue':'transparent'}" [ngClass]="{online: ind>=4}">{{i}}
 </div>
 

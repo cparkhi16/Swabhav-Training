@@ -49,6 +49,7 @@ export class ServerComponent {
     }
     addLogs(){
         //this.show = !this.show
-        this.logs.push(this.logs.length +1 )
+        //this.logs.push(this.logs.length +1 )
+        this.logs.push(new Date() )
     }
 }
