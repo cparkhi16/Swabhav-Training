@@ -10,16 +10,19 @@ export class ServerComponent {
     status: string ="offline";
     msg= "No server was created !"
     userName = ""
+    serverCreated = false;
     getStatus(){
         return this.status;
     }
     constructor(){
-        setTimeout(()=>{
-            console.log("after 5 secs")
-            this.allowAddServer=false;
-        },5000)
+        // setTimeout(()=>{
+        //     console.log("after 5 secs")
+        //     this.allowAddServer=false;
+        // },5000)
     }
     onClick(){
+        console.log(" on click of add server ")
+        this.serverCreated = true;
         this.msg= "server was created "+this.userName
     }
     onAssignment(){
@@ -30,5 +33,8 @@ export class ServerComponent {
         return true;
         else
         return false;
+    }
+    getColor(){
+        return this.serverCreated === true ? 'green' : 'red';
     }
 }

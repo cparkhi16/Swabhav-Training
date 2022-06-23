@@ -3,4 +3,9 @@
 <p>{{userName}}</p>
 <button class="btn btn-primary" [disabled]="getIsUserEmpty()" (click)="onAssignment()">Add username</button>
 <button class="btn btn-primary" [disabled]="!allowAddServer" (click)="onClick()">Add server {{allowAddServer}}</button>
-<p>{{msg}}</p>
+<p *ngIf="serverCreated else noServer" [ngStyle]="{backgroundColor:getColor()}">{{msg}}</p>
+<ng-template #noServer >
+    <p [ngStyle]="{backgroundColor:getColor()}">
+        No server was created 
+    </p>
+</ng-template>
