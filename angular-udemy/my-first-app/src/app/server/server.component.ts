@@ -18,6 +18,8 @@ export class ServerComponent {
     msg= "No server was created !"
     userName = ""
     serverCreated = false;
+    show = true;
+    logs=[]
     getStatus(){
         return this.status;
     }
@@ -44,5 +46,9 @@ export class ServerComponent {
     }
     getColor(){
         return this.serverCreated === true ? 'green' : 'red';
+    }
+    addLogs(){
+        //this.show = !this.show
+        this.logs.push(this.logs.length +1 )
     }
 }
