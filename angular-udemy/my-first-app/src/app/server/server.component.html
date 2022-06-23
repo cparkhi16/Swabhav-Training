@@ -1,0 +1,6 @@
+<p> The server {{id}} is {{getStatus()}} </p>
+<input type="text" class="form-control" [(ngModel)]="userName">
+<p>{{userName}}</p>
+<button class="btn btn-primary" [disabled]="getIsUserEmpty()" (click)="onAssignment()">Add username</button>
+<button class="btn btn-primary" [disabled]="!allowAddServer" (click)="onClick()">Add server {{allowAddServer}}</button>
+<p>{{msg}}</p>
