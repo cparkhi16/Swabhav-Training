@@ -2,7 +2,14 @@ import { Component } from "@angular/core";
 
 @Component({
     selector: 'app-server',
-    templateUrl : './server.component.html'
+    templateUrl : './server.component.html',
+    styles:[
+        `
+        .online{
+                color: white;
+            }
+        `
+    ]
 })
 export class ServerComponent {
     id: number=10;
@@ -23,6 +30,7 @@ export class ServerComponent {
     onClick(){
         console.log(" on click of add server ")
         this.serverCreated = true;
+        this.status="online"
         this.msg= "server was created "+this.userName
     }
     onAssignment(){
