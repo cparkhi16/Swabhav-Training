@@ -5,7 +5,7 @@ import { LoggingService } from '../logging.service';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
-  providers :[LoggingService]
+  //providers :[LoggingService]
 })
 export class AccountComponent {
   constructor(private loggingService: LoggingService,private accountService: AccountsService){
@@ -19,6 +19,6 @@ export class AccountComponent {
     //this.statusChanged.emit({id: this.id, newStatus: status});
     //console.log('A server status changed, new status: ' + status);
     this.accountService.updateStatus(this.id,status)
-    this.loggingService.logStatusChange(status)
+    //this.loggingService.logStatusChange(status)
   }
 }
