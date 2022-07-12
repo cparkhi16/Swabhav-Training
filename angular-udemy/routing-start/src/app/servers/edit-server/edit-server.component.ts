@@ -12,6 +12,7 @@ export class EditServerComponent implements OnInit {
   server: {id: number, name: string, status: string};
   serverName = '';
   serverStatus = '';
+  allowEdit = false;
 
   constructor(private serversService: ServersService,private route: ActivatedRoute) { }
 
@@ -20,6 +21,7 @@ export class EditServerComponent implements OnInit {
     console.log(this.route.snapshot.fragment)
     this.route.queryParams.subscribe((qp)=>{
       console.log(" qp in obs ",qp)
+      this.allowEdit = qp['allowEdit']=== '1'? true : false;
     })
     this.route.fragment.subscribe((frag)=>{
       console.log(" fragment in obs ",frag)
