@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { UserService } from 'user.service';
+import { UserService } from '../user.service';
+
 
 @Component({
   selector: 'app-user',
@@ -19,6 +20,6 @@ export class UserComponent implements OnInit {
     });
   }
   onActivate(){
-    this.userService.activatedEmitter.emit(true)
+    this.userService.activatedEmitter.next(true)
   }
 }
