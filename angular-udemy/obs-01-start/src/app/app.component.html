@@ -5,7 +5,9 @@
       <a [routerLink]="['user', 1]">
         User 1
       </a>
-      |
+      <hr>
+      <p *ngIf="userActivated">Activated!</p>
+      <hr>
       <a [routerLink]="['user', 2]">
         User 2
       </a>
