@@ -1,0 +1,11 @@
+version: '3'
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+    restart: always # used mostly in case of web servers (where we need to make sure that it should be available always)
+    #restart : on-failure (used for worker container for which we just need it to do work and then die when done)
+    #restart: 'no' (use ' ' as no is a keyword in yml file which equals to FALSE)
+    build: .
+    ports:
+      - '4001:8081'
