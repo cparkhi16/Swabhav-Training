@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+      - name: client
+        image: stephengrider/multi-client
+        ports:
+        - containerPort: 3000
+
+
+# to update the image of pods managed by deployment , first add new changes and push it to docker hub 
+# we would either :
+# 1. delete existing pods such that new pods will be created with latest image changes (bad approach)
+# 2. use tagging to tag image : version and new version to our config type such that it will then detect a change and update the pod (not preferrable as it again requires change in files and can cause issue in CI env)
+# 3. we can use imperative method : (push your new image with a version to docker hub) and run cmd :-
+# kubectl set image deployment/client-deployment client=stephengrider/multi-client:v5
+# kubectl set <property-to-change> <object-type>/object-name container-name=new property val (img in above case)

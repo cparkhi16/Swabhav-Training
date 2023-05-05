@@ -11,8 +11,15 @@ spec:
   selector:
     component: web
 
+
 # use docker desktop to enable k8s
 # kubectl apply -f client-port.yaml (for pod)
 # kubectl apply -f client-node-port.yaml (for service)
 # access using localhost: nodePort in browser (if using minikube then use minikube ip and access ip:nodePort)
 # in output of kubectl get services command we see 2 ports (port and nodePort)
+
+
+# kubectl get pods -o wide to get IP assigned to pods
+# this IP might keep on changing when we update pod or the pod might get deleted and new pod with diff IP will be created.
+# we as a user theoretically might need to handle the IP of pods to connect and access which will be problematic if IP changes repeatedly
+# for managing this we use SERVICE , it manages and handles the IP changes of pods (we just need to access service and ahead service will handle everything)
