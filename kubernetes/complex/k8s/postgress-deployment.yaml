@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+      containers:
+      - name: postgres
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-storage
+            subPath: postgres
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: PGPASSWORD
+                name: pgpassword
+
+
+
+# in spec of pod template we request a storage as advertised by the name of database-persistent-volume-claim
+# in container's section we attach the path of the data which is used in db for storage to map to the name of volume we have requested earlier. We will get the data within "postgres" folder
+# in the pvc we requested
+# kubectl get pvc -> gives the advertised volume claims that cluster can have
+# kubectl get pv -> gives actual instance of volume that is bound for our requirement and usage
