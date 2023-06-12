@@ -4,10 +4,10 @@ kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-    kubernetes.io/ingress.class: 'nginx'
+    kubernetes.io/ingress.class: 'nginx' # for configuring ingress-nginx controller
     nginx.ingress.kubernetes.io/use-regex: 'true'
     # ADD ANNOTATION
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$1 # this is required to remove /api once request is known to be routed to multi server pod we can remove it as there is no route starting with /api in multi server and already we have known to be routed to specific service
     # UPDATE ANNOTATION
 spec:
   rules:
