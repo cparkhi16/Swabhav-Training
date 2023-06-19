@@ -11,3 +11,6 @@ COPY ./ ./
 
 # Default command
 CMD ["npm", "start"]
+
+# if we want to mount our local dir into container using volume use similar command as follows in powershell:
+# docker run -it -v ${pwd}:/app ruby sh
