@@ -33,3 +33,4 @@ spec:
                 name: server-cluster-ip-service
                 port:
                   number: 5000
+# see mailed info on installing ingress nginx setup for local env

@@ -1,0 +1,34 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - SHA=$(git rev-parse HEAD) # get current commit SHA and tag images according to it to uniquely identify images and update our k8s cluster imperatively
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1 # this is to disable the install questions on gcloud terminal which are asked (eg Y/N) as we won't have access to the instance given by travis to respond them.
+before_install:
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d #this cmd we will get after we encrypt our sercice-account.json of GCP account encrypted using travis CLI (see mailed steps)
+  - curl https://sdk.cloud.google.com | bash > /dev/null; # install google cloud SDK in the instance given by travis
+  - source $HOME/google-cloud-sdk/path.bash.inc # execute required commands to load sdk
+  - gcloud components update kubectl # configure sdk to execute kubectl by installing it
+  - gcloud auth activate-service-account --key-file service-account.json # authenticate our json file which will be unencrypted by 1st command (travis will then be able to access GCP components using this creds)
+  - gcloud config set project steady-petal-307322 # set our project name in which we have configured k8s cluster (see the project id instead of project name and add it here)
+  - gcloud config set compute/zone us-central1-c # set location of data center in which k8s cluster is configured ( can find it in Kubernetes engine details on GCP)
+  - gcloud container clusters get-credentials multi-cluster # add the cluster name which you have created 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # docker login (added user name pwd on travis portal in env variables)
+  - docker build -t cparkhi16/react-test -f ./client/Dockerfile.dev ./client # build our client proj to run tests (we specifically use dockerfile.dev because it contains our package to run tests)
+
+script:
+  - docker run -e CI=true cparkhi16/react-test npm test
+
+deploy:
+  provider: script # in docker's complex project we added elasticbeanstalk here as travis was knowing the scripts to execute and deploy the project on elastic beanstalk but here on GCP we specifically provide a script i.e deploy.sh to build and deploy the tags on the cluster.
+  script: bash ./deploy.sh
+  on:
+    branch: main
+
+
+# on google cloud for creating a secret for the k8s cluster first we will have to switch to the project and do steps:
+# gcloud config set project steady-petal-307322 # set our project name in which we have configured k8s cluster (see the project id instead of project name and add it here)
+# gcloud config set compute/zone us-central1-c # set location of data center in which k8s cluster is configured ( can find it in Kubernetes engine details on GCP)
+# gcloud container clusters get-credentials multi-cluster # add the cluster name which you have created
+# kubectl create secret generic pgpassword --from-literal PGPASSWORD=mypassword123 
