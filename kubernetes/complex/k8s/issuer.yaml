@@ -1,0 +1,43 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory # issuer connecting to letsencrypt server 
+    email: "cparkhi16@gmail.com" # add email id , nothing to do with any of our communication process , just letsencrypt needs one email id
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
+
+#Overall, this configuration suggests that the ingress controller is set up to handle incoming HTTP traffic and obtain Let's Encrypt certificates using the HTTP01 challenge method. The NGINX ingress controller is being used to manage the routing and configuration of incoming requests.
+
+# Required Updates for Cert Manager Install ( cert manager is responsible for overall communication between k8s cluster and letsencrypt to obtain cert for our domain [see diagram in notes : issuer will be a object for telling cert manager from wheere to get cert manager from and certificate is another object which contains the info to be retrieved about the certificate from letsencrypt])
+# In the upcoming lecture, we will be installing the Cert Manager using Helm on Google Cloud. There have been some breaking changes introduced with the latest versions of Cert Manager, so we will need to do a few things differently.
+
+# Instead of the installation instructions given at around 1:20 in the video, we will complete these steps in the GCP Cloud Shell:
+
+# Add the Jetstack Helm repository
+
+# helm repo add jetstack https://charts.jetstack.io
+
+# Update your local Helm chart repository cache:
+
+# helm repo update
+
+# Install the cert-manager Helm chart:
+
+# helm install \
+#   cert-manager jetstack/cert-manager \
+#   --namespace cert-manager \
+#   --create-namespace \
+#   --version v1.8.0 \
+#   --set installCRDs=true
+# Official docs for reference:
+
+# https://cert-manager.io/docs/installation/helm/#steps
+
+

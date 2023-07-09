@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+ 
+kind: Certificate
+metadata:
+  name: k8s-multi-com-tls
+spec:
+  secretName: k8s-multi-com # a secret in which our tls cert will be stored once obtained from letsencrypt
+  issuerRef:
+    name: letsencrypt-prod # name of our issuer object we created for connecting to letsencrypt
+    kind: ClusterIssuer # type of issuer is clusterissuer
+  commonName: k8s-multi.com # cert is valid for this domain 
+  dnsNames:
+    - k8s-multi.com # other domains which can be considered valid under this cert
+    - www.k8s-multi.com # other domains which can be considered valid under this cert
+
+#If you have deployed your issuer and certificate manifests to GCP and you are getting No Resources Found when running kubectl get certificates, then continue on to the next lecture to create and deploy the Ingress manifest. Deploying the updated Ingress should trigger the certificate to be issued.
