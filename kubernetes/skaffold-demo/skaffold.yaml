@@ -39,3 +39,4 @@ build:
 
 # here index values for which fibonacci is calculated is stored in pvc and not the actual answer , so we see only indexes section filled up when we stop the container or clean deployment, actual answers are stored in redis cache
 # user enters a value in client pod -> it gets redirected to server pod -> server pod adds it in the postgres db and also in redis cache -> worker is listening for changes in cache , so once it detects the change it calculates the change and adds the answer in cache
+# note : - when we make changes locally : - 1. The files updated should be sent to the pod (will be done by skaffold) and 2. The project should be configured such that it notices the file changes and rebuilds the project itself (not image) for eg our react client project looks for changes always and we have configured nodemon to look for any changes in server application and rebuild itself using dev script in package.json
