@@ -1,0 +1,41 @@
+apiVersion: skaffold/v2beta12 #use skaffold dev to run it
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/* # whatever we add here will be managed by skaffold , all those deployments , services, etc will be configured by skaffold for us and also it will be deleted once we use Ctrl + C to shutdown skaffold , so we need to make sure we don't add any persistent data we would require in future like a postgres deployment for eg.
+build:
+  local:
+    push: false #this we are currently using for dev purpose , so we won't require the changed images locally to be pushed to any docker repository
+  artifacts:
+    - image: cparkhi18/multi-client # this image name should match the name in its deployment file in k8s folder
+      context: client
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "src/**/*.js" # mode 2 ( inject only changed js files  into client pod instead of mode 1 which rebuilds entire image and then updates k8s , mode 1 will be used if any other file is being changed instead of files listed here)
+            dest: . # dest is changes made to local file is to be updated in running container at same location
+          - src: "src/**/*.css"
+            dest: .
+          - src: "src/**/*.html"
+            dest: .
+    - image: stephengrider/multi-worker
+      context: worker
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: cparkhi18/multi-server
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+# here index values for which fibonacci is calculated is stored in pvc and not the actual answer , so we see only indexes section filled up when we stop the container or clean deployment, actual answers are stored in redis cache
+# user enters a value in client pod -> it gets redirected to server pod -> server pod adds it in the postgres db and also in redis cache -> worker is listening for changes in cache , so once it detects the change it calculates the change and adds the answer in cache
