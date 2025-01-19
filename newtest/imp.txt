@@ -1,0 +1,50 @@
+[Adblock Plus 2.0]
+! Checksum: eLcaZJp3rrEpbwhJ0+S2Ig
+! Version: 202306131002
+! Title: EasyList
+! Last modified: 13 Jun 2023 10:02 UTC
+! Expires: 1 days (update frequency)
+! Homepage: https://easylist.to/
+! Licence: https://easylist.to/pages/licence.html
+!
+! Please report any unblocked adverts or problems
+! in the forums (https://forums.lanik.us/)
+! or via e-mail (easylist@protonmail.com).
+!
+!------------------------General element hiding rules-------------------------!
+! *** easylist:easylist/easylist_general_hide.txt ***
+##div[data-native-ad]
+##div[data-native_ad]
+##div[data-spotim-slot]
+##div[id^="_vdo_ads_player_ai_"]
+##div[id^="ad-div-"]
+##div[id^="ad-position-"]
+##div[id^="ad_position_"]
+##div[id^="adngin-"]
+##div[id^="adrotate_widgets-"]
+##div[id^="ads250_250-widget-"]
+##div[id^="ads300_100-widget-"]
+##div[id^="ads300_250-widget-"]
+##div[id^="adspot-"]
+##div[id^="advads_ad_"]
+##div[id^="crt-"][style]
+##div[id^="dfp-ad-"]
+##div[id^="div-ads-"]
+##div[id^="div-gpt-"]
+##div[id^="ezoic-pub-ad-"]
+##div[id^="google_dfp_"]
+##div[id^="gpt_ad_"]
+##div[id^="lazyad-"]
+##div[id^="optidigital-adslot"]
+##div[id^="rc-widget-"]
+##div[id^="sticky_ad_"]
+##div[id^="vuukle-ad-"]
+##div[id^="yandex_ad"]
+##div[recirculation-ad-container]
+##gpt-ad
+##guj-ad
+##hl-adsense
+##img[src^="https://images.purevpnaffiliates.com"]
+##span[id^="ezoic-pub-ad-placeholder-"]
+##topadblock
+##zeus-ad
