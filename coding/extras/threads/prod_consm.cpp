@@ -1,54 +1,47 @@
 #include <iostream>
-#include <thread>
 #include <mutex>
 #include <condition_variable>
-#include <chrono>
+#include <vector>
+#include <bits/stdc++.h>
+std::mutex mu;
+std::condition_variable cond;
+std::vector<int> buffer;
+const unsigned int maxBufferSize = 50;
 
-std::mutex mtx;                 // Mutex to protect shared resource
-std::condition_variable cv;     // Condition variable for synchronization
-bool resourceReady = false;     // Flag indicating whether the resource is ready
-int resource = 0;               // Shared resource
+void producer(int val) {
+    while (val) {
+        std::unique_lock<std::mutex> locker(mu);
+        cond.wait(locker, []() { return buffer.size() < maxBufferSize; });
 
-void producer() {
-    for (int i = 1; i <= 5; ++i) { // Producing 5 resources
-        std::unique_lock<std::mutex> lock(mtx);
+        buffer.push_back(val);
+        std::cout << "Produced: " << val << std::endl;
 
-        // Wait until the consumer consumes the previous resource
-        cv.wait(lock, [] { return !resourceReady; });
-
-        // Produce a resource
-        resource = i;
-        std::cout << "Producer: Produced resource " << resource << "\n";
-        resourceReady = true;
-
-        // Notify the consumer
-        cv.notify_one();
+        val--;
+        locker.unlock();
+        cond.notify_one();
     }
 }
 
 void consumer() {
-    for (int i = 1; i <= 5; ++i) { // Consuming 5 resources
-        std::unique_lock<std::mutex> lock(mtx);
+    while (true) {
+        std::unique_lock<std::mutex> locker(mu);
+        cond.wait(locker, []() { return buffer.size() > 0; });
 
-        // Wait until the producer produces a new resource
-        cv.wait(lock, [] { return resourceReady; });
+        int val = buffer.back();
+        buffer.pop_back();
+        std::cout << "Consumed: " << val << std::endl;
 
-        // Consume the resource
-        std::cout << "Consumer: Consumed resource " << resource << "\n";
-        resourceReady = false;
-
-        // Notify the producer
-        cv.notify_one();
+        locker.unlock();
+        cond.notify_one();
     }
 }
 
 int main() {
-    std::thread th1(producer);
-    std::thread th2(consumer);
+    std::thread prodThread(producer, 100);
+    std::thread consThread(consumer);
 
-    // Join threads
-    th1.join();
-    th2.join();
+    prodThread.join();
+    consThread.join();
 
     return 0;
 }

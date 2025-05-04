@@ -1,35 +1,32 @@
 #include <iostream>
-#include <memory>
+#include <bits/stdc++.h>
+using namespace std;
 
-class MyClass {
+class Singleton {
 public:
-    // Delete copy constructor and assignment operator to prevent cloning
-    MyClass(const MyClass& obj) = delete;
-    MyClass& operator=(const MyClass& obj) = delete;
-    // Static method to access the single instance
-    static MyClass& getInstance() {
-        static MyClass instance;  // Guaranteed to be created only once
-        return instance;
+    Singleton(const Singleton& o) = delete;
+    Singleton operator=(const Singleton& o)= delete;
+    static Singleton& getInstance() {
+        if (!instance) {
+            instance = new Singleton();
+        }
+        return *instance;
     }
 
-    void display() const {
-        std::cout << "MyClass instance in action!" << std::endl;
+    void getLog() {
+        cout << " log from singleton " << endl;
     }
 
 private:
-    // Private constructor prevents direct instantiation
-    MyClass() { std::cout << "MyClass instance created\n"; }
+    Singleton() { cout << " singleton instance created " << endl; }
+    static Singleton* instance;
 };
 
+// Initialize the static member outside the class
+Singleton* Singleton::instance = nullptr;
 int main() {
-    // Access the singleton instance
-    MyClass& instance1 = MyClass::getInstance();
-    instance1.display();
-    
-     MyClass& instance2 = MyClass::getInstance();
-   instance2.display();
-    // Uncommenting this will result in a compile-time error:
-    // MyClass anotherInstance; 
+    Singleton& l = Singleton::getInstance();  // Access the Singleton instance
+    l.getLog();
 
     return 0;
 }

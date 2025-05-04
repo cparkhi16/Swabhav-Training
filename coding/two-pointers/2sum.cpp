@@ -7,6 +7,7 @@ vector<int> twoSum(vector<int>& nums, int target) {
     unordered_map<int, int> numToIndex; // Map to store {value -> index}
     for (int i = 0; i < nums.size(); i++) {
         int complement = target - nums[i];
+        cout<<" complement "<<complement<<" num to index count "<<numToIndex.count(complement)<<endl;
         if (numToIndex.count(complement)) { // Check if complement exists
             return vector<int>{numToIndex[complement], i}; // Return indices
         }

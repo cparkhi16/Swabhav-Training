@@ -9,8 +9,8 @@ int main() {
     vector<int> indices;
     unordered_map <char,int> freqMap;
     
-    string s = "ppqp";
-    string pattern = "pq";
+    string s = "cbaebabacd";
+    string pattern = "abc";
     
     for(int i =0 ; i< pattern.length() ; i++ ){
         freqMap[pattern[i]]++;

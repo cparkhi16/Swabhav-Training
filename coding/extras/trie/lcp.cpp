@@ -92,7 +92,7 @@ string findLongestCommonPrefix(vector<string>& strs) {
 
 // Main function
 int main() {
-    vector<string> strs = {"fl","fl"};
+    vector<string> strs = {"fle","fleeb", "abc"};
     
     string lcp = findLongestCommonPrefix(strs);
     cout << "Longest Common Prefix: " << lcp << endl;

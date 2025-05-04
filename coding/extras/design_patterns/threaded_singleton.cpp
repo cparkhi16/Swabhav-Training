@@ -1,67 +1,49 @@
 #include <iostream>
-#include <thread>
-#include <vector>
-#include <mutex>
-#include <memory>
+#include <bits/stdc++.h>
+using namespace std;
 
-// Singleton class template with thread-safety and lazy initialization
-template <typename T>
 class Singleton {
 public:
-    static T& Instance() {
+    Singleton(const Singleton& o) = delete;
+    Singleton operator=(const Singleton& o)= delete;
+    static Singleton& getInstance() {
         if (!instance) {
-            std::lock_guard<std::mutex> lock(mutex);
-            if (!instance) {
-                instance = std::make_unique<T>();
+            lock_guard<mutex> lock(mtx);
+            if(!instance){
+            instance = new Singleton();
             }
         }
         return *instance;
     }
 
+    void getLog() {
+        cout << " log from singleton " << endl;
+    }
+
 private:
-    static std::unique_ptr<T> instance;
-    static std::mutex mutex;
+    Singleton() { cout << " singleton instance created " << endl; }
+    static Singleton* instance;
+    static mutex mtx;
 };
 
-// Definition of the static member variables
-template <typename T>
-std::unique_ptr<T> Singleton<T>::instance = nullptr;
+// Initialize the static member outside the class
+Singleton* Singleton::instance = nullptr;
+mutex Singleton::mtx;
 
-template <typename T>
-std::mutex Singleton<T>::mutex;
-
-// Test class to use with Singleton
-class MyClass {
-public:
-    MyClass() {
-        std::cout << "MyClass instance created\n";
-    }
-
-    void showMessage() {
-        std::cout << "Hello from MyClass Singleton!\n";
-    }
-};
-
-// Driver function for threaded Singleton
-void threadFunction(int threadID) {
-    std::cout << "Thread " << threadID << " accessing Singleton instance...\n";
-    MyClass& instance = Singleton<MyClass>::Instance();
-    instance.showMessage();
+void func(int i){
+     Singleton& l = Singleton::getInstance();  // Access the Singleton instance
+    l.getLog();
 }
-
 int main() {
-    // Create a vector of threads
-    std::vector<std::thread> threads;
-
-    // Launch 5 threads to demonstrate thread-safe Singleton
-    for (int i = 1; i <= 5; ++i) {
-        threads.push_back(std::thread(threadFunction, i));
-    }
-
-    // Join all threads
-    for (auto& t : threads) {
-        t.join();
-    }
+   std::vector<std::thread> threads;
+   
+   for(int i = 0 ; i < 5 ; i++){
+       threads.push_back(thread(func, i));
+   }
+   
+   for(int i = 0 ; i < 5 ; i++){
+       threads[i].join();
+   }
 
     return 0;
 }

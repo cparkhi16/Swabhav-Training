@@ -21,11 +21,14 @@ public:
         for (int i = 0; i <= n; ++i) {
             first = first->next;
         }
-
+        cout<<"first is pointing to "<<first->val<<endl;
         // Step 2: Move both pointers until the first pointer reaches the end
         while (first) {
+            cout<<" first "<<first->val<<endl;
+            cout<<" second "<<second->val<<endl;
             first = first->next;
             second = second->next;
+            
         }
         cout<<" second is pointing to "<<second->val<<endl;
         // Step 3: Remove the nth node

@@ -19,6 +19,7 @@ bool isPalindrome(Node* head){
     }
     Node* prev = nullptr;
     Node* n;
+    cout<<" slow is pointing to "<<slow->data<<endl;
     while(slow){
         n = slow->next;
         slow->next = prev;
